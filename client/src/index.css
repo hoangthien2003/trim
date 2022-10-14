@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+@layer components {
+  .container {
+    @apply flex justify-center items-center h-screen
+    md:w-screen;
+  }
+  .card {
+    @apply flex flex-col items-center border-solid px-[30px] py-[20px] rounded-2xl
+    shadow-2xl
+    md:px-[120px] md:py-[60px];
+  }
+  .form {
+    @apply flex flex-col mt-[8px] w-[280px]
+    md:w-[550px] md:mt-0;
+  }
+  .cardTitle {
+    @apply text-xl font-bold text-black-200
+    md:text-[28px] md:mb-[30px];
+  }
+  .setupTitle {
+    @apply text-black-200 text-lg;
+  }
+  .formLabel {
+    @apply mt-10 mb-1 text-[12px] text-gray font-medium
+    md:text-[12px];
+  }
+  .formInput {
+    @apply outline-none border-none px-3 py-3  w-[235px] md:w-[505px]
+    text-black-200 rounded-[5px] text-[14px]
+    md:text-[13.5px];
+  }
+  .buttonPurple {
+    @apply w-full py-[13px] border-solid rounded-[5px] bg-purple
+    text-white text-[14px] mt-6
+    md:mt-8 md:transition md:opacity-70
+    hover:opacity-100 hover:duration-300;
+  }
+  .buttonGoogle {
+    @apply flex flex-row items-center justify-center w-full py-[13px]
+    border-solid border-[1px] border-outlineButton rounded-[5px] bg-white text-black-200 text-[12px];
+  }
+  .colorItem {
+    @apply md:m-[5px] m-[2px] opacity-60 border-solid border-[2px] p-[2px] border-white transition-opacity hover:cursor-pointer rounded-[17px];
+  }
+  .colorDiv {
+    @apply h-[18px] w-[18px] md:h-[20px] md:w-[20px] rounded-[14px];
+  }
+  .memberItem {
+    @apply border-[1px] border-solid border-[#E6E9EF] rounded-[5px] px-[15px] py-[6px] text-[13px] m-[7px] flex justify-center w-[95px] hover:cursor-pointer select-none;
+  }
+  .blackContainer {
+    @apply bg-black-100 w-screen h-screen;
+  }
+  .headerBar {
+    @apply sticky top-0 flex items-center justify-between flex-row h-[65px] w-full pl-[30px] pr-[20px];
+  }
+  .navBarContainer {
+    @apply absolute bg-white w-[250px] z-50 h-full border-r-[1px] border-r-outlineButton ease-in duration-300;
+  }
+  .textOther {
+    @apply text-[12px] px-[6px] py-[8px] w-[150px] hover:bg-whitesmoke rounded-[4px];
+  }
+}
