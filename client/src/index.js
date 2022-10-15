@@ -19,30 +19,33 @@ import EmailMembers from "./screens/components/EmailMembers";
 import HomeScreen from "./screens/HomeScreen";
 import Home from "./screens/components/HomeScreen/Home";
 import Tasks from "./screens/components/HomeScreen/Tasks";
+import AuthProvider from './contexts/AuthProvider'
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/forgotpw" element={<ForgotPwScreen />} />
-        <Route path="/reset" element={<ResetPwScreen />} />
-        <Route path="/signup" element={<SignupScreen />}>
-          <Route index element={<EmailSignupComponent />} />
-          <Route path="detail" element={<SignupComponent />} />
-        </Route>
-        <Route path="/setup" element={<SetupScreen />}>
-          <Route index element={<CreateProject />} />
-          <Route path="upload-avatar" element={<UploadAvatar />} />
-          <Route path="members" element={<Members />} />
-          <Route path="email-members" element={<EmailMembers />} />
-        </Route>
-        <Route path="/" element={<HomeScreen />}>
-          <Route index element={<Home />} />
-          <Route path="/tasks" element={<Tasks />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/forgotpw" element={<ForgotPwScreen />} />
+          <Route path="/reset" element={<ResetPwScreen />} />
+          <Route path="/signup" element={<SignupScreen />}>
+            <Route index element={<EmailSignupComponent />} />
+            <Route path="detail" element={<SignupComponent />} />
+          </Route>
+          <Route path="/setup" element={<SetupScreen />}>
+            <Route index element={<CreateProject />} />
+            <Route path="upload-avatar" element={<UploadAvatar />} />
+            <Route path="members" element={<Members />} />
+            <Route path="email-members" element={<EmailMembers />} />
+          </Route>
+          <Route path="/" element={<HomeScreen />}>
+            <Route index element={<Home />} />
+            <Route path="/tasks" element={<Tasks />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   </Provider>
 );

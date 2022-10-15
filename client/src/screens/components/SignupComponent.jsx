@@ -6,9 +6,15 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { EmailSignupSelector } from "../../redux/selector";
 import ErrorItem from "./ErrorItem";
+import { auth } from "../../firebase/config.js";
+import { useDispatch } from "react-redux";
+import { EmailSignupSlice } from "../../redux/slice/EmailSignupSlice.js";
+import { LOCAL_STORAGE_TOKEN_NAME } from "../../contexts/constants.js";
+import firebase from "../../firebase/config.js";
 
 function SignupComponent() {
   /** REACT STATE */
+  const dispatch = useDispatch();
   const [nameError, setNameError] = React.useState("");
   const [passwordError, setPasswordError] = React.useState("");
   const [confirmPwError, setConfirmPwError] = React.useState("");
@@ -64,62 +70,50 @@ function SignupComponent() {
   /** VALIDATE AND SET ERROR STATE FUNCTION */
   const handleSubmitSignup = async (e) => {
     e.preventDefault();
-    let isError = 0;
-    if (!formik.values.name) {
-      formik.errors.name = "This input is not a blank!";
-      isError = 1;
+    const data = {
+      displayName: formik.values.name,
+      email: emailSignup,
+      password: formik.values.password,
+      confirmPassword: formik.values.confirmPassword,
+      photoURL: "https://www.meme-arsenal.com/memes/9f0935ebd265b299eaa1480ccec28052.jpg"
+    };
+    const response = await axios.post("http://localhost:5000/api/auth/check-register-info", data)
+      .catch(err => {
+        const messageError = err.response.data.message;
+        if (messageError.name) {
+          setNameError(messageError.name);
+          setBorderInputName("border-red-50");
+          setWidthInputNameDesktop("md:w-[505px]");
+          setWidthInputNameMobile("w-[235px]");
+          setDisplayErrorName("block");
+        }
+        if (messageError.password) {
+          setPasswordError(messageError.password);
+          setBorderInputPassword("border-red-50");
+          setWidthInputPasswordDesktop("md:w-[505px]");
+          setWidthInputPasswordMobile("w-[235px]");
+          setDisplayErrorPassword("block");
+        }
+        if (messageError.confirmPassword) {
+          setConfirmPwError(messageError.confirmPassword);
+          setBorderInputConfirmPw("border-red-50");
+          setWidthInputConfirmPwDesktop("md:w-[505px]");
+          setWidthInputConfirmPwMobile("w-[235px]");
+          setDisplayErrorConfirmPw("block");
+        }
+      })
+    if (response.data.success === true) {
+      await auth.createUserWithEmailAndPassword(emailSignup, formik.values.password)
+      const uid = firebase.auth().currentUser.uid;
+      await axios.post("http://localhost:5000/api/auth/register", { ...data, uid })
+        .then(res => {
+          if (res.data.success === true) {
+            localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.accessToken);
+            navigate("/setup", { replace: true });
+          }
+        })
     }
-    if (!formik.values.password) {
-      formik.errors.password = "This input is not a blank!";
-      isError = 1;
-    }
-    if (!formik.values.confirmPassword) {
-      formik.errors.confirmPassword = "This input is not a blank!";
-      isError = 1;
-    }
-    if (formik.values.confirmPassword !== formik.values.password) {
-      formik.errors.confirmPassword = "Password must match!";
-      isError = 1;
-    }
-    /** IF THE FORM HASN'T ANY ERROR => SEND USERCRED TO SERVER */
-    if (!isError) {
-      const userCredential = {
-        email: emailSignup,
-        name: formik.values.name,
-        password: formik.values.password,
-      };
-      // await axios
-      //   .post("http://localhost:5000/api/auth/create-user", userCredential)
-      //   .then((res) => console.log(res))
-      //   .catch((error) => console.log(error));
-    } else {
-      setNameError(formik.errors.name);
-      setPasswordError(formik.errors.password);
-      setConfirmPwError(formik.errors.confirmPassword);
-      if (formik.errors.name) {
-        setNameError(formik.errors.name);
-        setBorderInputName("border-red-50");
-        setWidthInputNameDesktop("md:w-[505px]");
-        setWidthInputNameMobile("w-[235px]");
-        setDisplayErrorName("block");
-      }
-      if (formik.errors.password) {
-        setPasswordError(formik.errors.password);
-        setBorderInputPassword("border-red-50");
-        setWidthInputPasswordDesktop("md:w-[505px]");
-        setWidthInputPasswordMobile("w-[235px]");
-        setDisplayErrorPassword("block");
-      }
-      if (formik.errors.confirmPassword) {
-        setConfirmPwError(formik.errors.confirmPassword);
-        setBorderInputConfirmPw("border-red-50");
-        setWidthInputConfirmPwDesktop("md:w-[505px]");
-        setWidthInputConfirmPwMobile("w-[235px]");
-        setDisplayErrorConfirmPw("block");
-      }
-    }
-    navigate("/setup", { replace: true });
-  };
+  }
 
   return (
     <div className="container">
@@ -238,5 +232,6 @@ function SignupComponent() {
     </div>
   );
 }
+
 
 export default SignupComponent;

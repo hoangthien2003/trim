@@ -7,6 +7,8 @@ import { EmailSignupSlice } from "../../redux/slice/EmailSignupSlice.js";
 import * as yup from "yup";
 import axios from "axios";
 import ErrorItem from "./ErrorItem";
+import { auth, providerGoogle } from "../../firebase/config.js"
+import { LOCAL_STORAGE_TOKEN_NAME } from "../../contexts/constants.js";
 
 function EmailSignupComponent() {
   const [emailError, setEmailError] = React.useState("");
@@ -36,32 +38,50 @@ function EmailSignupComponent() {
 
   const handleSubmitSignup = async (e) => {
     e.preventDefault();
-    if (!formik.values.email) {
-      formik.errors.email = "This input is not a blank!";
-    }
-    if (formik.errors.email) {
-      setEmailError(formik.errors.email);
-      setBorderInputEmail("border-red-50");
-      setDisplayError("block");
-      setWidthInputEmailDesktop("md:w-[505px]");
-      setWidthInputEmailMobile("w-[235px]");
-    } else {
-      const userCredential = {
-        email: formik.values.email,
-      };
-      await axios
-        .post("http://localhost:5000/api/auth/check-email", userCredential)
-        .then((res) => {
-          if (res.data === "Sign up email successfully!") {
-            dispatch(EmailSignupSlice.actions.setEmail(formik.values.email));
-            navigate("detail");
-          } else {
-            setEmailError("Email is exist");
-          }
-        })
-        .catch((err) => console.log(err));
-    }
+    const userCredential = {
+      email: formik.values.email.toLowerCase(),
+    };
+    await axios
+      .post("http://localhost:5000/api/auth/check-email", userCredential)
+      .then((res) => {
+        if (res.data.success === true) {
+          dispatch(EmailSignupSlice.actions.setEmail(formik.values.email));
+          navigate("detail");
+        }
+      })
+      .catch((err) => {
+        setEmailError(err.response.data.message)
+        setBorderInputEmail("border-red-50");
+        setDisplayError("block");
+        setWidthInputEmailDesktop("md:w-[505px]");
+        setWidthInputEmailMobile("w-[235px]")
+      });
+
   };
+
+  async function handelSignupWithGoogle(e) {
+    e.preventDefault();
+    const { additionalUserInfo, user } = await auth.signInWithPopup(providerGoogle);
+    if (additionalUserInfo.isNewUser) {
+      const data = {
+        displayName: user.displayName,
+        email: user.email,
+        uid: user.uid,
+        photoURL: user.photoURL,
+        password: user.uid
+      }
+      const url = `http://localhost:5000/api/auth/register`;
+      const response = await axios.post(url, data).catch(err => console.log(err));
+      if (response === undefined) { return };
+      if (response.data.success) {
+        localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.accessToken);
+      }
+      navigate("/setup", { replace: true });
+    }
+
+    navigate("/", { replace: true });
+
+  }
 
   return (
     <div className="container">
@@ -113,7 +133,7 @@ function EmailSignupComponent() {
             <p className="text-gray text-sm">or</p>
           </div>
         </div>
-        <button className="buttonGoogle">
+        <button onClick={(e) => handelSignupWithGoogle(e)} className="buttonGoogle">
           <img src={googleSvg} alt="Google Logo" className="mb-[2px]" />
           <p className="ml-5 text-black50 font-medium text-sm">
             Continue with Google

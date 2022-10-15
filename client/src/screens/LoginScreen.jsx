@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ErrorItem from "./components/ErrorItem";
+import { auth, providerGoogle } from "../firebase/config.js";
+import { LOCAL_STORAGE_TOKEN_NAME } from "../contexts/constants.js";
+import axios from "axios"
 
 function LoginScreen() {
   const [borderInputEmail, setBorderInputEmail] = React.useState(
@@ -48,37 +51,108 @@ function LoginScreen() {
     }),
   });
 
-  const handleSubmitLogin = (e) => {
+  const handleSubmitLogin = async (e) => {
     e.preventDefault();
-    let hasError = 0;
-    if (!formik.values.email) {
-      hasError = 1;
-      formik.errors.email = "This input is not a blank!";
+    const data = {
+      email: formik.values.email,
+      password: formik.values.password
     }
-    if (!formik.values.password) {
-      hasError = 1;
-      formik.errors.password = "This input is not a blank!";
+    const response = await axios.post("http://localhost:5000/api/auth/check-login-info", data)
+      .catch(err => {
+        const messageError = err.response.data.message;
+        if (messageError.email) {
+          setEmailError(messageError.email);
+          setBorderInputEmail("border-red-50");
+          setDisplayErrorEmail("block");
+          setWidthInputEmailDesktop("md:w-[505px]");
+          setWidthInputEmailMobile("w-[235px]");
+        }
+        if (messageError.password) {
+          setPasswordError(messageError.password);
+          setBorderInputPassword("border-red-50");
+          setDisplayErrorPassword("block");
+          setWidthInputPasswordDesktop("md:w-[505px]");
+          setWidthInputPasswordMobile("w-[235px]");
+        }
+      })
+    if (response.data.success === true) {
+      await axios.post("http://localhost:5000/api/auth/login", data)
+        .then(res => {
+          if (res.data.success === true) {
+            auth.signInWithEmailAndPassword(formik.values.email, formik.values.password)
+            localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.accessToken);
+            navigate("/", { replace: true });
+          }
+        })
+        .catch(err => {
+          const messageError = err.response.data.message;
+          setPasswordError(messageError.password);
+          setBorderInputPassword("border-red-50");
+          setDisplayErrorPassword("block");
+          setWidthInputPasswordDesktop("md:w-[505px]");
+          setWidthInputPasswordMobile("w-[235px]");
+
+        })
     }
-    if (formik.errors.email) {
-      hasError = 1;
-      setEmailError(formik.errors.email);
-      setBorderInputEmail("border-red-50");
-      setDisplayErrorEmail("block");
-      setWidthInputEmailDesktop("md:w-[505px]");
-      setWidthInputEmailMobile("w-[235px]");
-    }
-    if (formik.errors.password) {
-      hasError = 1;
-      setPasswordError(formik.errors.password);
-      setBorderInputPassword("border-red-50");
-      setDisplayErrorPassword("block");
-      setWidthInputPasswordDesktop("md:w-[505px]");
-      setWidthInputPasswordMobile("w-[235px]");
-    }
-    if (!hasError) {
-      navigate("/home", { replace: true });
-    }
+    // let hasError = 0;
+    // if (!formik.values.email) {
+    //   hasError = 1;
+    //   formik.errors.email = "This input is not a blank!";
+    // }
+    // if (!formik.values.password) {
+    //   hasError = 1;
+    //   formik.errors.password = "This input is not a blank!";
+    // }
+    // if (formik.errors.email) {
+    //   hasError = 1;
+    //   setEmailError(formik.errors.email);
+    //   setBorderInputEmail("border-red-50");
+    //   setDisplayErrorEmail("block");
+    //   setWidthInputEmailDesktop("md:w-[505px]");
+    //   setWidthInputEmailMobile("w-[235px]");
+    // }
+    // if (formik.errors.password) {
+    //   hasError = 1;
+    //   setPasswordError(formik.errors.password);
+    //   setBorderInputPassword("border-red-50");
+    //   setDisplayErrorPassword("block");
+    //   setWidthInputPasswordDesktop("md:w-[505px]");
+    //   setWidthInputPasswordMobile("w-[235px]");
+    // }
+    // if (!hasError) {
+    //   navigate("/home", { replace: true });
+    // }
   };
+
+  async function handleLoginWithGoogle(e) {
+    e.preventDefault();
+    const { additionalUserInfo, user } = await auth.signInWithPopup(providerGoogle);
+
+    const data = {
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      password: user.uid
+    }
+
+    let url;
+    if (additionalUserInfo.isNewUser) {
+      console.log("regis")
+      url = `http://localhost:5000/api/auth/register`;
+    }
+    else {
+      console.log("login")
+      url = `http://localhost:5000/api/auth/login`;
+    }
+
+    await axios.post(url, data)
+      .then(res => {
+        localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, res.data.accessToken);
+        navigate("/", { replace: true });
+      })
+      .catch(err => console.log(err));
+
+  }
 
   return (
     <div className="container">
@@ -172,7 +246,7 @@ function LoginScreen() {
             <p className="text-gray text-sm">or</p>
           </div>
         </div>
-        <button className="buttonGoogle">
+        <button onClick={(e) => handleLoginWithGoogle(e)} className="buttonGoogle">
           <img src={googleSvg} alt="Google Logo" className="mb-[2px]" />
           <p className="ml-5 text-black-50 font-medium text-sm">
             Continue with Google
