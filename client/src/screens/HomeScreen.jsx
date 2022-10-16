@@ -33,7 +33,7 @@ function HomeScreen() {
       auth.signOut();
       navigate("/login");
     }
-  }, [requestLogOut]);
+  }, [requestLogOut,navigate]);
 
   return (
     <div className="flex flex-col md:flex-row">

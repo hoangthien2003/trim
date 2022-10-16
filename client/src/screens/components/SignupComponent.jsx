@@ -8,7 +8,6 @@ import { EmailSignupSelector } from "../../redux/selector";
 import ErrorItem from "./ErrorItem";
 import { auth } from "../../firebase/config.js";
 import { useDispatch } from "react-redux";
-import { EmailSignupSlice } from "../../redux/slice/EmailSignupSlice.js";
 import { LOCAL_STORAGE_TOKEN_NAME } from "../../contexts/constants.js";
 import firebase from "../../firebase/config.js";
 

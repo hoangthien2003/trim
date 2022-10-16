@@ -20,6 +20,7 @@ import HomeScreen from "./screens/HomeScreen";
 import Home from "./screens/components/HomeScreen/Home";
 import Tasks from "./screens/components/HomeScreen/Tasks";
 import AuthProvider from './contexts/AuthProvider'
+import PrivateRoute from "./utils/PrivateRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -40,9 +41,11 @@ root.render(
             <Route path="members" element={<Members />} />
             <Route path="email-members" element={<EmailMembers />} />
           </Route>
-          <Route path="/" element={<HomeScreen />}>
-            <Route index element={<Home />} />
-            <Route path="/tasks" element={<Tasks />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={<HomeScreen />}>
+              <Route index element={<Home />} />
+              <Route path="/tasks" element={<Tasks />} />
+            </Route>
           </Route>
         </Routes>
       </AuthProvider>

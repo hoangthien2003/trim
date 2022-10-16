@@ -94,34 +94,6 @@ function LoginScreen() {
 
         })
     }
-    // let hasError = 0;
-    // if (!formik.values.email) {
-    //   hasError = 1;
-    //   formik.errors.email = "This input is not a blank!";
-    // }
-    // if (!formik.values.password) {
-    //   hasError = 1;
-    //   formik.errors.password = "This input is not a blank!";
-    // }
-    // if (formik.errors.email) {
-    //   hasError = 1;
-    //   setEmailError(formik.errors.email);
-    //   setBorderInputEmail("border-red-50");
-    //   setDisplayErrorEmail("block");
-    //   setWidthInputEmailDesktop("md:w-[505px]");
-    //   setWidthInputEmailMobile("w-[235px]");
-    // }
-    // if (formik.errors.password) {
-    //   hasError = 1;
-    //   setPasswordError(formik.errors.password);
-    //   setBorderInputPassword("border-red-50");
-    //   setDisplayErrorPassword("block");
-    //   setWidthInputPasswordDesktop("md:w-[505px]");
-    //   setWidthInputPasswordMobile("w-[235px]");
-    // }
-    // if (!hasError) {
-    //   navigate("/home", { replace: true });
-    // }
   };
 
   async function handleLoginWithGoogle(e) {
@@ -131,6 +103,7 @@ function LoginScreen() {
     const data = {
       displayName: user.displayName,
       email: user.email,
+      uid:user.uid,
       photoURL: user.photoURL,
       password: user.uid
     }

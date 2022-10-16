@@ -104,6 +104,7 @@ authRouter.post('/check-register-info', async (req, res) => {
 
 authRouter.post('/register', async (req, res) => {
   const { email, uid, displayName, photoURL, password } = req.body;
+  console.log(uid)
   try {
 
     const hashedPassword = await argon2.hash(password)
