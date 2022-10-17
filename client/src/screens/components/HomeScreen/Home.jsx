@@ -1,16 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { ShowProfileModalSelector } from "../../../redux/selector";
 import ProjectCard from "./ProjectCard";
 import WorkedOn from "./WorkedOnComponent";
+import AvtIcon from "../../../images/Avatar.png";
+import { auth } from "../../../firebase/config";
+import { LOCAL_STORAGE_TOKEN_NAME } from "../../../contexts/constants.js";
 
 function Home() {
+  var isShowProfile = useSelector(ShowProfileModalSelector);
   const [spanColor01, setSpanColor01] = React.useState("text-purple");
   const [spanColor02, setSpanColor02] = React.useState("text-black-200");
   const [spanColor03, setSpanColor03] = React.useState("text-black-200");
+  const [requestLogOut, setRequestLogOut] = useState(false);
+  const navigate = useNavigate();
 
   const [translateBottomBar, setTranslateBottomBar] =
     React.useState("translate-x-[0px]");
   const [widthBottomBar, setWidthBottomBar] = React.useState("w-[120px]");
   const [typeProject, setTypeProject] = React.useState(1);
+
+  const [toggleButtonActive, setToggleButtonActive] = React.useState(false);
+  const [toggleButtonDarkMode, setToggleButtonDarkMode] = React.useState(false);
+
+  function handelLogOut() {
+    setRequestLogOut(true);
+  }
+
+  useEffect(() => {
+    if (requestLogOut) {
+      localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
+      auth.signOut();
+      navigate("/login");
+    }
+  }, [requestLogOut, navigate]);
 
   function RecentProject() {
     return (
@@ -41,6 +65,72 @@ function Home() {
 
   return (
     <div className="bg-[#FBFBFB] relative h-screen justify-center pt-[30px]">
+      {/**Modal Profile */}
+      <div
+        className={`${
+          isShowProfile ? "absolute" : "hidden"
+        } top-1 bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
+      >
+        <div className="flex flex-row items-center py-[14px] px-[18px]">
+          <img src={AvtIcon} alt="" />
+          <div className="flex flex-col ml-[9px]">
+            <span className="text-[13px] font-medium whitespace-nowrap">
+              Tajul Islam
+            </span>
+            <span className="text-[12px] text-black-20">
+              {"tajulislam@gmail.com"}
+            </span>
+          </div>
+        </div>
+        <div className="h-[1px] w-full bg-outlineButton"></div>
+        <div className="mt-[15px] px-[18px]">
+          <div
+            className="flex flex-row w-full items-center justify-between mb-[10px]"
+            onClick={() => {
+              setToggleButtonActive(!toggleButtonActive);
+            }}
+          >
+            <span className="text-[11px]">Active Status</span>
+            <div
+              className={`h-[13px] w-[26px] rounded-[10px] ${
+                toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
+              } flex items-center px-[1px]`}
+            >
+              <div
+                className={`h-[10px] w-[10px] bg-white rounded-[14px] ${
+                  toggleButtonActive ? "translate-x-[14px]" : "translate-x-0"
+                } transition ease-linear duration-250`}
+              ></div>
+            </div>
+          </div>
+          <div
+            className="flex flex-row w-full items-center justify-between pb-[15px]"
+            onClick={() => {
+              setToggleButtonDarkMode(!toggleButtonDarkMode);
+            }}
+          >
+            <span className="text-[11px]">Dark Mode</span>
+            <div
+              className={`h-[13px] w-[26px] rounded-[10px] ${
+                toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
+              } flex items-center px-[1px]`}
+            >
+              <div
+                className={`h-[10px] w-[10px] bg-white rounded-[14px] ${
+                  toggleButtonDarkMode ? "translate-x-[14px]" : "translate-x-0"
+                } transition ease-linear duration-250`}
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div className="h-[1px] w-full bg-outlineButton"></div>
+        <div className="mt-[12px] px-[18px] mb-[12px]">
+          <p className="text-[11px] mb-[10px]">Setting</p>
+          <p className="text-[11px]" onClick={handelLogOut}>
+            Log out
+          </p>
+        </div>
+      </div>
       <div className="px-[20px]">
         <div className="flex justify-between w-full px-[20px]">
           <span

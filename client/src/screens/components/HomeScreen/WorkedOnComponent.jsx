@@ -12,8 +12,8 @@ function WorkedOn(props) {
           className="h-[15px] w-[15px]"
         />
       </div>
-      <div className="flex text-[13px] font-medium items-center justify-center col-span-4">
-        <span>Design Stage</span>
+      <div className="text-[13px] flex items-center font-medium col-span-4">
+        <span className="truncate">Design Stage</span>
       </div>
       <div className="flex flex-row items-center col-span-4">
         <div className={`h-[6px] w-[9px] rounded-[2px] bg-red-50`}></div>

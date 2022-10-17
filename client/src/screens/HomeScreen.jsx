@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import logoSvg from "../images/logo.svg";
 import HomeSvg from "../images/Home.svg";
 import InboxSvg from "../images/Inbox.svg";
@@ -13,8 +14,7 @@ import AddSvg from "../images/Add.svg";
 import NotiSvg from "../images/Notification.svg";
 import AvatarPng from "../images/Avatar.png";
 import Navbar from "./components/HomeScreen/Navbar";
-import { auth } from "../firebase/config";
-import { LOCAL_STORAGE_TOKEN_NAME } from "../contexts/constants.js";
+import { ShowProfileModalSlice } from "../redux/slice/HomeSlice";
 
 function HomeScreen() {
   const [showNav, setShowNav] = React.useState(false);
@@ -22,23 +22,11 @@ function HomeScreen() {
   const [requestLogOut, setRequestLogOut] = useState(false);
 
   const navigate = useNavigate();
-
-  function handelLogOut() {
-    setRequestLogOut(true);
-  }
-
-  useEffect(() => {
-    if (requestLogOut) {
-      localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
-      auth.signOut();
-      navigate("/login");
-    }
-  }, [requestLogOut,navigate]);
+  const dispatch = useDispatch();
 
   return (
     <div className="flex flex-col md:flex-row">
       <div className="headerBar border-b-[1px] border-b-outlineButton border-solid">
-        <button onClick={handelLogOut}>Logout</button>
         <img
           src={MenuSvg}
           alt="Menu Icon"
@@ -54,14 +42,21 @@ function HomeScreen() {
             <img src={AddSvg} alt="" />
           </div>
           <img src={NotiSvg} alt="" />
-          <img src={AvatarPng} alt="Avatar" />
+          <img
+            src={AvatarPng}
+            alt="Avatar"
+            onClick={() => {
+              dispatch(ShowProfileModalSlice.actions.toggleShow());
+            }}
+          />
         </div>
       </div>
       <div className="relative">
         <Navbar isHide={showNav} />
         <div
-          className={`${showCloseNav ? "absolute" : "hidden"
-            } h-full w-full z-10`}
+          className={`${
+            showCloseNav ? "absolute" : "hidden"
+          } h-full w-full z-10`}
           onClick={() => {
             setShowNav(false);
             setShowCloseNav(false);

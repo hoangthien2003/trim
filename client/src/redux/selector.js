@@ -5,5 +5,5 @@ export const ColorSelector = (state) => state.colorReducer.colorState;
 export const IDColorSelector = (state) => state.IDColorReducer.IDState;
 export const MemberSelector = (state) => state.memberReducer.memberAmount;
 export const IDMemberSelector = (state) => state.IDMemberReducer.IDMemberState;
-export const HidePopupSelector = (state) =>
-  state.hideOtherPopupReducer.isHideState;
+export const ShowProfileModalSelector = (state) =>
+  state.showProfileModalReducer.isShowProfile;

@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const HideOtherPopupSlice = createSlice({
-  name: "hideOtherPopup",
+export const ShowProfileModalSlice = createSlice({
+  name: "showProfileModal",
   initialState: {
-    isHideState: false,
+    isShowProfile: false,
   },
   reducers: {
-    setIsHide: (state, action) => {
-      state.isHideState = action.payload;
+    toggleShow: (state) => {
+      state.isShowProfile = !state.isShowProfile;
     },
   },
 });

@@ -6,7 +6,7 @@ import { ColorSlice } from "./slice/ColorSlice";
 import { IDColorSlice } from "./slice/IDColorSlice";
 import { MemberSlice } from "./slice/MembersSlice";
 import { IDMemberSlice } from "./slice/IDMemberSlice";
-import { HideOtherPopupSlice } from "./slice/HomeSlice";
+import { ShowProfileModalSlice } from "./slice/HomeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +17,6 @@ export const store = configureStore({
     IDColorReducer: IDColorSlice.reducer,
     memberReducer: MemberSlice.reducer,
     IDMemberReducer: IDMemberSlice.reducer,
-    hideOtherPopupReducer: HideOtherPopupSlice.reducer,
+    showProfileModalReducer: ShowProfileModalSlice.reducer,
   },
 });
