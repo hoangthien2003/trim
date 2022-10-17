@@ -1,14 +1,11 @@
-import "dotenv/config";
-import express from "express";
-// import { getUser, createUser } from "../controllers/auth.js";
+require("dotenv").config()
+const express = require("express");
 const authRouter = express.Router();
-import argon2 from 'argon2';
-import jwt from 'jsonwebtoken';
-import User from '../model/User.js';
+const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
+const User = require('../model/User.js');
+const verifyToken = require("../middleware/auth.js")
 
-// authRouter.get("/", getUser);
-// // authRouter.post("/check-email", checkEmail);
-// authRouter.post("/create-user", createUser);
 
 authRouter.post('/check-email', async (req, res) => {
 
@@ -146,4 +143,16 @@ authRouter.post("/login", async (req, res) => {
 
 })
 
-export default authRouter;
+
+
+
+authRouter.get('/user', verifyToken, async (req, res) => {
+  try {
+    const foundUser = await User.findOne({ _id: req.userId });
+    res.json({ success: true, user: foundUser });
+  }  catch (err) {
+    console.log(err);
+  }
+})
+
+module.exports = authRouter;

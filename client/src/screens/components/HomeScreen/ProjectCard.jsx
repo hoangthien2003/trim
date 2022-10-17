@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect, useContext } from "react";
 import AppIcon from "../../../images/AppProject.svg";
 import WebIcon from "../../../images/WebProject.svg";
 import CreativeIcon from "../../../images/CreativeProject.svg";
@@ -6,21 +6,38 @@ import MarketIcon from "../../../images/MarketingProject.svg";
 import HeartedIcon from "../../../images/Hearted.svg";
 import HeartIcon from "../../../images/Heart.svg";
 import OtherIcon from "../../../images/Other3dots.svg";
+import { AuthContext } from "../../../contexts/AuthProvider.js"
+import axios from "axios";
+import { URL_BASE, LOCAL_STORAGE_TOKEN_NAME } from "../../../contexts/constants.js"
 
 function ProjectCard(props) {
-  const [isLiked, setIsLiked] = React.useState(false);
+  const { category, name, avatar, numberProgressTask, numberCompleteTask, lovers, _id } = props.project;
+  const [isLiked, setIsLiked] = React.useState();
   const [isDisplayOther, setIsDisplayOther] = React.useState(false);
+  const { user } = useContext(AuthContext);
 
-  var backgroundApp = "bg-backgroundAppIcon",
-    backgroundWeb = "bg-backgroundWebIcon",
-    backgroundCreative = "bg-backgroundCreateIcon",
-    backgroundMarketing = "bg-backgroundMarketIcon";
+  useLayoutEffect(() => {
+    lovers.forEach(member => {
+      if (member._id === user._id && member.isLove) {
+        setIsLiked(true);
+      }
+    })
+  }, [lovers, user])
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     setIsDisplayOther(!isDisplayOther);
     e.stopPropagation();
     document.addEventListener("click", closeModal);
   };
+
+  async function handleChangeFavorite() {
+    setIsLiked(!isLiked);
+    await axios.patch(`${URL_BASE}/api/project/change-favorite`, { idProject: _id }, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME)}`
+      }
+    })
+  }
 
   const closeModal = () => {
     setIsDisplayOther(false);
@@ -31,39 +48,15 @@ function ProjectCard(props) {
     <div className="px-[14px] py-[8px] relative border-outlineButton border-[1px] border-solid rounded-[8px] bg-white">
       {/**Header */}
       <div className="flex flex-row items-center justify-between">
-        <div
-          className={`w-[31px] h-[31px] ${
-            props.type === "app"
-              ? backgroundApp
-              : props.type === "web"
-              ? backgroundWeb
-              : props.type === "marketing"
-              ? backgroundMarketing
-              : props.type === "creative" && backgroundCreative
-          } rounded-[15px] flex items-center justify-center mr-[10px]`}
-        >
-          <img
-            src={
-              props.type === "app"
-                ? AppIcon
-                : props.type === "web"
-                ? WebIcon
-                : props.type === "creative"
-                ? CreativeIcon
-                : props.type === "marketing" && MarketIcon
-            }
-            alt=""
-            className="w-[16px] h-[16px]"
-          />
+        <div className={`w-[31px] h-[31px] rounded-[15px] flex items-center justify-center mr-[10px]`}>
+          <img src={avatar} alt="" className="w-full h-full rounded-full" />
         </div>
         <div className="flex flex-row items-center">
           <img
             src={isLiked ? HeartedIcon : HeartIcon}
             alt=""
             className="h-[14px] w-[14px]"
-            onClick={() => {
-              setIsLiked(!isLiked);
-            }}
+            onClick={handleChangeFavorite}
           />
           <img
             src={OtherIcon}
@@ -75,9 +68,8 @@ function ProjectCard(props) {
       </div>
       {/**Popup Other */}
       <div
-        className={`${
-          isDisplayOther ? "absolute" : "hidden"
-        } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
+        className={`${isDisplayOther ? "absolute" : "hidden"
+          } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="textOther">Share</div>
@@ -89,18 +81,18 @@ function ProjectCard(props) {
 
       {/**Title */}
       <div className="mt-[13px]">
-        <h2 className="text-[13px] font-medium">{props.title}</h2>
-        <p className="text-[11px] text-black-20 mt-[3px]">{`(${props.desc})`}</p>
+        <h2 className="text-[13px] font-medium">{name}</h2>
+        <p className="text-[11px] text-black-20 mt-[3px]">{`(${category})`}</p>
       </div>
 
       {/**Tasks */}
       <div className="mt-[10px] flex justify-between">
         <span className="text-[12px]">Progress Task</span>
-        <span className="text-[12px]">43</span>
+        <span className="text-[12px]">{numberProgressTask}</span>
       </div>
       <div className="mt-[10px] flex justify-between">
         <span className="text-[12px]">Complete Task</span>
-        <span className="text-[12px]">16</span>
+        <span className="text-[12px]">{numberCompleteTask}</span>
       </div>
     </div>
   );

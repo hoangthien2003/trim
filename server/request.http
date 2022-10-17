@@ -16,9 +16,9 @@ GET http://localhost:5000/api/project/recent
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzRjMjcwMDQ5YjQzZTUyOWE2YmQ2NmEiLCJpYXQiOjE2NjU5MzUxMDV9.snuTxZ-xYBLoJErxx9cv70Wlsr3lcDd_djVuEcI60Zs
 
 ###
-PATCH  http://localhost:5000/api/project/add-favorite
+PATCH  http://localhost:5000/api/project/change-favorite
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzRjMjcwMDQ5YjQzZTUyOWE2YmQ2NmEiLCJpYXQiOjE2NjU5MzUxMDV9.snuTxZ-xYBLoJErxx9cv70Wlsr3lcDd_djVuEcI60Zs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzRiODhkZTBjZGZiYmVhZDU1OTFjMGEiLCJpYXQiOjE2NjU5ODk3MTN9.sxwPewxrsvONsRO75K2kKXvbSLeU6XwBZyq-sC2d-XI
 
 {
   "idProject":"634ccea02fe35d8082f2a286"

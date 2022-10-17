@@ -1,8 +1,8 @@
-import "dotenv/config";
-import express from "express";
+require("dotenv").config()
+const express = require("express");
 const projectRouter = express.Router();
-import Project from '../model/Project.js';
-import verifyToken from "../middleware/auth.js"
+const Project = require('../model/Project.js');
+const verifyToken = require("../middleware/auth.js")
 
 
 
@@ -31,19 +31,17 @@ projectRouter.get("/favorite", verifyToken, async (req, res) => {
 
 
 
-projectRouter.patch("/add-favorite", verifyToken, async (req, res) => {
+projectRouter.patch("/change-favorite", verifyToken, async (req, res) => {
   const { idProject } = req.body;
   try {
     const foundProject = await Project.findOne({ _id: idProject });
     const updatedLovers = foundProject.lovers.map((member) => {
       if (member._id.equals(req.userId)) {
-        console.log("hahahah");
-        member.isLove = true;
+        member.isLove = !member.isLove;
         return member;
       }
       else return member
     })
-    console.log(updatedLovers);
     await Project.findOneAndUpdate({ _id: idProject }, { $set: { "lovers": updatedLovers } })
     res.json({ success: true, message: "Add Favorite Successfully" })
   } catch (err) { console.log(err); }
@@ -84,4 +82,4 @@ projectRouter.post("/add-project", verifyToken, async (req, res) => {
 
 
 
-export default projectRouter;
+module.exports = projectRouter;

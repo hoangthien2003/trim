@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const usersSchema = new mongoose.Schema({
   username: {
@@ -29,24 +29,24 @@ const usersSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  recentProjects: {
-    type: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Project',
-    }],
-    default: []
-  },
-  favoriteProjects:{
-    type: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Project',
-    }],
-  default: []
-},
+  // recentProjects: {
+  //   type: [{
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Project',
+  //   }],
+  //   default: []
+  // },
+  // favoriteProjects: {
+  //   type: [{
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Project',
+  //   }],
+  //   default: []
+  // },
   createdAt: {
-  type: Date,
-  default: Date.now()
-}
+    type: Date,
+    default: Date.now()
+  }
 });
 
-export default mongoose.model("User", usersSchema);
+module.exports = mongoose.model("User", usersSchema);

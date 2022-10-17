@@ -19,9 +19,6 @@ import { ShowProfileModalSlice } from "../redux/slice/HomeSlice";
 function HomeScreen() {
   const [showNav, setShowNav] = React.useState(false);
   const [showCloseNav, setShowCloseNav] = React.useState(false);
-  const [requestLogOut, setRequestLogOut] = useState(false);
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   return (

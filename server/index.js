@@ -1,17 +1,17 @@
-import "dotenv/config";
-import express from "express";
+require("dotenv").config()
+const express = require("express");
 const app = express();
-import cors from "cors";
-import mongoose from "mongoose";
-import authRouter from "./routes/authRouter.js";
-import projectRouter from "./routes/projectRouter.js";
-import bodyParser from "body-parser";
+const cors = require("cors");
+const mongoose = require("mongoose");
+const authRouter = require("./routes/authRouter.js");
+const projectRouter = require("./routes/projectRouter.js");
+// const bodyParser = require("body-parser");
 const PORT = process.env.PORT;
 const MONGODB_CONNECT = process.env.MONGODB_CONNECT;
 
 app.use(cors());
-app.use(bodyParser.json({ limit: "30mb" }));
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json({ limit: "30mb" }));
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json())
 
 mongoose

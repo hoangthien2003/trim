@@ -6,7 +6,9 @@ import ProjectCard from "./ProjectCard";
 import WorkedOn from "./WorkedOnComponent";
 import AvtIcon from "../../../images/Avatar.png";
 import { auth } from "../../../firebase/config";
-import { LOCAL_STORAGE_TOKEN_NAME } from "../../../contexts/constants.js";
+import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../../../contexts/constants.js";
+import axios from "axios"
+import { AuthContext } from "../../../contexts/AuthProvider.js"
 
 function Home() {
   var isShowProfile = useSelector(ShowProfileModalSelector);
@@ -15,6 +17,7 @@ function Home() {
   const [spanColor03, setSpanColor03] = React.useState("text-black-200");
   const [requestLogOut, setRequestLogOut] = useState(false);
   const navigate = useNavigate();
+  const { user } = React.useContext(AuthContext);
 
   const [translateBottomBar, setTranslateBottomBar] =
     React.useState("translate-x-[0px]");
@@ -37,22 +40,64 @@ function Home() {
   }, [requestLogOut, navigate]);
 
   function RecentProject() {
+    const [recentProjects, setRecentProjects] = React.useState(null);
+
+    const getRecentProjects = async () => {
+      const response = await axios.get(`${URL_BASE}/api/project/recent`,
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME)}`
+          }
+        })
+        .catch(err => console.log(err));
+      if (response.data.success) {
+        setRecentProjects(response.data.projects);
+      }
+    }
+
+    useEffect(() => {
+      getRecentProjects();
+    }, []);
+
     return (
-      <div className="grid grid-cols-2 gap-[12px] grid-rows-2 mt-[20px] px-[20px]">
-        <ProjectCard type="app" title="App Development" desc="Development" />
-        <ProjectCard type="web" title="Web Design" desc="Design" />
-        <ProjectCard type="creative" title="Creative Project" desc="Design" />
-        <ProjectCard
-          type="marketing"
-          title="Marketing & Sales"
-          desc="Marketing"
-        />
+      <div className="grid grid-cols-2 gap-[12px] mt-[20px] px-[20px]">
+        {
+          recentProjects?.map(project => {
+            return <ProjectCard key={project._id} project={project} />
+          })
+        }
       </div>
     );
   }
 
-  function Favourites() {
-    return <div>Favourites</div>;
+  function Favorites() {
+    const [favoriteProjects, setFavoriteProjects] = useState(null);
+    const getFavoriteProjects = async () => {
+      const response = await axios.get(`${URL_BASE}/api/project/favorite`,
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME)}`
+          }
+        })
+        .catch(err => console.log(err));
+      if (response.data.success) {
+        setFavoriteProjects(response.data.projects);
+      }
+    }
+
+    useEffect(() => {
+      getFavoriteProjects();
+    }, []);
+
+    return (
+      <div className="grid grid-cols-2 gap-[12px] mt-[20px] px-[20px]">
+        {
+          favoriteProjects?.map(project => {
+            return <ProjectCard key={project._id} project={project} />
+          })
+        }
+      </div>
+    );
   }
 
   function WorkedOnComponent() {
@@ -67,9 +112,8 @@ function Home() {
     <div className="bg-[#FBFBFB] relative h-screen justify-center pt-[30px]">
       {/**Modal Profile */}
       <div
-        className={`${
-          isShowProfile ? "absolute" : "hidden"
-        } top-1 bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
+        className={`${isShowProfile ? "absolute" : "hidden"
+          } top-1 bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
       >
         <div className="flex flex-row items-center py-[14px] px-[18px]">
           <img src={AvtIcon} alt="" />
@@ -92,14 +136,12 @@ function Home() {
           >
             <span className="text-[11px]">Active Status</span>
             <div
-              className={`h-[13px] w-[26px] rounded-[10px] ${
-                toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
-              } flex items-center px-[1px]`}
+              className={`h-[13px] w-[26px] rounded-[10px] ${toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
+                } flex items-center px-[1px]`}
             >
               <div
-                className={`h-[10px] w-[10px] bg-white rounded-[14px] ${
-                  toggleButtonActive ? "translate-x-[14px]" : "translate-x-0"
-                } transition ease-linear duration-250`}
+                className={`h-[10px] w-[10px] bg-white rounded-[14px] ${toggleButtonActive ? "translate-x-[14px]" : "translate-x-0"
+                  } transition ease-linear duration-250`}
               ></div>
             </div>
           </div>
@@ -111,14 +153,12 @@ function Home() {
           >
             <span className="text-[11px]">Dark Mode</span>
             <div
-              className={`h-[13px] w-[26px] rounded-[10px] ${
-                toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
-              } flex items-center px-[1px]`}
+              className={`h-[13px] w-[26px] rounded-[10px] ${toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
+                } flex items-center px-[1px]`}
             >
               <div
-                className={`h-[10px] w-[10px] bg-white rounded-[14px] ${
-                  toggleButtonDarkMode ? "translate-x-[14px]" : "translate-x-0"
-                } transition ease-linear duration-250`}
+                className={`h-[10px] w-[10px] bg-white rounded-[14px] ${toggleButtonDarkMode ? "translate-x-[14px]" : "translate-x-0"
+                  } transition ease-linear duration-250`}
               ></div>
             </div>
           </div>
@@ -184,7 +224,7 @@ function Home() {
       {typeProject === 1 ? (
         <RecentProject />
       ) : typeProject === 2 ? (
-        <Favourites />
+        <Favorites />
       ) : (
         typeProject === 3 && <WorkedOnComponent />
       )}
