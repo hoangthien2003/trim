@@ -1,0 +1,9 @@
+.gridDisplay {
+  display: grid;
+  grid-template-columns: 40px 110px 134px 70px;
+  padding: 15px 10px 15px 10px;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-color: #e8ecee;
+  border-style: solid;
+}

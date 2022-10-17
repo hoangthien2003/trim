@@ -1,5 +1,6 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
+import WorkedOn from "./WorkedOnComponent";
 
 function Home() {
   const [spanColor01, setSpanColor01] = React.useState("text-purple");
@@ -9,55 +10,11 @@ function Home() {
   const [translateBottomBar, setTranslateBottomBar] =
     React.useState("translate-x-[0px]");
   const [widthBottomBar, setWidthBottomBar] = React.useState("w-[120px]");
+  const [typeProject, setTypeProject] = React.useState(1);
 
-  return (
-    <div className="bg-[#FBFBFB] relative h-screen justify-center pt-[30px] px-[20px]">
-      <div className="flex justify-around w-full">
-        <span
-          className={`${spanColor01} text-[15px] font-medium`}
-          onClick={() => {
-            setSpanColor01("text-purple");
-            setSpanColor02("text-black-200");
-            setSpanColor03("text-black-200");
-            setTranslateBottomBar("translate-x-[0px]");
-            setWidthBottomBar("w-[120px]");
-          }}
-        >
-          Recent Project
-        </span>
-        <span
-          className={`${spanColor02} text-[15px] font-medium`}
-          onClick={() => {
-            setSpanColor01("text-black-200");
-            setSpanColor02("text-purple");
-            setSpanColor03("text-black-200");
-            setTranslateBottomBar("translate-x-[127px]");
-            setWidthBottomBar("w-[90px]");
-          }}
-        >
-          Favorites
-        </span>
-        <span
-          className={`${spanColor03} text-[15px] font-medium`}
-          onClick={() => {
-            setSpanColor01("text-black-200");
-            setSpanColor02("text-black-200");
-            setSpanColor03("text-purple");
-            setTranslateBottomBar("translate-x-[230px]");
-            setWidthBottomBar("w-[89px]");
-          }}
-        >
-          Worked on
-        </span>
-      </div>
-      <div className="mt-[6px] px-[8px]">
-        <div
-          className={`${widthBottomBar} h-[1.5px] ${translateBottomBar} ease-in duration-200 rounded-[15px] bg-purple`}
-        ></div>
-        <div className="w-full h-[1px] bg-outlineButton"></div>
-      </div>
-      {/**Project Card Component */}
-      <div className="grid grid-cols-2 gap-[12px] grid-rows-2 mt-[20px]">
+  function RecentProject() {
+    return (
+      <div className="grid grid-cols-2 gap-[12px] grid-rows-2 mt-[20px] px-[20px]">
         <ProjectCard type="app" title="App Development" desc="Development" />
         <ProjectCard type="web" title="Web Design" desc="Design" />
         <ProjectCard type="creative" title="Creative Project" desc="Design" />
@@ -67,6 +24,80 @@ function Home() {
           desc="Marketing"
         />
       </div>
+    );
+  }
+
+  function Favourites() {
+    return <div>Favourites</div>;
+  }
+
+  function WorkedOnComponent() {
+    return (
+      <div className="mt-[20px]">
+        <WorkedOn />
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-[#FBFBFB] relative h-screen justify-center pt-[30px]">
+      <div className="px-[20px]">
+        <div className="flex justify-between w-full px-[20px]">
+          <span
+            className={`${spanColor01} text-[15px] font-medium`}
+            onClick={() => {
+              setSpanColor01("text-purple");
+              setSpanColor02("text-black-200");
+              setSpanColor03("text-black-200");
+              setTranslateBottomBar("translate-x-[0px]");
+              setWidthBottomBar("w-[130px]");
+              setTypeProject(1);
+            }}
+          >
+            Recent Project
+          </span>
+          <span
+            className={`${spanColor02} text-[15px] font-medium`}
+            onClick={() => {
+              setSpanColor01("text-black-200");
+              setSpanColor02("text-purple");
+              setSpanColor03("text-black-200");
+              setTranslateBottomBar("translate-x-[127px]");
+              setWidthBottomBar("w-[90px]");
+              setTypeProject(2);
+            }}
+          >
+            Favorites
+          </span>
+          <span
+            className={`${spanColor03} text-[15px] font-medium`}
+            onClick={() => {
+              setSpanColor01("text-black-200");
+              setSpanColor02("text-black-200");
+              setSpanColor03("text-purple");
+              setTranslateBottomBar("translate-x-[220px]");
+              setWidthBottomBar("w-[99px]");
+              setTypeProject(3);
+            }}
+          >
+            Worked on
+          </span>
+        </div>
+        <div className="mt-[6px] px-[8px]">
+          <div
+            className={`${widthBottomBar} h-[1.5px] ${translateBottomBar} ease-in duration-200 rounded-[15px] bg-purple`}
+          ></div>
+          <div className="w-full h-[1px] bg-outlineButton"></div>
+        </div>
+      </div>
+      {/**Project Card Component */}
+      {typeProject === 1 ? (
+        <RecentProject />
+      ) : typeProject === 2 ? (
+        <Favourites />
+      ) : (
+        typeProject === 3 && <WorkedOnComponent />
+      )}
     </div>
   );
 }
