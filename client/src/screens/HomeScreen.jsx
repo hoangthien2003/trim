@@ -15,6 +15,7 @@ import NotiSvg from "../images/Notification.svg";
 import AvatarPng from "../images/Avatar.png";
 import Navbar from "./components/HomeScreen/Navbar";
 import { ShowProfileModalSlice } from "../redux/slice/HomeSlice";
+import ModalProfile from "./components/HomeScreen/ModalProfile";
 
 function HomeScreen() {
   const [showNav, setShowNav] = React.useState(false);
@@ -59,6 +60,7 @@ function HomeScreen() {
             setShowCloseNav(false);
           }}
         ></div>
+        <ModalProfile />
         <Outlet />
       </div>
     </div>
