@@ -8,7 +8,7 @@ import { EmailSignupSelector } from "../../redux/selector";
 import ErrorItem from "./ErrorItem";
 import { auth } from "../../firebase/config.js";
 import { useDispatch } from "react-redux";
-import { LOCAL_STORAGE_TOKEN_NAME } from "../../contexts/constants.js";
+import { LOCAL_STORAGE_TOKEN_NAME,URL_BASE } from "../../contexts/constants.js";
 import firebase from "../../firebase/config.js";
 
 function SignupComponent() {
@@ -76,7 +76,7 @@ function SignupComponent() {
       confirmPassword: formik.values.confirmPassword,
       photoURL: "https://www.meme-arsenal.com/memes/9f0935ebd265b299eaa1480ccec28052.jpg"
     };
-    const response = await axios.post("http://localhost:5000/api/auth/check-register-info", data)
+    const response = await axios.post(`${URL_BASE}/api/auth/check-register-info`, data)
       .catch(err => {
         const messageError = err.response.data.message;
         if (messageError.name) {
@@ -104,7 +104,7 @@ function SignupComponent() {
     if (response.data.success === true) {
       await auth.createUserWithEmailAndPassword(emailSignup, formik.values.password)
       const uid = firebase.auth().currentUser.uid;
-      await axios.post("http://localhost:5000/api/auth/register", { ...data, uid })
+      await axios.post(`${URL_BASE}/api/auth/register`, { ...data, uid })
         .then(res => {
           if (res.data.success === true) {
             localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.accessToken);

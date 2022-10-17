@@ -8,7 +8,7 @@ import * as yup from "yup";
 import axios from "axios";
 import ErrorItem from "./ErrorItem";
 import { auth, providerGoogle } from "../../firebase/config.js"
-import { LOCAL_STORAGE_TOKEN_NAME } from "../../contexts/constants.js";
+import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../../contexts/constants.js";
 
 function EmailSignupComponent() {
   const [emailError, setEmailError] = React.useState("");
@@ -42,7 +42,7 @@ function EmailSignupComponent() {
       email: formik.values.email.toLowerCase(),
     };
     await axios
-      .post("http://localhost:5000/api/auth/check-email", userCredential)
+      .post(`${URL_BASE}/api/auth/check-email`, userCredential)
       .then((res) => {
         if (res.data.success === true) {
           dispatch(EmailSignupSlice.actions.setEmail(formik.values.email));
@@ -70,7 +70,7 @@ function EmailSignupComponent() {
         photoURL: user.photoURL,
         password: user.uid
       }
-      const url = `http://localhost:5000/api/auth/register`;
+      const url = `${URL_BASE}/api/auth/register`;
       const response = await axios.post(url, data).catch(err => console.log(err));
       if (response === undefined) { return };
       if (response.data.success) {

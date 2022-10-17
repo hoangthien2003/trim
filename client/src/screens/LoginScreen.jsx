@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import ErrorItem from "./components/ErrorItem";
 import { auth, providerGoogle } from "../firebase/config.js";
-import { LOCAL_STORAGE_TOKEN_NAME } from "../contexts/constants.js";
+import { LOCAL_STORAGE_TOKEN_NAME,URL_BASE } from "../contexts/constants.js";
 import axios from "axios"
 
 function LoginScreen() {
@@ -57,7 +57,7 @@ function LoginScreen() {
       email: formik.values.email,
       password: formik.values.password
     }
-    const response = await axios.post("http://localhost:5000/api/auth/check-login-info", data)
+    const response = await axios.post(`${URL_BASE}/api/auth/check-login-info`, data)
       .catch(err => {
         const messageError = err.response.data.message;
         if (messageError.email) {
@@ -76,11 +76,11 @@ function LoginScreen() {
         }
       })
     if (response.data.success === true) {
-      await axios.post("http://localhost:5000/api/auth/login", data)
+      await axios.post(`${URL_BASE}/api/auth/login`, data)
         .then(res => {
           if (res.data.success === true) {
             auth.signInWithEmailAndPassword(formik.values.email, formik.values.password)
-            localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.accessToken);
+            localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, res.data.accessToken);
             navigate("/", { replace: true });
           }
         })
@@ -111,11 +111,11 @@ function LoginScreen() {
     let url;
     if (additionalUserInfo.isNewUser) {
       console.log("regis")
-      url = `http://localhost:5000/api/auth/register`;
+      url = `${URL_BASE}/api/auth/register`;
     }
     else {
       console.log("login")
-      url = `http://localhost:5000/api/auth/login`;
+      url = `${URL_BASE}/api/auth/login`;
     }
 
     await axios.post(url, data)

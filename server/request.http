@@ -1,0 +1,28 @@
+POST http://localhost:5000/api/project/add-project
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzRjMjcwMDQ5YjQzZTUyOWE2YmQ2NmEiLCJpYXQiOjE2NjU5MzUxMDV9.snuTxZ-xYBLoJErxx9cv70Wlsr3lcDd_djVuEcI60Zs
+
+{
+  "name":"This is name's project 2",
+  "descreption":"this is descreption 2",
+  "avatar":"this is avatar 2",
+  "category":"this is category 2",
+  "members":["634c270049b43e529a6bd66a","634b88de0cdfbbead5591c0a"]
+}
+
+###
+
+GET http://localhost:5000/api/project/recent
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzRjMjcwMDQ5YjQzZTUyOWE2YmQ2NmEiLCJpYXQiOjE2NjU5MzUxMDV9.snuTxZ-xYBLoJErxx9cv70Wlsr3lcDd_djVuEcI60Zs
+
+###
+PATCH  http://localhost:5000/api/project/add-favorite
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzRjMjcwMDQ5YjQzZTUyOWE2YmQ2NmEiLCJpYXQiOjE2NjU5MzUxMDV9.snuTxZ-xYBLoJErxx9cv70Wlsr3lcDd_djVuEcI60Zs
+
+{
+  "idProject":"634ccea02fe35d8082f2a286"
+}
+###
+GET http://localhost:5000/api/project/favorite
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzRjMjcwMDQ5YjQzZTUyOWE2YmQ2NmEiLCJpYXQiOjE2NjU5MzUxMDV9.snuTxZ-xYBLoJErxx9cv70Wlsr3lcDd_djVuEcI60Zs
