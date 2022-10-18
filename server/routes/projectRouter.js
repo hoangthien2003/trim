@@ -3,6 +3,7 @@ const express = require("express");
 const projectRouter = express.Router();
 const Project = require('../model/Project.js');
 const verifyToken = require("../middleware/auth.js")
+const User = require("../model/User.js")
 
 
 
@@ -26,6 +27,21 @@ projectRouter.get("/favorite", verifyToken, async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+})
+
+
+
+projectRouter.get("/:idProject/members", verifyToken, async (req, res) => {
+  try {
+    const idProject = req.params['idProject'];
+    const foundProject = await Project.findOne({ _id: idProject })
+    let members = [];
+    for (let i = 0; i < foundProject.members.length; ++i) {
+      const foundMember = await User.findOne({ _id: foundProject.members[i].toString() });
+      members.push(foundMember);
+    }
+    res.json({ success: true, members });
+  } catch (err) { console.log(err) };
 })
 
 

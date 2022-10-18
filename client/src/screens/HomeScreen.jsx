@@ -10,6 +10,7 @@ import ArrowLeft from "../images/arrow-left-solid.svg";
 import Navbar from "./components/HomeScreen/Navbar";
 import { ShowProfileModalSlice } from "../redux/slice/HomeSlice";
 import ModalProfile from "./components/HomeScreen/ModalProfile";
+import { AuthContext } from "../contexts/AuthProvider";
 
 function HomeScreen() {
   const [showNav, setShowNav] = React.useState(false);
@@ -17,6 +18,7 @@ function HomeScreen() {
   const [isClickNoti, setIsClickNoti] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = React.useContext(AuthContext);
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -57,7 +59,7 @@ function HomeScreen() {
             }}
           />
           <img
-            src={AvatarPng}
+            src={user.photoURL}
             className="h-[28px] w-[28px] rounded-full"
             alt="Avatar"
             onClick={() => {
@@ -69,9 +71,8 @@ function HomeScreen() {
       <div className="relative">
         <Navbar isHide={showNav} />
         <div
-          className={`${
-            showCloseNav ? "absolute" : "hidden"
-          } h-full w-full z-10`}
+          className={`${showCloseNav ? "absolute" : "hidden"
+            } h-full w-full z-10`}
           onClick={() => {
             setShowNav(false);
             setShowCloseNav(false);

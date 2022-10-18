@@ -5,10 +5,7 @@ import { auth } from "../../../firebase/config";
 import { useSelector, useDispatch } from "react-redux";
 import { ShowProfileModalSelector } from "../../../redux/selector";
 import { AuthContext } from "../../../contexts/AuthProvider.js";
-import {
-  LOCAL_STORAGE_TOKEN_NAME,
-  URL_BASE,
-} from "../../../contexts/constants.js";
+import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE, } from "../../../contexts/constants.js";
 import { ShowProfileModalSlice } from "../../../redux/slice/HomeSlice";
 
 function ModalProfile() {
@@ -35,18 +32,17 @@ function ModalProfile() {
 
   return (
     <div
-      className={`${
-        isShowProfile ? "absolute" : "hidden"
-      } top-1 bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
+      className={`${isShowProfile ? "absolute" : "hidden"
+        } top-1 bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
     >
       <div className="flex flex-row items-center py-[14px] px-[18px]">
-        <img src={AvtIcon} alt="" className="h-[30px] w-[30px] rounded-full" />
+        <img src={user.photoURL} alt="" className="h-[30px] w-[30px] rounded-full" />
         <div className="flex flex-col ml-[9px]">
           <span className="text-[13px] font-medium whitespace-nowrap">
-            Tajul Islam
+            {user.username}
           </span>
           <span className="text-[12px] text-black-20">
-            {"tajulislam@gmail.com"}
+            {user.email}
           </span>
         </div>
       </div>
@@ -60,14 +56,12 @@ function ModalProfile() {
         >
           <span className="text-[11px]">Active Status</span>
           <div
-            className={`h-[13px] w-[26px] rounded-[10px] ${
-              toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
-            } flex items-center px-[1px]`}
+            className={`h-[13px] w-[26px] rounded-[10px] ${toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
+              } flex items-center px-[1px]`}
           >
             <div
-              className={`h-[10px] w-[10px] bg-white rounded-[14px] ${
-                toggleButtonActive ? "translate-x-[14px]" : "translate-x-0"
-              } transition ease-linear duration-250`}
+              className={`h-[10px] w-[10px] bg-white rounded-[14px] ${toggleButtonActive ? "translate-x-[14px]" : "translate-x-0"
+                } transition ease-linear duration-250`}
             ></div>
           </div>
         </div>
@@ -79,14 +73,12 @@ function ModalProfile() {
         >
           <span className="text-[11px]">Dark Mode</span>
           <div
-            className={`h-[13px] w-[26px] rounded-[10px] ${
-              toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
-            } flex items-center px-[1px]`}
+            className={`h-[13px] w-[26px] rounded-[10px] ${toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
+              } flex items-center px-[1px]`}
           >
             <div
-              className={`h-[10px] w-[10px] bg-white rounded-[14px] ${
-                toggleButtonDarkMode ? "translate-x-[14px]" : "translate-x-0"
-              } transition ease-linear duration-250`}
+              className={`h-[10px] w-[10px] bg-white rounded-[14px] ${toggleButtonDarkMode ? "translate-x-[14px]" : "translate-x-0"
+                } transition ease-linear duration-250`}
             ></div>
           </div>
         </div>

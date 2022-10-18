@@ -25,6 +25,19 @@ function ProjectCard(props) {
   const [isLiked, setIsLiked] = React.useState();
   const [isDisplayOther, setIsDisplayOther] = React.useState(false);
   const { user } = useContext(AuthContext);
+  const [members, setMembers] = React.useState(null);
+
+  async function getMembers() {
+    await axios.get(`${URL_BASE}/api/project/${_id}/members`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME)}`
+      }
+    })
+      .then(res => setMembers(res.data.members));
+  }
+  useLayoutEffect(() => {
+    getMembers();
+  }, [])
 
   useLayoutEffect(() => {
     lovers.forEach((member) => {
@@ -86,9 +99,8 @@ function ProjectCard(props) {
       </div>
       {/**Popup Other */}
       <div
-        className={`${
-          isDisplayOther ? "absolute" : "hidden"
-        } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
+        className={`${isDisplayOther ? "absolute" : "hidden"
+          } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="textOther">Share</div>
@@ -116,9 +128,9 @@ function ProjectCard(props) {
 
       {/**Avatar member in project */}
       <div className="flex flex-row relative items-center mt-[15px] truncate">
-        <img src={Person01} alt="" className="h-[22px] w-[22px] rounded-full" />
-        <img src={Person02} alt="" className="h-[22px] w-[22px] rounded-full" />
-        <img src={Person03} alt="" className="h-[22px] w-[22px] rounded-full" />
+        {members?.map(member => {
+          return <img key={member._id} src={member.photoURL} alt="" className="h-[22px] w-[22px] rounded-full" />
+        })}
       </div>
     </div>
   );
