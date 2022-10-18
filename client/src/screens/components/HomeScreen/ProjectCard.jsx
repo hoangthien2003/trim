@@ -1,28 +1,38 @@
 import React, { useLayoutEffect, useContext } from "react";
-import AppIcon from "../../../images/AppProject.svg";
-import WebIcon from "../../../images/WebProject.svg";
-import CreativeIcon from "../../../images/CreativeProject.svg";
-import MarketIcon from "../../../images/MarketingProject.svg";
 import HeartedIcon from "../../../images/Hearted.svg";
 import HeartIcon from "../../../images/Heart.svg";
 import OtherIcon from "../../../images/Other3dots.svg";
-import { AuthContext } from "../../../contexts/AuthProvider.js"
+import { AuthContext } from "../../../contexts/AuthProvider.js";
 import axios from "axios";
-import { URL_BASE, LOCAL_STORAGE_TOKEN_NAME } from "../../../contexts/constants.js"
+import {
+  URL_BASE,
+  LOCAL_STORAGE_TOKEN_NAME,
+} from "../../../contexts/constants.js";
+import Person01 from "../../../images/Person1.png";
+import Person02 from "../../../images/Person2.png";
+import Person03 from "../../../images/Person3.png";
 
 function ProjectCard(props) {
-  const { category, name, avatar, numberProgressTask, numberCompleteTask, lovers, _id } = props.project;
+  const {
+    category,
+    name,
+    avatar,
+    numberProgressTask,
+    numberCompleteTask,
+    lovers,
+    _id,
+  } = props.project;
   const [isLiked, setIsLiked] = React.useState();
   const [isDisplayOther, setIsDisplayOther] = React.useState(false);
   const { user } = useContext(AuthContext);
 
   useLayoutEffect(() => {
-    lovers.forEach(member => {
+    lovers.forEach((member) => {
       if (member._id === user._id && member.isLove) {
         setIsLiked(true);
       }
-    })
-  }, [lovers, user])
+    });
+  }, [lovers, user]);
 
   const handleClick = async (e) => {
     setIsDisplayOther(!isDisplayOther);
@@ -32,11 +42,17 @@ function ProjectCard(props) {
 
   async function handleChangeFavorite() {
     setIsLiked(!isLiked);
-    await axios.patch(`${URL_BASE}/api/project/change-favorite`, { idProject: _id }, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME)}`
+    await axios.patch(
+      `${URL_BASE}/api/project/change-favorite`,
+      { idProject: _id },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            LOCAL_STORAGE_TOKEN_NAME
+          )}`,
+        },
       }
-    })
+    );
   }
 
   const closeModal = () => {
@@ -48,7 +64,9 @@ function ProjectCard(props) {
     <div className="px-[14px] py-[8px] relative border-outlineButton border-[1px] border-solid rounded-[8px] bg-white">
       {/**Header */}
       <div className="flex flex-row items-center justify-between">
-        <div className={`w-[31px] h-[31px] rounded-[15px] flex items-center justify-center mr-[10px]`}>
+        <div
+          className={`w-[31px] h-[31px] rounded-[15px] flex items-center justify-center mr-[10px]`}
+        >
           <img src={avatar} alt="" className="w-full h-full rounded-full" />
         </div>
         <div className="flex flex-row items-center">
@@ -68,8 +86,9 @@ function ProjectCard(props) {
       </div>
       {/**Popup Other */}
       <div
-        className={`${isDisplayOther ? "absolute" : "hidden"
-          } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
+        className={`${
+          isDisplayOther ? "absolute" : "hidden"
+        } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="textOther">Share</div>
@@ -93,6 +112,13 @@ function ProjectCard(props) {
       <div className="mt-[10px] flex justify-between">
         <span className="text-[12px]">Complete Task</span>
         <span className="text-[12px]">{numberCompleteTask}</span>
+      </div>
+
+      {/**Avatar member in project */}
+      <div className="flex flex-row relative items-center mt-[15px] truncate">
+        <img src={Person01} alt="" className="h-[22px] w-[22px] rounded-full" />
+        <img src={Person02} alt="" className="h-[22px] w-[22px] rounded-full" />
+        <img src={Person03} alt="" className="h-[22px] w-[22px] rounded-full" />
       </div>
     </div>
   );

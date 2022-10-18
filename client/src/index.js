@@ -19,8 +19,9 @@ import EmailMembers from "./screens/components/EmailMembers";
 import HomeScreen from "./screens/HomeScreen";
 import Home from "./screens/components/HomeScreen/Home";
 import Tasks from "./screens/components/HomeScreen/Tasks";
-import AuthProvider from './contexts/AuthProvider'
+import AuthProvider from "./contexts/AuthProvider";
 import PrivateRoute from "./utils/PrivateRoute";
+import Notification from "./screens/components/HomeScreen/Notification";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -44,6 +45,7 @@ root.render(
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<HomeScreen />}>
               <Route index element={<Home />} />
+              <Route path="/noti" element={<Notification />} />
               <Route path="/tasks" element={<Tasks />} />
             </Route>
           </Route>

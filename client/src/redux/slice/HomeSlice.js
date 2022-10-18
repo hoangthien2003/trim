@@ -9,5 +9,8 @@ export const ShowProfileModalSlice = createSlice({
     toggleShow: (state) => {
       state.isShowProfile = !state.isShowProfile;
     },
+    setHide: (state) => {
+      state.isShowProfile = false;
+    },
   },
 });

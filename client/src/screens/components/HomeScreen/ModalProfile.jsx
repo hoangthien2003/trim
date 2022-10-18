@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import AvtIcon from "../../../images/Avatar.png";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../../firebase/config";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ShowProfileModalSelector } from "../../../redux/selector";
 import { AuthContext } from "../../../contexts/AuthProvider.js";
 import {
   LOCAL_STORAGE_TOKEN_NAME,
   URL_BASE,
 } from "../../../contexts/constants.js";
+import { ShowProfileModalSlice } from "../../../redux/slice/HomeSlice";
 
 function ModalProfile() {
   var isShowProfile = useSelector(ShowProfileModalSelector);
@@ -17,6 +18,7 @@ function ModalProfile() {
   const [requestLogOut, setRequestLogOut] = useState(false);
   const navigate = useNavigate();
   const { user } = React.useContext(AuthContext);
+  const dispatch = useDispatch();
 
   function handelLogOut() {
     setRequestLogOut(true);
@@ -25,10 +27,11 @@ function ModalProfile() {
   useEffect(() => {
     if (requestLogOut) {
       localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
+      dispatch(ShowProfileModalSlice.actions.setHide());
       auth.signOut();
       navigate("/login");
     }
-  }, [requestLogOut, navigate]);
+  }, [requestLogOut, navigate, dispatch]);
 
   return (
     <div
@@ -37,7 +40,7 @@ function ModalProfile() {
       } top-1 bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
     >
       <div className="flex flex-row items-center py-[14px] px-[18px]">
-        <img src={AvtIcon} alt="" />
+        <img src={AvtIcon} alt="" className="h-[30px] w-[30px] rounded-full" />
         <div className="flex flex-col ml-[9px]">
           <span className="text-[13px] font-medium whitespace-nowrap">
             Tajul Islam
@@ -89,8 +92,8 @@ function ModalProfile() {
         </div>
       </div>
       <div className="h-[1px] w-full bg-outlineButton"></div>
-      <div className="mt-[12px] px-[18px] mb-[12px]">
-        <p className="text-[11px] mb-[10px]">Setting</p>
+      <div className="mt-[15px] px-[18px] mb-[12px]">
+        <p className="text-[11px] mb-[12px]">Setting</p>
         <p className="text-[11px]" onClick={handelLogOut}>
           Log out
         </p>
