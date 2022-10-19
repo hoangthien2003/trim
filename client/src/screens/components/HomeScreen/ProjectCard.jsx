@@ -8,9 +8,6 @@ import {
   URL_BASE,
   LOCAL_STORAGE_TOKEN_NAME,
 } from "../../../contexts/constants.js";
-import Person01 from "../../../images/Person1.png";
-import Person02 from "../../../images/Person2.png";
-import Person03 from "../../../images/Person3.png";
 
 function ProjectCard(props) {
   const {
@@ -28,16 +25,19 @@ function ProjectCard(props) {
   const [members, setMembers] = React.useState(null);
 
   async function getMembers() {
-    await axios.get(`${URL_BASE}/api/project/${_id}/members`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME)}`
-      }
-    })
-      .then(res => setMembers(res.data.members));
+    await axios
+      .get(`${URL_BASE}/api/project/${_id}/members`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            LOCAL_STORAGE_TOKEN_NAME
+          )}`,
+        },
+      })
+      .then((res) => setMembers(res.data.members));
   }
   useLayoutEffect(() => {
     getMembers();
-  }, [])
+  }, []);
 
   useLayoutEffect(() => {
     lovers.forEach((member) => {
@@ -86,21 +86,22 @@ function ProjectCard(props) {
           <img
             src={isLiked ? HeartedIcon : HeartIcon}
             alt=""
-            className="h-[14px] w-[14px]"
+            className="h-[15px] w-[15px] md:cursor-pointer"
             onClick={handleChangeFavorite}
           />
           <img
             src={OtherIcon}
             alt=""
-            className="ml-[10px]"
+            className="ml-[10px] h-[14px] w-[14px] md:cursor-pointer"
             onClick={handleClick}
           />
         </div>
       </div>
       {/**Popup Other */}
       <div
-        className={`${isDisplayOther ? "absolute" : "hidden"
-          } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
+        className={`${
+          isDisplayOther ? "absolute" : "hidden"
+        } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="textOther">Share</div>
@@ -128,8 +129,16 @@ function ProjectCard(props) {
 
       {/**Avatar member in project */}
       <div className="flex flex-row relative items-center mt-[15px] truncate">
-        {members?.map(member => {
-          return <img key={member._id} src={member.photoURL} alt="" className="h-[22px] w-[22px] rounded-full" />
+        {members?.map((member) => {
+          return (
+            <img
+              key={member._id}
+              referrerPolicy="no-referrer"
+              src={member.photoURL}
+              alt=""
+              className="h-[22px] w-[22px] rounded-full"
+            />
+          );
         })}
       </div>
     </div>

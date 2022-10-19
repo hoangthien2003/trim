@@ -21,7 +21,10 @@ import SearchIcon from "../../../images/Search.svg";
 import AddIcon from "../../../images/Add.svg";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../../../contexts/constants.js"
+import {
+  LOCAL_STORAGE_TOKEN_NAME,
+  URL_BASE,
+} from "../../../contexts/constants.js";
 
 function Navbar(props) {
   /** STATE ONCLICK NAVITEM **/
@@ -38,6 +41,14 @@ function Navbar(props) {
   const [valueSearchProject, setValueSearchProject] = React.useState("");
 
   const [recentProjects, setRecentProjects] = React.useState(null);
+  const [hideDisplayNav, setHideDisplayNav] = React.useState(true);
+
+  useEffect(() => {
+    if (props.isShow) {
+      getFavoriteProjects();
+      setHideDisplayNav(false);
+    }
+  }, [props.isShow]);
 
   const getRecentProjects = async () => {
     const response = await axios
@@ -83,7 +94,11 @@ function Navbar(props) {
     const { name, avatar } = props.project;
     return (
       <div className="flex flex-row items-center mt-[10px]">
-        <img className=" w-[24px] h-[24px] rounded-full mr-[10px]" src={avatar} alt="Project Icon" />
+        <img
+          className=" w-[24px] h-[24px] rounded-full mr-[10px]"
+          src={avatar}
+          alt="Project Icon"
+        />
         <span className="text-[13px]">{name}</span>
       </div>
     );
@@ -91,7 +106,9 @@ function Navbar(props) {
 
   return (
     <div
-      className={`navBarContainer ${props.isHide ? "left-0" : "left-[-100%]"}`}
+      className={`navBarContainer ${props.isShow ? "left-0" : "left-[-100%]"} ${
+        hideDisplayNav ? "hidden left-[-100%]" : "flex flex-col"
+      } select-none`}
     >
       <div className="border-b-[1px] border-b-outlineButton w-full px-[10px] py-[20px]">
         <div className="flex flex-row items-center mx-[10px]">
@@ -101,8 +118,9 @@ function Navbar(props) {
         <div className="mt-[25px]">
           <Link
             to="/"
-            className={`flex flex-row items-center py-[5px] px-[10px] rounded-[7px] ${isClickedHome ? "bg-cyan" : "bg-white"
-              }`}
+            className={`flex flex-row items-center py-[5px] px-[10px] rounded-[7px] ${
+              isClickedHome ? "bg-cyan" : "bg-white"
+            }`}
             onClick={() => {
               setIsClickedHome(true);
               setIsClickedTasks(false);
@@ -118,16 +136,18 @@ function Navbar(props) {
               className="h-[16px] w-[16px]"
             />
             <span
-              className={`text-[13px] ${isClickedHome ? "text-white" : "text-black-20"
-                } ml-[10px] mt-[1px]`}
+              className={`text-[13px] ${
+                isClickedHome ? "text-white" : "text-black-20"
+              } ml-[10px] mt-[1px]`}
             >
               Home
             </span>
           </Link>
           <Link
             to="/tasks"
-            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${isClickedTasks ? "bg-cyan" : "bg-white"
-              }`}
+            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
+              isClickedTasks ? "bg-cyan" : "bg-white"
+            }`}
             onClick={() => {
               setIsClickedHome(false);
               setIsClickedTasks(true);
@@ -143,15 +163,17 @@ function Navbar(props) {
               className="h-[16px] w-[16px]"
             />
             <span
-              className={`text-[13px] ${isClickedTasks ? "text-white" : "text-black-20"
-                } ml-[10px] mt-[1px]`}
+              className={`text-[13px] ${
+                isClickedTasks ? "text-white" : "text-black-20"
+              } ml-[10px] mt-[1px]`}
             >
               My Tasks
             </span>
           </Link>
           <div
-            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${isClickedPlan ? "bg-cyan" : "bg-white"
-              }`}
+            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
+              isClickedPlan ? "bg-cyan" : "bg-white"
+            }`}
             onClick={() => {
               setIsClickedHome(false);
               setIsClickedTasks(false);
@@ -167,15 +189,17 @@ function Navbar(props) {
               className="h-[16px] w-[16px]"
             />
             <span
-              className={`text-[13px] ${isClickedPlan ? "text-white" : "text-black-20"
-                } ml-[10px] mt-[1px]`}
+              className={`text-[13px] ${
+                isClickedPlan ? "text-white" : "text-black-20"
+              } ml-[10px] mt-[1px]`}
             >
               My Plan
             </span>
           </div>
           <div
-            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${isClickedInbox ? "bg-cyan" : "bg-white"
-              }`}
+            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
+              isClickedInbox ? "bg-cyan" : "bg-white"
+            }`}
             onClick={() => {
               setIsClickedHome(false);
               setIsClickedTasks(false);
@@ -191,15 +215,17 @@ function Navbar(props) {
               className="h-[16px] w-[16px]"
             />
             <span
-              className={`text-[13px] ${isClickedInbox ? "text-white" : "text-black-20"
-                } ml-[10px] mt-[1px]`}
+              className={`text-[13px] ${
+                isClickedInbox ? "text-white" : "text-black-20"
+              } ml-[10px] mt-[1px]`}
             >
               Inbox
             </span>
           </div>
           <div
-            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${isClickedPeople ? "bg-cyan" : "bg-white"
-              }`}
+            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
+              isClickedPeople ? "bg-cyan" : "bg-white"
+            }`}
             onClick={() => {
               setIsClickedHome(false);
               setIsClickedTasks(false);
@@ -215,15 +241,17 @@ function Navbar(props) {
               className="h-[16px] w-[16px]"
             />
             <span
-              className={`text-[13px] ${isClickedPeople ? "text-white" : "text-black-20"
-                } ml-[10px] mt-[1px]`}
+              className={`text-[13px] ${
+                isClickedPeople ? "text-white" : "text-black-20"
+              } ml-[10px] mt-[1px]`}
             >
               People
             </span>
           </div>
           <div
-            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${isClickedReport ? "bg-cyan" : "bg-white"
-              }`}
+            className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
+              isClickedReport ? "bg-cyan" : "bg-white"
+            }`}
             onClick={() => {
               setIsClickedHome(false);
               setIsClickedTasks(false);
@@ -239,8 +267,9 @@ function Navbar(props) {
               className="h-[16px] w-[16px]"
             />
             <span
-              className={`text-[13px] ${isClickedReport ? "text-white" : "text-black-20"
-                } ml-[10px] mt-[1px]`}
+              className={`text-[13px] ${
+                isClickedReport ? "text-white" : "text-black-20"
+              } ml-[10px] mt-[1px]`}
             >
               Reporting
             </span>
@@ -251,31 +280,32 @@ function Navbar(props) {
         <div
           className="mt-[20px] w-full px-[10px] mb-[10px]"
           onClick={() => {
+            getFavoriteProjects();
             setIsOpenFavourites(!isOpenFavourites);
             setIsHideFavourProject(!isHideFavourProject);
           }}
         >
-          <div className="flex flex-row items-center justify-between">
-            <span className="text-black-20 font-medium text-[15px]">
+          <div className="flex flex-row items-center justify-between md:cursor-pointer">
+            <span className="text-black-20 font-medium text-[14px]">
               Favourites
             </span>
             <img
               src={ExpandArrow}
               alt=""
-              className={`ease-in duration-150 ${isOpenFavourites ? "rotate-0" : "rotate-180"
-                }`}
+              className={`ease-in duration-150 ${
+                isOpenFavourites ? "rotate-0" : "rotate-180"
+              }`}
             />
           </div>
           <div className="overflow-hidden">
             <div
-              className={`${isHideFavourProject && "mt-[-100%]"
-                } transition-all`}
+              className={`${
+                isHideFavourProject && "mt-[-100%]"
+              } transition-all`}
             >
-              {
-                favoriteProjects?.map(project =>
-                  <FavouritesProject key={project._id} project={project} />
-                )
-              }
+              {favoriteProjects?.map((project) => (
+                <FavouritesProject key={project._id} project={project} />
+              ))}
             </div>
           </div>
         </div>
@@ -285,12 +315,12 @@ function Navbar(props) {
       <div className="px-[20px] mt-[10px] ">
         {/**Search Project */}
         <div className="flex flex-row items-center">
-          <div className="flex flex-row items-center border-outlineButton border-[2px] px-[15px] py-[8px] rounded-[18px] w-[170px]">
+          <div className="flex flex-row items-center border-outlineButton border-[2px] px-[15px] py-[8px] rounded-[18px] w-[170px] md:px-[17px] md:py-[6px]">
             <img src={SearchIcon} alt="" />
             <input
               type="text"
               placeholder="Search Project"
-              className="outline-none w-full text-[14px] font-medium text-black-20 ml-[5px]"
+              className="outline-none w-full text-[14px] md:text-[12px] font-medium text-black-20 ml-[5px]"
               value={valueSearchProject}
               onChange={(e) => {
                 setValueSearchProject(e.target.value);
@@ -305,12 +335,12 @@ function Navbar(props) {
         </div>
         {/**List Project */}
         <div className={`mt-[15px] ${isHideProject && "hidden"}`}>
-          <span className="text-black-20 text-[15px] font-medium">
+          <span className="text-black-20 text-[14px] font-medium">
             Projects
           </span>
-          {recentProjects?.map(project =>
-            <FavouritesProject key={project._id} project={project} />)
-          }
+          {recentProjects?.map((project) => (
+            <FavouritesProject key={project._id} project={project} />
+          ))}
         </div>
       </div>
     </div>

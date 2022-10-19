@@ -61,10 +61,12 @@ body {
     @apply bg-black-100 w-screen h-screen;
   }
   .headerBar {
-    @apply flex items-center justify-between flex-row h-[65px] w-full pl-[30px] pr-[20px];
+    @apply flex items-center justify-between flex-row h-[65px] w-full pl-[30px] pr-[20px]
+    md:w-full md:pr-[35px];
   }
   .navBarContainer {
-    @apply absolute bg-white w-[250px] z-50 h-full border-r-[1px] border-r-outlineButton ease-in duration-300;
+    @apply absolute bg-white w-[250px] z-50 h-screen border-r-[1px] border-r-outlineButton ease-in duration-300
+    md:flex md:flex-col md:z-0 md:relative;
   }
   .textOther {
     @apply text-[12px] px-[6px] py-[8px] w-[150px] hover:bg-whitesmoke rounded-[4px];
