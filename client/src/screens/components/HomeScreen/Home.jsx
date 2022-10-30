@@ -94,7 +94,7 @@ function Home() {
   }
 
   return (
-    <div className="bg-[#FBFBFB] relative h-screen justify-center pt-[15px]">
+    <div className="bg-[#FBFBFB] h-screen md:h-full relative justify-center pt-[15px]">
       <div className="px-[20px]">
         <div className="flex justify-between w-full px-[20px]">
           <div

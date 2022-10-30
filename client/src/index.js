@@ -22,6 +22,7 @@ import Tasks from "./screens/components/HomeScreen/Tasks";
 import AuthProvider from "./contexts/AuthProvider";
 import PrivateRoute from "./utils/PrivateRoute";
 import Notification from "./screens/components/HomeScreen/Notification";
+import Add from "./screens/components/HomeScreen/Add";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

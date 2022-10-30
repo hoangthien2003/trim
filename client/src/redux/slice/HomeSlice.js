@@ -14,3 +14,18 @@ export const ShowProfileModalSlice = createSlice({
     },
   },
 });
+
+export const DisplayAddPopupSlice = createSlice({
+  name: "displayAddPopup",
+  initialState: {
+    displayAddPopup: false,
+  },
+  reducers: {
+    closeAddPopup: (state) => {
+      state.displayAddPopup = false;
+    },
+    openAddPopup: (state) => {
+      state.displayAddPopup = true;
+    },
+  },
+});

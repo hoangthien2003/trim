@@ -7,3 +7,5 @@ export const MemberSelector = (state) => state.memberReducer.memberAmount;
 export const IDMemberSelector = (state) => state.IDMemberReducer.IDMemberState;
 export const ShowProfileModalSelector = (state) =>
   state.showProfileModalReducer.isShowProfile;
+export const DisplayAddPopupSelector = (state) =>
+  state.displayAddPopupReducer.displayAddPopup;
