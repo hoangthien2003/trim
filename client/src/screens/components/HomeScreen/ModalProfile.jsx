@@ -65,7 +65,7 @@ function ModalProfile() {
           <div
             className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${
               toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
-            } flex items-center px-[1px]`}
+            } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
           >
             <div
               className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${
@@ -86,7 +86,7 @@ function ModalProfile() {
           <div
             className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${
               toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
-            } flex items-center px-[1px] md:px-[2px]`}
+            } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
           >
             <div
               className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${

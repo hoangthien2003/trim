@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import LogoSvg from "../../../images/logo.svg";
 import HomeLight from "../../../images/Home.svg";
 import HomeDark from "../../../images/HomeBlack.svg";
@@ -13,10 +14,6 @@ import ReportLight from "../../../images/ReportLight.svg";
 import TasksDark from "../../../images/Tasks.svg";
 import TasksLight from "../../../images/TasksLight.svg";
 import ExpandArrow from "../../../images/ExpandArrow.svg";
-import AppProject from "../../../images/AppProject.svg";
-import WebProject from "../../../images/WebProject.svg";
-import CreativeProject from "../../../images/CreativeProject.svg";
-import MarketingProject from "../../../images/MarketingProject.svg";
 import SearchIcon from "../../../images/Search.svg";
 import AddIcon from "../../../images/Add.svg";
 import { Link } from "react-router-dom";
@@ -25,6 +22,7 @@ import {
   LOCAL_STORAGE_TOKEN_NAME,
   URL_BASE,
 } from "../../../contexts/constants.js";
+import { DisplayAddPopupSlice } from "../../../redux/slice/HomeSlice";
 
 function Navbar(props) {
   /** STATE ONCLICK NAVITEM **/
@@ -42,6 +40,7 @@ function Navbar(props) {
 
   const [recentProjects, setRecentProjects] = React.useState(null);
   const [hideDisplayNav, setHideDisplayNav] = React.useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (props.isShow) {
@@ -329,7 +328,13 @@ function Navbar(props) {
               }}
             />
           </div>
-          <div className="bg-cyan ml-[10px] h-[36px] w-[38px] flex items-center justify-center rounded-[30px]">
+          <div
+            className="bg-cyan ml-[10px] h-[36px] w-[38px] flex items-center justify-center rounded-[30px]
+            md:cursor-pointer"
+            onClick={() => {
+              dispatch(DisplayAddPopupSlice.actions.openAddPopup());
+            }}
+          >
             <img src={AddIcon} alt="" />
           </div>
         </div>

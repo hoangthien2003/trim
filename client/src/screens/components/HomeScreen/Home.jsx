@@ -101,19 +101,15 @@ function Home() {
             className={`${recentBottomBarColor} border-b-[2px] p-[5px] border-solid cursor-pointer`}
             onClick={() => {
               setRecentBottomBarColor("border-b-purple");
+              setSpanColor01("text-purple");
+              setSpanColor02("text-black-200");
+              setSpanColor03("text-black-200");
               setFavourBottomBarColor("border-b-[#FBFBFB]");
               setWorkedOnBottomBarColor("border-b-[#FBFBFB]");
+              setTypeProject(1);
             }}
           >
-            <span
-              className={`${spanColor01} text-[15px] font-medium`}
-              onClick={() => {
-                setSpanColor01("text-purple");
-                setSpanColor02("text-black-200");
-                setSpanColor03("text-black-200");
-                setTypeProject(1);
-              }}
-            >
+            <span className={`${spanColor01} text-[15px] font-medium`}>
               Recent Project
             </span>
           </div>
@@ -123,17 +119,13 @@ function Home() {
               setRecentBottomBarColor("border-b-[#FBFBFB]");
               setFavourBottomBarColor("border-b-purple");
               setWorkedOnBottomBarColor("border-b-[#FBFBFB]");
+              setSpanColor01("text-black-200");
+              setSpanColor02("text-purple");
+              setSpanColor03("text-black-200");
+              setTypeProject(2);
             }}
           >
-            <span
-              className={`${spanColor02} text-[15px] font-medium`}
-              onClick={() => {
-                setSpanColor01("text-black-200");
-                setSpanColor02("text-purple");
-                setSpanColor03("text-black-200");
-                setTypeProject(2);
-              }}
-            >
+            <span className={`${spanColor02} text-[15px] font-medium`}>
               Favorites
             </span>
           </div>
@@ -143,17 +135,13 @@ function Home() {
               setRecentBottomBarColor("border-b-[#FBFBFB]");
               setFavourBottomBarColor("border-b-[#FBFBFB]");
               setWorkedOnBottomBarColor("border-b-purple");
+              setSpanColor01("text-black-200");
+              setSpanColor02("text-black-200");
+              setSpanColor03("text-purple");
+              setTypeProject(3);
             }}
           >
-            <span
-              className={`${spanColor03}  text-[15px] font-medium`}
-              onClick={() => {
-                setSpanColor01("text-black-200");
-                setSpanColor02("text-black-200");
-                setSpanColor03("text-purple");
-                setTypeProject(3);
-              }}
-            >
+            <span className={`${spanColor03}  text-[15px] font-medium`}>
               Worked on
             </span>
           </div>

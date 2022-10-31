@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DisplayAddPopupSelector } from "../../../redux/selector";
 import { DisplayAddPopupSlice } from "../../../redux/slice/HomeSlice";
@@ -7,16 +7,42 @@ import AddIcon from "../../../images/AddBlack.svg";
 import ArrowLeft from "../../../images/ArrowLeft.svg";
 import Close from "../../../images/Close.svg";
 import Camera from "../../../images/Camera.svg";
+import { useEffect } from "react";
 
 function Add() {
   var displayAddPopup = useSelector(DisplayAddPopupSelector);
   const dispatch = useDispatch();
-  const [isCreate, setIsCreate] = React.useState(false);
+  const [isCreate, setIsCreate] = useState(false);
+  const [projName, setProjName] = useState("");
+  const [categoryVal, setCategoryVal] = useState("Design");
+  const [descVal, setDescVal] = useState("");
+  const [privacyVal, setPrivacyVal] = useState("Private to me");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isSelected, setIsSelected] = useState(false);
+  const [borderImage, setBorderImage] = useState("border-outlineButton");
+  const [borderProjName, setBorderProjName] = useState("border-outlineButton");
+  const [borderDesc, setBorderDesc] = useState("border-outlineButton");
+  const [isErrorImg, setIsErrorImg] = useState(false);
+  const [isErrorProj, setIsErrorProj] = useState(false);
+  const [isErrorDesc, setIsErrorDesc] = useState(false);
+
+  function getImage(e) {
+    var inputImg = e.target.files[0];
+    if (inputImg) {
+      setSelectedImage(window.URL.createObjectURL(inputImg));
+      setIsSelected(true);
+      setIsErrorImg(false);
+    } else {
+      setIsSelected(false);
+      setIsErrorImg(true);
+    }
+  }
 
   function createProject() {
     return (
       <div
-        className={`flex flex-col absolute bg-white px-[22px] py-[17px] rounded-[10px] items-center w-full md:w-[500px]`}
+        className={`flex flex-col absolute bg-white px-[22px] py-[17px] rounded-[10px] items-center w-full md:w-[500px]
+        `}
       >
         <div className="flex justify-between w-full">
           <img
@@ -38,27 +64,65 @@ function Add() {
           Create a New Project
         </h1>
         <div
-          className="h-[70px] w-[70px] flex items-center justify-center mt-[15px] rounded-[12px] border-[2px]
-          border-outlineButton border-solid md:cursor-pointer"
+          className={`h-[65px] w-[65px] flex items-center justify-center md:mt-[15px] mt-[8px] rounded-[12px] ${
+            isSelected ? "border-none" : "border-[2px]"
+          }
+          ${borderImage} border-solid md:cursor-pointer md:h-[75px] md:w-[75px]`}
         >
-          <img src={Camera} alt="" />
+          <input
+            type="file"
+            id="inputFile"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => getImage(e)}
+          />
+          {isSelected ? (
+            <img id="outputImg" src={selectedImage} alt="" />
+          ) : (
+            <img
+              id="cameraImg"
+              src={Camera}
+              alt=""
+              onClick={() => document.getElementById("inputFile").click()}
+            />
+          )}
         </div>
+        <p
+          className={`${
+            isErrorImg ? "visible" : "hidden"
+          } text-red-100 text-[12px]`}
+        >
+          Required
+        </p>
         {/**Project Name */}
-        <div className="w-full mb-[10px] mt-[15px]">
+        <div className="w-full md:mb-[10px] md:mt-[15px] mt-[10px] mb-[5px]">
           <p className="text-[12px] text-black-20 font-medium">Project Name</p>
           <div
-            className="px-[12px] py-[10px] border-solid border-[1px] border-outlineButton rounded-md mt-[5px]
-          flex items-center"
+            className={`px-[12px] py-[10px] border-solid border-[1px] ${borderProjName} rounded-md mt-[5px]
+          flex items-center`}
           >
             <input
               type="text"
               className="outline-none w-full text-[13px] text-black-100"
               placeholder="Project Name"
+              value={projName}
+              onChange={(e) => setProjName(e.target.value)}
+              onFocus={() => {
+                setBorderProjName("border-outlineButton");
+                setIsErrorProj(false);
+              }}
             />
           </div>
+          <p
+            className={`${
+              isErrorProj ? "visible" : "hidden"
+            } text-red-100 text-[12px] ml-[8px]`}
+          >
+            Required
+          </p>
         </div>
         {/**Category */}
-        <div className="w-full my-[10px]">
+        <div className="w-full md:my-[10px] my-[5px]">
           <p className="text-[12px] text-black-20 font-medium">Category</p>
           <div
             className="border-solid border-[1px] border-outlineButton rounded-md mt-[5px]
@@ -67,10 +131,10 @@ function Add() {
             <select
               id="category"
               className="w-full text-[13px] px-[6px] py-[10px] outline-none"
+              value={categoryVal}
+              onChange={(e) => setCategoryVal(e.target.value)}
             >
-              <option value="Design" selected>
-                Design
-              </option>
+              <option value="Design">Design</option>
               <option value="Development">Development</option>
               <option value="Marketing">Marketing</option>
               <option value="Operations">Operations</option>
@@ -83,22 +147,35 @@ function Add() {
           </div>
         </div>
         {/**Description */}
-        <div className="w-full mb-[10px] mt-[15px]">
+        <div className="w-full md:my-[10px] my-[5px]">
           <p className="text-[12px] text-black-20 font-medium">Description</p>
           <div
-            className="px-[12px] py-[10px] border-solid border-[1px] border-outlineButton rounded-md mt-[5px]
-          flex items-center"
+            className={`px-[12px] py-[10px] border-solid border-[1px] ${borderDesc} rounded-md mt-[5px]
+          flex items-center`}
           >
             <textarea
               name="description"
               id=""
               placeholder="Description"
               className="outline-none w-full text-[13px] text-black-100 h-[100px]"
+              value={descVal}
+              onChange={(e) => setDescVal(e.target.value)}
+              onFocus={() => {
+                setBorderDesc("border-outlineButton");
+                setIsErrorDesc(false);
+              }}
             />
           </div>
+          <p
+            className={`${
+              isErrorDesc ? "visible" : "hidden"
+            } text-red-100 text-[12px] ml-[8px]`}
+          >
+            Required
+          </p>
         </div>
         {/**Privacy */}
-        <div className="w-full my-[10px]">
+        <div className="w-full md:my-[10px] my-[5px]">
           <p className="text-[12px] text-black-20 font-medium">Privacy</p>
           <div
             className="border-solid border-[1px] border-outlineButton rounded-md mt-[5px]
@@ -107,10 +184,10 @@ function Add() {
             <select
               id="privacy"
               className="w-full text-[13px] px-[6px] py-[10px] outline-none"
+              value={privacyVal}
+              onChange={(e) => setPrivacyVal(e.target.value)}
             >
-              <option value="Private to me" selected>
-                Private to me
-              </option>
+              <option value="Private to me">Private to me</option>
               <option value="Private to project numbers">
                 Private to project numbers
               </option>
@@ -121,7 +198,32 @@ function Add() {
         {/**Button Create */}
         <div
           className="w-full mt-[20px] bg-cyan border-solid rounded-[8px] h-[38px] flex items-center justify-center
-        md:cursor-pointer transition-opacity duration-300 opacity-60 hover:opacity-100"
+        md:cursor-pointer md:transition-opacity md:duration-300 md:opacity-60 hover:opacity-100"
+          onClick={() => {
+            var hasError = false;
+            if (!isSelected) {
+              hasError = true;
+              setBorderImage("border-red-100");
+              setIsErrorProj(true);
+            }
+            if (!projName) {
+              hasError = true;
+              setBorderProjName("border-red-100");
+              setIsErrorDesc(true);
+            }
+            if (!descVal) {
+              hasError = true;
+              setBorderDesc("border-red-100");
+              setIsErrorImg(true);
+            }
+            //If hasn't error -> add project
+            if (!hasError) {
+              console.log(projName);
+              console.log(categoryVal);
+              console.log(descVal);
+              console.log(privacyVal);
+            }
+          }}
         >
           <span className="text-[14px] text-white font-medium">
             Create Project
