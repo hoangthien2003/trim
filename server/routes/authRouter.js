@@ -214,14 +214,15 @@ authRouter.get("/user", verifyToken, async (req, res) => {
   }
 });
 
-authRouter.patch("/changeDarkMode", async (req, res) => {
-  console.log(req.body.isDarkMode);
+authRouter.patch("/changeDarkMode", verifyToken, async (req, res) => {
   try {
-    const foundUser = await User.findOneAndUpdate(
-      { _id: req.userId },
-      { $set: { isDarkMode: Boolean(req.body.isDarkMode) } }
-    );
-    res.json({ success: true, user: foundUser });
+    const foundUser = await User.findOne({ _id: req.userId });
+    const updateIsDarkMode = !foundUser.isDarkMode;
+    await User.findOneAndUpdate({ _id: req.userId }, { $set: { isDarkMode: updateIsDarkMode } }).then(data => {
+      console.log(data);
+    });
+    res.json({ success: true });
+
   } catch (err) {
     console.log(err);
   }

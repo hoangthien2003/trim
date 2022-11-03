@@ -44,10 +44,16 @@ function ModalProfile() {
     setToggleButtonDarkMode(!toggleButtonDarkMode);
     dispatch(DarkModeSlice.actions.toggleDarkMode());
     await axios
-      .patch(`${URL_BASE}/api/auth/changeDarkMode`, {
-        isDarkMode: toggleButtonDarkMode,
+      .patch(`${URL_BASE}/api/auth/changeDarkMode`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(
+            LOCAL_STORAGE_TOKEN_NAME
+          )}`,
+        },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res)
+      })
       .catch((err) => console.log(err));
     if (toggleButtonDarkMode) {
       htmlClasses.remove("dark");
@@ -60,9 +66,8 @@ function ModalProfile() {
 
   return (
     <div
-      className={`${
-        isShowProfile ? "absolute" : "hidden"
-      } top-14 select-none bg-white dark:bg-bgHeaderBarDark rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
+      className={`${isShowProfile ? "absolute" : "hidden"
+        } top-14 select-none bg-white dark:bg-bgHeaderBarDark rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
     >
       <div className="flex flex-row items-center py-[14px] px-[18px]">
         <img
@@ -87,19 +92,17 @@ function ModalProfile() {
             Active Status
           </span>
           <div
-            className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${
-              toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
-            } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
+            className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
+              } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
             onClick={() => {
               setToggleButtonActive(!toggleButtonActive);
             }}
           >
             <div
-              className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${
-                toggleButtonActive
-                  ? "translate-x-[14px] md:translate-x-[16px]"
-                  : "translate-x-0"
-              } transition ease-linear duration-250`}
+              className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${toggleButtonActive
+                ? "translate-x-[14px] md:translate-x-[16px]"
+                : "translate-x-0"
+                } transition ease-linear duration-250`}
             ></div>
           </div>
         </div>
@@ -108,19 +111,17 @@ function ModalProfile() {
             Dark Mode
           </span>
           <div
-            className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${
-              toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
-            } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
+            className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
+              } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
             onClick={() => {
               setDarkMode();
             }}
           >
             <div
-              className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${
-                toggleButtonDarkMode
-                  ? "translate-x-[14px] md:translate-x-[16px]"
-                  : "translate-x-0"
-              } transition ease-linear duration-250`}
+              className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${toggleButtonDarkMode
+                ? "translate-x-[14px] md:translate-x-[16px]"
+                : "translate-x-0"
+                } transition ease-linear duration-250`}
             ></div>
           </div>
         </div>
