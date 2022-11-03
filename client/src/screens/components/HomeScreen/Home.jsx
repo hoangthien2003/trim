@@ -6,11 +6,8 @@ import {
   URL_BASE,
 } from "../../../contexts/constants.js";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { DarkModeSelector } from "../../../redux/selector";
 
 function Home() {
-  var isDarkMode = useSelector(DarkModeSelector);
   const [spanColor01, setSpanColor01] = useState("text-purple dark:text-white");
   const [spanColor02, setSpanColor02] = useState(
     "text-black-200 dark:text-black-10"

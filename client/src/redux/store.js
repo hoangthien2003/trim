@@ -7,7 +7,6 @@ import { IDColorSlice } from "./slice/IDColorSlice";
 import { MemberSlice } from "./slice/MembersSlice";
 import { IDMemberSlice } from "./slice/IDMemberSlice";
 import { DisplayAddPopupSlice, ShowProfileModalSlice } from "./slice/HomeSlice";
-import { DarkModeSlice } from "./slice/DarkModeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +19,5 @@ export const store = configureStore({
     IDMemberReducer: IDMemberSlice.reducer,
     showProfileModalReducer: ShowProfileModalSlice.reducer,
     displayAddPopupReducer: DisplayAddPopupSlice.reducer,
-    darkModeReducer: DarkModeSlice.reducer,
   },
 });

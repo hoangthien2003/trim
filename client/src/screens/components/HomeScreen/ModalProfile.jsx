@@ -3,22 +3,17 @@ import AvtIcon from "../../../images/Avatar.png";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../../firebase/config";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  DarkModeSelector,
-  ShowProfileModalSelector,
-} from "../../../redux/selector";
+import { ShowProfileModalSelector } from "../../../redux/selector";
 import { AuthContext } from "../../../contexts/AuthProvider.js";
 import {
   LOCAL_STORAGE_TOKEN_NAME,
   URL_BASE,
 } from "../../../contexts/constants.js";
 import { ShowProfileModalSlice } from "../../../redux/slice/HomeSlice";
-import { DarkModeSlice } from "../../../redux/slice/DarkModeSlice";
 import axios from "axios";
 
 function ModalProfile() {
   let isShowProfile = useSelector(ShowProfileModalSelector);
-  let isDarkMode = useSelector(DarkModeSelector);
   const [toggleButtonActive, setToggleButtonActive] = React.useState(false);
   const [toggleButtonDarkMode, setToggleButtonDarkMode] = React.useState(null);
   const [requestLogOut, setRequestLogOut] = useState(false);
@@ -31,31 +26,47 @@ function ModalProfile() {
     setRequestLogOut(true);
   }
   useEffect(() => {
-    setToggleButtonDarkMode(isDarkMode);
     if (requestLogOut) {
       localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
       dispatch(ShowProfileModalSlice.actions.setHide());
       auth.signOut();
       navigate("/login");
     }
-  }, [requestLogOut, navigate, dispatch, setToggleButtonDarkMode, isDarkMode]);
+    async function toggleDarkMode() {
+      await axios
+        .get(`${URL_BASE}/api/auth/user`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              LOCAL_STORAGE_TOKEN_NAME
+            )}`,
+          },
+        })
+        .then((res) => setToggleButtonDarkMode(res.data.user.isDarkMode))
+        .catch((err) => console.log(err));
+    }
+    toggleDarkMode();
+  }, [requestLogOut, navigate, dispatch, setToggleButtonDarkMode]);
 
   async function setDarkMode() {
     setToggleButtonDarkMode(!toggleButtonDarkMode);
-    dispatch(DarkModeSlice.actions.toggleDarkMode());
     await axios
-      .patch(`${URL_BASE}/api/auth/changeDarkMode`, {}, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            LOCAL_STORAGE_TOKEN_NAME
-          )}`,
-        },
-      })
+      .patch(
+        `${URL_BASE}/api/auth/changeDarkMode`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              LOCAL_STORAGE_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
       .then((res) => {
-        console.log(res)
+        console.log(res);
       })
       .catch((err) => console.log(err));
     if (toggleButtonDarkMode) {
+      document.body.className = "light";
       htmlClasses.remove("dark");
       localStorage.removeItem("theme");
     } else {
@@ -66,8 +77,9 @@ function ModalProfile() {
 
   return (
     <div
-      className={`${isShowProfile ? "absolute" : "hidden"
-        } top-14 select-none bg-white dark:bg-bgHeaderBarDark rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
+      className={`${
+        isShowProfile ? "absolute" : "hidden"
+      } top-14 select-none bg-white dark:bg-bgHeaderBarDark rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
     >
       <div className="flex flex-row items-center py-[14px] px-[18px]">
         <img
@@ -92,17 +104,19 @@ function ModalProfile() {
             Active Status
           </span>
           <div
-            className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
-              } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
+            className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${
+              toggleButtonActive ? "bg-cyan" : "bg-outlineButton"
+            } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
             onClick={() => {
               setToggleButtonActive(!toggleButtonActive);
             }}
           >
             <div
-              className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${toggleButtonActive
-                ? "translate-x-[14px] md:translate-x-[16px]"
-                : "translate-x-0"
-                } transition ease-linear duration-250`}
+              className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${
+                toggleButtonActive
+                  ? "translate-x-[14px] md:translate-x-[16px]"
+                  : "translate-x-0"
+              } transition ease-linear duration-250`}
             ></div>
           </div>
         </div>
@@ -111,17 +125,19 @@ function ModalProfile() {
             Dark Mode
           </span>
           <div
-            className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
-              } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
+            className={`h-[13px] md:h-[17px] w-[26px] md:w-[32px] rounded-[10px] ${
+              toggleButtonDarkMode ? "bg-cyan" : "bg-outlineButton"
+            } flex items-center px-[1px] md:px-[2px] md:cursor-pointer`}
             onClick={() => {
               setDarkMode();
             }}
           >
             <div
-              className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${toggleButtonDarkMode
-                ? "translate-x-[14px] md:translate-x-[16px]"
-                : "translate-x-0"
-                } transition ease-linear duration-250`}
+              className={`h-[10px] md:h-[12px] w-[10px] md:w-[12px] bg-white rounded-[14px] ${
+                toggleButtonDarkMode
+                  ? "translate-x-[14px] md:translate-x-[16px]"
+                  : "translate-x-0"
+              } transition ease-linear duration-250`}
             ></div>
           </div>
         </div>

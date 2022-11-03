@@ -20,11 +20,9 @@ import Add from "./components/HomeScreen/Add";
 import { DarkModeSelector, DisplayAddPopupSelector } from "../redux/selector";
 import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../contexts/constants";
 import axios from "axios";
-import { DarkModeSlice } from "../redux/slice/DarkModeSlice";
 
 function HomeScreen() {
   var openPopupSelector = useSelector(DisplayAddPopupSelector);
-  var isDarkMode = useSelector(DarkModeSelector);
   const [showNav, setShowNav] = React.useState(true);
   const [showCloseNav, setShowCloseNav] = React.useState(false);
   const [isClickNoti, setIsClickNoti] = React.useState(false);
@@ -35,6 +33,7 @@ function HomeScreen() {
   const [isOpenAddPopup, setIsOpenAddPopup] = React.useState(false);
   const [displayHideModal, setDisplayHideModal] = useState(false);
   let htmlClasses = document.querySelector("html").classList;
+  const [isDarkMode, setIsDarkMode] = useState(null);
 
   useEffect(() => {
     if (window.innerWidth <= 768) setShowNav(false);
@@ -50,11 +49,10 @@ function HomeScreen() {
         })
         .catch((err) => console.log(err));
       if (response.data.success === true) {
-        const dataUser = response.data.user;
-        if (dataUser.isDarkMode) {
+        setIsDarkMode(response.data.user.isDarkMode);
+        if (isDarkMode) {
           htmlClasses.add("dark");
           localStorage.theme = "dark";
-          dispatch(DarkModeSlice.actions.enable());
         } else {
           htmlClasses.remove("dark");
           localStorage.removeItem("theme");
@@ -62,7 +60,14 @@ function HomeScreen() {
       }
     }
     getDarkMode();
-  }, [setShowNav, setIsOpenAddPopup, openPopupSelector]);
+  }, [
+    setShowNav,
+    setIsOpenAddPopup,
+    openPopupSelector,
+    htmlClasses,
+    dispatch,
+    isDarkMode,
+  ]);
 
   return (
     <>

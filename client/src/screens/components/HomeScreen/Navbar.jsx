@@ -26,10 +26,6 @@ import {
   DisplayAddPopupSlice,
   ShowProfileModalSlice,
 } from "../../../redux/slice/HomeSlice";
-import {
-  DarkModeSelector,
-  ShowProfileModalSelector,
-} from "../../../redux/selector";
 
 function Navbar(props) {
   /** STATE ONCLICK NAVITEM **/
@@ -48,7 +44,6 @@ function Navbar(props) {
   const [recentProjects, setRecentProjects] = React.useState(null);
   const [hideDisplayNav, setHideDisplayNav] = React.useState(true);
   const dispatch = useDispatch();
-  var isDarkMode = useSelector(DarkModeSelector);
 
   useEffect(() => {
     if (props.isShow) {
