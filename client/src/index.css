@@ -10,11 +10,11 @@ body {
 
 @layer components {
   .container {
-    @apply flex justify-center items-center h-screen
+    @apply flex justify-center items-center h-screen dark:bg-bgDashboardDark
     md:w-screen;
   }
   .card {
-    @apply flex flex-col items-center border-solid px-[30px] py-[20px] rounded-2xl
+    @apply flex flex-col items-center dark:bg-bgProjectCardDark border-solid px-[30px] py-[20px] rounded-2xl
     shadow-2xl
     md:px-[120px] md:py-[60px];
   }
@@ -23,29 +23,29 @@ body {
     md:w-[550px] md:mt-0;
   }
   .cardTitle {
-    @apply text-xl font-bold text-black-200
+    @apply text-xl font-bold text-black-200 dark:text-white
     md:text-[28px] md:mb-[30px];
   }
   .setupTitle {
     @apply text-black-200 text-lg;
   }
   .formLabel {
-    @apply mt-10 mb-1 text-[12px] text-gray font-medium
+    @apply mt-10 mb-1 text-[12px] text-gray font-medium dark:text-black-10
     md:text-[12px];
   }
   .formInput {
     @apply outline-none border-none px-3 py-3  w-[235px] md:w-[505px]
-    text-black-200 rounded-[5px] text-[14px]
+    text-black-200 rounded-[5px] text-[14px] dark:text-whitesmoke dark:bg-bgProjectCardDark
     md:text-[13.5px];
   }
   .buttonPurple {
-    @apply w-full py-[13px] border-solid rounded-[5px] bg-purple
-    text-white text-[14px] mt-6
+    @apply w-full py-[11px] border-solid rounded-[5px] bg-purple
+    text-white text-[15px] mt-6
     md:mt-8 md:transition md:opacity-70
     hover:opacity-100 hover:duration-300;
   }
   .buttonGoogle {
-    @apply flex flex-row items-center justify-center w-full py-[13px]
+    @apply flex flex-row items-center justify-center w-full py-[13px] dark:bg-bgProjectCardDark dark:border-bgOtherPopup
     border-solid border-[1px] border-outlineButton rounded-[5px] bg-white text-black-200 text-[12px];
   }
   .colorItem {
@@ -65,10 +65,11 @@ body {
     md:w-full md:pr-[35px];
   }
   .navBarContainer {
-    @apply absolute bg-white w-[250px] z-50 h-screen border-r-[1px] border-r-outlineButton ease-in duration-300
+    @apply absolute bg-white w-[250px] z-50 h-screen border-r-[1px] border-r-outlineButton 
+    ease-in duration-300 md:transition-none dark:border-r-black-50
     md:flex md:flex-col md:z-0 md:relative;
   }
   .textOther {
-    @apply text-[12px] px-[6px] py-[8px] w-[150px] hover:bg-whitesmoke rounded-[4px];
+    @apply text-[12px] dark:text-whitesmoke px-[6px] py-[8px] w-[150px] hover:bg-whitesmoke dark:hover:bg-bgHeaderBarDark rounded-[4px];
   }
 }

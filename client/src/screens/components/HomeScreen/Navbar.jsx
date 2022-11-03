@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LogoSvg from "../../../images/logo.svg";
 import HomeLight from "../../../images/Home.svg";
 import HomeDark from "../../../images/HomeBlack.svg";
@@ -22,7 +22,14 @@ import {
   LOCAL_STORAGE_TOKEN_NAME,
   URL_BASE,
 } from "../../../contexts/constants.js";
-import { DisplayAddPopupSlice } from "../../../redux/slice/HomeSlice";
+import {
+  DisplayAddPopupSlice,
+  ShowProfileModalSlice,
+} from "../../../redux/slice/HomeSlice";
+import {
+  DarkModeSelector,
+  ShowProfileModalSelector,
+} from "../../../redux/selector";
 
 function Navbar(props) {
   /** STATE ONCLICK NAVITEM **/
@@ -41,6 +48,7 @@ function Navbar(props) {
   const [recentProjects, setRecentProjects] = React.useState(null);
   const [hideDisplayNav, setHideDisplayNav] = React.useState(true);
   const dispatch = useDispatch();
+  var isDarkMode = useSelector(DarkModeSelector);
 
   useEffect(() => {
     if (props.isShow) {
@@ -98,27 +106,29 @@ function Navbar(props) {
           src={avatar}
           alt="Project Icon"
         />
-        <span className="text-[13px]">{name}</span>
+        <span className="text-[13px] dark:text-black-10">{name}</span>
       </div>
     );
   };
 
   return (
     <div
-      className={`navBarContainer ${props.isShow ? "left-0" : "left-[-100%]"} ${
+      className={`navBarContainer dark:bg-bgHeaderBarDark ${
+        props.isShow ? "left-0" : "left-[-100%]"
+      } ${
         hideDisplayNav ? "hidden left-[-100%]" : "flex flex-col"
       } select-none`}
     >
-      <div className="border-b-[1px] border-b-outlineButton w-full px-[10px] py-[20px]">
+      <div className="border-b-[1px] border-b-outlineButton dark:border-b-black-50 w-full px-[10px] py-[20px]">
         <div className="flex flex-row items-center mx-[10px]">
           <img src={LogoSvg} alt="" className="h-[25px] w-[25px]" />
-          <span className="ml-[5px] font-bold">Trim.</span>
+          <span className="ml-[5px] font-bold dark:text-white">Trim.</span>
         </div>
         <div className="mt-[25px]">
           <Link
             to="/"
             className={`flex flex-row items-center py-[5px] px-[10px] rounded-[7px] ${
-              isClickedHome ? "bg-cyan" : "bg-white"
+              isClickedHome ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
               setIsClickedHome(true);
@@ -136,7 +146,9 @@ function Navbar(props) {
             />
             <span
               className={`text-[13px] ${
-                isClickedHome ? "text-white" : "text-black-20"
+                isClickedHome
+                  ? "text-white"
+                  : "text-black-20 dark:text-black-10"
               } ml-[10px] mt-[1px]`}
             >
               Home
@@ -145,7 +157,7 @@ function Navbar(props) {
           <Link
             to="/tasks"
             className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
-              isClickedTasks ? "bg-cyan" : "bg-white"
+              isClickedTasks ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
               setIsClickedHome(false);
@@ -163,15 +175,18 @@ function Navbar(props) {
             />
             <span
               className={`text-[13px] ${
-                isClickedTasks ? "text-white" : "text-black-20"
+                isClickedTasks
+                  ? "text-white"
+                  : "text-black-20 dark:text-black-10"
               } ml-[10px] mt-[1px]`}
             >
               My Tasks
             </span>
           </Link>
-          <div
+          <Link
+            to="/"
             className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
-              isClickedPlan ? "bg-cyan" : "bg-white"
+              isClickedPlan ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
               setIsClickedHome(false);
@@ -189,15 +204,18 @@ function Navbar(props) {
             />
             <span
               className={`text-[13px] ${
-                isClickedPlan ? "text-white" : "text-black-20"
+                isClickedPlan
+                  ? "text-white"
+                  : "text-black-20 dark:text-black-10"
               } ml-[10px] mt-[1px]`}
             >
               My Plan
             </span>
-          </div>
-          <div
+          </Link>
+          <Link
+            to="/"
             className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
-              isClickedInbox ? "bg-cyan" : "bg-white"
+              isClickedInbox ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
               setIsClickedHome(false);
@@ -215,15 +233,18 @@ function Navbar(props) {
             />
             <span
               className={`text-[13px] ${
-                isClickedInbox ? "text-white" : "text-black-20"
+                isClickedInbox
+                  ? "text-white"
+                  : "text-black-20 dark:text-black-10"
               } ml-[10px] mt-[1px]`}
             >
               Inbox
             </span>
-          </div>
-          <div
+          </Link>
+          <Link
+            to="/"
             className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
-              isClickedPeople ? "bg-cyan" : "bg-white"
+              isClickedPeople ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
               setIsClickedHome(false);
@@ -241,15 +262,18 @@ function Navbar(props) {
             />
             <span
               className={`text-[13px] ${
-                isClickedPeople ? "text-white" : "text-black-20"
+                isClickedPeople
+                  ? "text-white"
+                  : "text-black-20 dark:text-black-10"
               } ml-[10px] mt-[1px]`}
             >
               People
             </span>
-          </div>
-          <div
+          </Link>
+          <Link
+            to="/"
             className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
-              isClickedReport ? "bg-cyan" : "bg-white"
+              isClickedReport ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
               setIsClickedHome(false);
@@ -267,12 +291,14 @@ function Navbar(props) {
             />
             <span
               className={`text-[13px] ${
-                isClickedReport ? "text-white" : "text-black-20"
+                isClickedReport
+                  ? "text-white"
+                  : "text-black-20 dark:text-black-10"
               } ml-[10px] mt-[1px]`}
             >
               Reporting
             </span>
-          </div>
+          </Link>
         </div>
 
         {/* Favourite Component */}
@@ -285,7 +311,7 @@ function Navbar(props) {
           }}
         >
           <div className="flex flex-row items-center justify-between md:cursor-pointer">
-            <span className="text-black-20 font-medium text-[14px]">
+            <span className="text-black-20 dark:text-black-10 font-medium text-[14px]">
               Favourites
             </span>
             <img
@@ -314,12 +340,12 @@ function Navbar(props) {
       <div className="px-[20px] mt-[10px] ">
         {/**Search Project */}
         <div className="flex flex-row items-center">
-          <div className="flex flex-row items-center border-outlineButton border-[2px] px-[15px] py-[8px] rounded-[18px] w-[170px] md:px-[17px] md:py-[6px]">
+          <div className="flex flex-row items-center border-outlineButton dark:border-black-50 border-[2px] px-[15px] py-[8px] rounded-[18px] w-[170px] md:px-[17px] md:py-[6px]">
             <img src={SearchIcon} alt="" />
             <input
               type="text"
               placeholder="Search Project"
-              className="outline-none w-full text-[14px] md:text-[12px] font-medium text-black-20 ml-[5px]"
+              className="outline-none dark:bg-bgHeaderBarDark dark:text-black-10 w-full text-[14px] md:text-[12px] font-medium text-black-20 ml-[5px]"
               value={valueSearchProject}
               onChange={(e) => {
                 setValueSearchProject(e.target.value);
@@ -340,7 +366,7 @@ function Navbar(props) {
         </div>
         {/**List Project */}
         <div className={`mt-[15px] ${isHideProject && "hidden"}`}>
-          <span className="text-black-20 text-[14px] font-medium">
+          <span className="text-black-20 dark:text-whitesmoke text-[14px] font-medium">
             Projects
           </span>
           {recentProjects?.map((project) => (

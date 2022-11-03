@@ -9,3 +9,4 @@ export const ShowProfileModalSelector = (state) =>
   state.showProfileModalReducer.isShowProfile;
 export const DisplayAddPopupSelector = (state) =>
   state.displayAddPopupReducer.displayAddPopup;
+export const DarkModeSelector = (state) => state.darkModeReducer.isDarkMode;

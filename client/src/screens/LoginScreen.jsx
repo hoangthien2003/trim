@@ -1,34 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import googleSvg from "../images/google.svg";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ErrorItem from "./components/ErrorItem";
 import { auth, providerGoogle } from "../firebase/config.js";
-import { LOCAL_STORAGE_TOKEN_NAME,URL_BASE } from "../contexts/constants.js";
-import axios from "axios"
+import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../contexts/constants.js";
+import axios from "axios";
 
 function LoginScreen() {
-  const [borderInputEmail, setBorderInputEmail] = React.useState(
-    "border-outlineButton"
+  const [borderInputEmail, setBorderInputEmail] = useState(
+    "border-outlineButton dark:border-bgOtherPopup"
   );
-  const [emailError, setEmailError] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState("");
-  const [displayErrorEmail, setDisplayErrorEmail] = React.useState("hidden");
-  const [displayErrorPassword, setDisplayErrorPassword] =
-    React.useState("hidden");
-  const [borderInputPassword, setBorderInputPassword] = React.useState(
-    "border-outlineButton"
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [displayErrorEmail, setDisplayErrorEmail] = useState("hidden");
+  const [displayErrorPassword, setDisplayErrorPassword] = useState("hidden");
+  const [borderInputPassword, setBorderInputPassword] = useState(
+    "border-outlineButton dark:border-bgOtherPopup"
   );
   const [widthInputEmailDesktop, setWidthInputEmailDesktop] =
-    React.useState("md:w-full");
-  const [widthInputEmailMobile, setWidthInputEmailMobile] =
-    React.useState("w-full");
+    useState("md:w-full");
+  const [widthInputEmailMobile, setWidthInputEmailMobile] = useState("w-full");
   const navigate = useNavigate();
   const [widthInputPasswordDesktop, setWidthInputPasswordDesktop] =
-    React.useState("md:w-full");
+    useState("md:w-full");
   const [widthInputPasswordMobile, setWidthInputPasswordMobile] =
-    React.useState("w-full");
+    useState("w-full");
 
   const formik = useFormik({
     initialValues: {
@@ -55,10 +53,11 @@ function LoginScreen() {
     e.preventDefault();
     const data = {
       email: formik.values.email,
-      password: formik.values.password
-    }
-    const response = await axios.post(`${URL_BASE}/api/auth/check-login-info`, data)
-      .catch(err => {
+      password: formik.values.password,
+    };
+    const response = await axios
+      .post(`${URL_BASE}/api/auth/check-login-info`, data)
+      .catch((err) => {
         const messageError = err.response.data.message;
         if (messageError.email) {
           setEmailError(messageError.email);
@@ -74,61 +73,68 @@ function LoginScreen() {
           setWidthInputPasswordDesktop("md:w-[505px]");
           setWidthInputPasswordMobile("w-[235px]");
         }
-      })
+      });
     if (response.data.success === true) {
-      await axios.post(`${URL_BASE}/api/auth/login`, data)
-        .then(res => {
+      await axios
+        .post(`${URL_BASE}/api/auth/login`, data)
+        .then((res) => {
           if (res.data.success === true) {
-            auth.signInWithEmailAndPassword(formik.values.email, formik.values.password)
-            localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, res.data.accessToken);
+            auth.signInWithEmailAndPassword(
+              formik.values.email,
+              formik.values.password
+            );
+            localStorage.setItem(
+              LOCAL_STORAGE_TOKEN_NAME,
+              res.data.accessToken
+            );
             navigate("/", { replace: true });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           const messageError = err.response.data.message;
           setPasswordError(messageError.password);
           setBorderInputPassword("border-red-50");
           setDisplayErrorPassword("block");
           setWidthInputPasswordDesktop("md:w-[505px]");
           setWidthInputPasswordMobile("w-[235px]");
-
-        })
+        });
     }
   };
 
   async function handleLoginWithGoogle(e) {
     e.preventDefault();
-    const { additionalUserInfo, user } = await auth.signInWithPopup(providerGoogle);
+    const { additionalUserInfo, user } = await auth.signInWithPopup(
+      providerGoogle
+    );
 
     const data = {
       displayName: user.displayName,
       email: user.email,
-      uid:user.uid,
+      uid: user.uid,
       photoURL: user.photoURL,
-      password: user.uid
-    }
+      password: user.uid,
+    };
 
     let url;
     if (additionalUserInfo.isNewUser) {
-      console.log("regis")
+      console.log("regis");
       url = `${URL_BASE}/api/auth/register`;
-    }
-    else {
-      console.log("login")
+    } else {
+      console.log("login");
       url = `${URL_BASE}/api/auth/login`;
     }
 
-    await axios.post(url, data)
-      .then(res => {
+    await axios
+      .post(url, data)
+      .then((res) => {
         localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, res.data.accessToken);
         navigate("/", { replace: true });
       })
-      .catch(err => console.log(err));
-
+      .catch((err) => console.log(err));
   }
 
   return (
-    <div className="container">
+    <div className="container select-none">
       <div className="card">
         <h1 className="cardTitle">Welcome back</h1>
         <form method="post" onSubmit={handleSubmitLogin} className="form">
@@ -137,7 +143,7 @@ function LoginScreen() {
               Email address
             </label>
             <div
-              className={`relative border-[2px] ${borderInputEmail} rounded-[8px]`}
+              className={`relative border-[2px] dark:border-[1px] ${borderInputEmail} rounded-[8px]`}
             >
               <input
                 type="text"
@@ -148,7 +154,9 @@ function LoginScreen() {
                 onFocus={() => {
                   setEmailError("");
                   formik.errors.email = "";
-                  setBorderInputEmail("border-outlineButton");
+                  setBorderInputEmail(
+                    "border-outlineButton dark:border-bgOtherPopup"
+                  );
                   setDisplayErrorEmail("hidden");
                   setWidthInputEmailDesktop("md:w-full");
                   setWidthInputEmailMobile("w-full");
@@ -172,7 +180,7 @@ function LoginScreen() {
               Password
             </label>
             <div
-              className={`relative border-[2px] ${borderInputPassword} rounded-[8px]`}
+              className={`relative border-[2px] dark:border-[1px] ${borderInputPassword} rounded-[8px]`}
             >
               <input
                 type="password"
@@ -183,7 +191,9 @@ function LoginScreen() {
                 onFocus={() => {
                   setPasswordError("");
                   formik.errors.password = "";
-                  setBorderInputPassword("border-outlineButton");
+                  setBorderInputPassword(
+                    "border-outlineButton dark:border-bgOtherPopup"
+                  );
                   setWidthInputPasswordDesktop("md:w-full");
                   setWidthInputPasswordMobile("w-full");
                   setDisplayErrorPassword("hidden");
@@ -204,7 +214,7 @@ function LoginScreen() {
             )}
           </div>
           <p
-            className="hover:underline cursor-pointer select-none text-gray text-[12px] mt-2"
+            className="hover:underline cursor-pointer select-none text-gray dark:text-black-10 text-[12px] mt-2"
             onClick={() => navigate("/forgotpw")}
           >
             Forgot your password?
@@ -214,23 +224,26 @@ function LoginScreen() {
           </button>
         </form>
         <div className="flex justify-center items-center w-full my-10">
-          <div className="h-[1px] bg-outlineButton w-full"></div>
-          <div className="absolute bg-white px-2">
-            <p className="text-gray text-sm">or</p>
+          <div className="h-[1px] bg-outlineButton dark:bg-bgOtherPopup w-full"></div>
+          <div className="absolute bg-white dark:bg-bgProjectCardDark px-2">
+            <p className="text-gray dark:text-black-10 text-sm">or</p>
           </div>
         </div>
-        <button onClick={(e) => handleLoginWithGoogle(e)} className="buttonGoogle">
+        <button
+          onClick={(e) => handleLoginWithGoogle(e)}
+          className="buttonGoogle"
+        >
           <img src={googleSvg} alt="Google Logo" className="mb-[2px]" />
-          <p className="ml-5 text-black-50 font-medium text-sm">
+          <p className="ml-5 text-black-50 dark:text-whitesmoke font-medium text-sm">
             Continue with Google
           </p>
         </button>
         <div className="text-sm flex flex-row justify-center mt-[40px]">
-          <p className="mr-4 text-black-50 font-regular select-none">
+          <p className="mr-4 text-black-50 dark:text-whitesmoke font-regular select-none">
             Don't have an account?
           </p>
           <p
-            className="text-cyan cursor-pointer"
+            className="text-cyan cursor-pointer hover:underline"
             onClick={() => navigate("/signup", { replace: true })}
           >
             Sign up

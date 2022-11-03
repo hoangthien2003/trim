@@ -74,7 +74,10 @@ function ProjectCard(props) {
   };
 
   return (
-    <div className="px-[14px] py-[8px] relative border-outlineButton border-[1px] border-solid rounded-[8px] bg-white">
+    <div
+      className="px-[14px] py-[8px] relative border-outlineButton dark:border-black-50 border-[1px] 
+    border-solid rounded-[8px] bg-white dark:bg-bgProjectCardDark"
+    >
       {/**Header */}
       <div className="flex flex-row items-center justify-between">
         <div
@@ -101,7 +104,7 @@ function ProjectCard(props) {
       <div
         className={`${
           isDisplayOther ? "absolute" : "hidden"
-        } right-0 px-[6px] py-[8px] bg-white rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
+        } right-0 px-[6px] py-[8px] bg-white dark:bg-bgOtherPopup rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="textOther">Share</div>
@@ -113,18 +116,22 @@ function ProjectCard(props) {
 
       {/**Title */}
       <div className="mt-[13px]">
-        <h2 className="text-[13px] font-medium">{name}</h2>
-        <p className="text-[11px] text-black-20 mt-[3px]">{`(${category})`}</p>
+        <h2 className="text-[13px] dark:text-white font-medium">{name}</h2>
+        <p className="text-[11px] text-black-20 dark:text-black-10 mt-[3px]">{`(${category})`}</p>
       </div>
 
       {/**Tasks */}
       <div className="mt-[10px] flex justify-between">
-        <span className="text-[12px]">Progress Task</span>
-        <span className="text-[12px]">{numberProgressTask}</span>
+        <span className="text-[12px] dark:text-whitesmoke">Progress Task</span>
+        <span className="text-[12px] dark:text-whitesmoke">
+          {numberProgressTask}
+        </span>
       </div>
       <div className="mt-[10px] flex justify-between">
-        <span className="text-[12px]">Complete Task</span>
-        <span className="text-[12px]">{numberCompleteTask}</span>
+        <span className="text-[12px] dark:text-whitesmoke">Complete Task</span>
+        <span className="text-[12px] dark:text-whitesmoke">
+          {numberCompleteTask}
+        </span>
       </div>
 
       {/**Avatar member in project */}

@@ -1,14 +1,12 @@
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
 const authRouter = express.Router();
-const argon2 = require('argon2');
-const jwt = require('jsonwebtoken');
-const User = require('../model/User.js');
-const verifyToken = require("../middleware/auth.js")
+const argon2 = require("argon2");
+const jwt = require("jsonwebtoken");
+const User = require("../model/User.js");
+const verifyToken = require("../middleware/auth.js");
 
-
-authRouter.post('/check-email', async (req, res) => {
-
+authRouter.post("/check-email", async (req, res) => {
   const { email } = req.body;
 
   //check blank
@@ -24,135 +22,209 @@ authRouter.post('/check-email', async (req, res) => {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
-  if (!validateEmail(email)) return res.status(400).json({ success: false, message: "Invalid Email" });
+  if (!validateEmail(email))
+    return res.status(400).json({ success: false, message: "Invalid Email" });
 
   try {
     //check for existing email
-    const user = await User.findOne({ email })
-    if (user) return res.status(400).json({ success: false, message: "Email already exists" })
+    const user = await User.findOne({ email });
+    if (user)
+      return res
+        .status(400)
+        .json({ success: false, message: "Email already exists" });
 
-    res.json({ success: true, message: "Check Email successfully" })
+    res.json({ success: true, message: "Check Email successfully" });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ success: false, message: "Internal Server Error" })
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
 
-authRouter.post('/check-login-info', async (req, res) => {
+authRouter.post("/check-login-info", async (req, res) => {
   const { email, password } = req.body;
   const validateEmail = (displayName) => {
-    return String(displayName)
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
+    return String(displayName).match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
   };
   const validatePassword = (password) => {
-    return String(password)
-      .match(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-      );
+    return String(password).match(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    );
   };
 
   let isError = false;
   let messageError = {
     email: "",
     password: "",
+  };
+
+  if (!validateEmail(email)) {
+    isError = true;
+    messageError.email = "Email is not correct, try again.";
+  }
+  if (!validatePassword(password)) {
+    isError = true;
+    messageError.password =
+      "Password has at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character";
+  }
+  if (!email) {
+    isError = true;
+    messageError.name = "Missing Email";
+  }
+  if (!password) {
+    isError = true;
+    messageError.password = "Missing Password";
   }
 
-  if (!validateEmail(email)) { isError = true; messageError.email = "Email is not correct, try again." }
-  if (!validatePassword(password)) { isError = true; messageError.password = "Password has at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character" }
-  if (!email) { isError = true; messageError.name = "Missing Email"; }
-  if (!password) { isError = true; messageError.password = "Missing Password"; }
-
-  if (isError) return res.status(400).json({ success: false, message: messageError })
-  return res.json({ success: true, message: "Check info successfully" })
+  if (isError)
+    return res.status(400).json({ success: false, message: messageError });
+  return res.json({ success: true, message: "Check info successfully" });
 });
 
-authRouter.post('/check-register-info', async (req, res) => {
+authRouter.post("/check-register-info", async (req, res) => {
   const { displayName, password, confirmPassword } = req.body;
   const validateName = (displayName) => {
-    return String(displayName).length >= 2
+    return String(displayName).length >= 2;
   };
   const validatePassword = (password) => {
-    return String(password)
-      .match(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-      );
+    return String(password).match(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    );
   };
 
   let isError = false;
   let messageError = {
     name: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+  };
+
+  if (confirmPassword !== password) {
+    isError = true;
+    messageError.confirmPassword = "The password confirmation does not match";
+  }
+  if (!validateName(displayName)) {
+    isError = true;
+    messageError.name = "The length must greater 2 character.";
+  }
+  if (!validatePassword(password)) {
+    isError = true;
+    messageError.password =
+      "Password has at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character";
+  }
+  if (!validatePassword(confirmPassword)) {
+    isError = true;
+    messageError.confirmPassword =
+      "Confirm Password has at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character";
+  }
+  if (!displayName) {
+    isError = true;
+    messageError.name = "Missing Name";
+  }
+  if (!password) {
+    isError = true;
+    messageError.password = "Missing Password";
+  }
+  if (!confirmPassword) {
+    isError = true;
+    messageError.confirmPassword = "Missing Confirm Password";
   }
 
-  if (confirmPassword !== password) { isError = true; messageError.confirmPassword = "The password confirmation does not match" }
-  if (!validateName(displayName)) { isError = true; messageError.name = "The length must greater 2 character." }
-  if (!validatePassword(password)) { isError = true; messageError.password = "Password has at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character" }
-  if (!validatePassword(confirmPassword)) { isError = true; messageError.confirmPassword = "Confirm Password has at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character" }
-  if (!displayName) { isError = true; messageError.name = "Missing Name"; }
-  if (!password) { isError = true; messageError.password = "Missing Password"; }
-  if (!confirmPassword) { isError = true; messageError.confirmPassword = "Missing Confirm Password" }
-
-  if (isError) return res.status(400).json({ success: false, message: messageError })
-  return res.json({ success: true, message: "Check info successfully" })
+  if (isError)
+    return res.status(400).json({ success: false, message: messageError });
+  return res.json({ success: true, message: "Check info successfully" });
 });
 
-authRouter.post('/register', async (req, res) => {
+authRouter.post("/register", async (req, res) => {
   const { email, uid, displayName, photoURL, password } = req.body;
-  console.log(uid)
+  console.log(uid);
   try {
-
-    const hashedPassword = await argon2.hash(password)
-    const newUser = new User({ email, uid, username: displayName, photoURL, password: hashedPassword })
+    const hashedPassword = await argon2.hash(password);
+    const newUser = new User({
+      email,
+      uid,
+      username: displayName,
+      photoURL,
+      password: hashedPassword,
+    });
     await newUser.save();
 
     //Return token
-    const accessToken = jwt.sign({ userId: newUser._id }, process.env.ACCESS_TOKEN_SECRET)
+    const accessToken = jwt.sign(
+      { userId: newUser._id },
+      process.env.ACCESS_TOKEN_SECRET
+    );
 
-    res.json({ success: true, message: "User created successfully", accessToken })
+    res.json({
+      success: true,
+      message: "User created successfully",
+      accessToken,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ success: false, message: "Internal Serverr Error" })
+    res.status(500).json({ success: false, message: "Internal Serverr Error" });
   }
-
 });
 
 authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // check for existing user 
-    const user = await User.findOne({ email })
-    if (!user) return res.status(400).json({ success: false, message: { password: "Incorrect username and/or password " } });
+    // check for existing user
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(400).json({
+        success: false,
+        message: { password: "Incorrect username and/or password " },
+      });
 
     //username found
     const passwordValid = await argon2.verify(user.password, password);
-    if (!passwordValid) return res.status(400).json({ success: false, message: { password: "Incorrect username and/or password " } });
+    if (!passwordValid)
+      return res.status(400).json({
+        success: false,
+        message: { password: "Incorrect username and/or password " },
+      });
 
-    //All good at here 
+    //All good at here
     //Return token
-    const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET)
+    const accessToken = jwt.sign(
+      { userId: user._id },
+      process.env.ACCESS_TOKEN_SECRET
+    );
 
-    res.json({ success: true, message: "User logged in successfully", accessToken })
+    res.json({
+      success: true,
+      message: "User logged in successfully",
+      accessToken,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ success: false, message: "Internal Server Error" })
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
+});
 
-})
-
-
-
-
-authRouter.get('/user', verifyToken, async (req, res) => {
+authRouter.get("/user", verifyToken, async (req, res) => {
   try {
     const foundUser = await User.findOne({ _id: req.userId });
     res.json({ success: true, user: foundUser });
-  }  catch (err) {
+  } catch (err) {
     console.log(err);
   }
-})
+});
+
+authRouter.patch("/changeDarkMode", async (req, res) => {
+  console.log(req.body.isDarkMode);
+  try {
+    const foundUser = await User.findOneAndUpdate(
+      { _id: req.userId },
+      { $set: { isDarkMode: Boolean(req.body.isDarkMode) } }
+    );
+    res.json({ success: true, user: foundUser });
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports = authRouter;

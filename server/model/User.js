@@ -22,12 +22,18 @@ const usersSchema = new mongoose.Schema({
   },
   photoURL: {
     type: String,
-    default: "https://www.meme-arsenal.com/memes/9f0935ebd265b299eaa1480ccec28052.jpg"
+    default:
+      "https://www.meme-arsenal.com/memes/9f0935ebd265b299eaa1480ccec28052.jpg",
   },
   uid: {
     type: String,
     required: true,
     unique: true,
+  },
+  isDarkMode: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
   // recentProjects: {
   //   type: [{
@@ -45,8 +51,8 @@ const usersSchema = new mongoose.Schema({
   // },
   createdAt: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
 });
 
 module.exports = mongoose.model("User", usersSchema);

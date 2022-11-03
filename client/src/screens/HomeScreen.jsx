@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import MenuSvg from "../images/Menu.svg";
+import MenuDark from "../images/MenuDark.svg";
 import SearchSvg from "../images/Search.svg";
+import SearchDark from "../images/SearchDark.svg";
 import AddSvg from "../images/Add.svg";
 import NotiSvg from "../images/Notification.svg";
+import NotiDark from "../images/NotiDark.svg";
 import ArrowLeft from "../images/arrow-left-solid.svg";
 import Navbar from "./components/HomeScreen/Navbar";
 import {
@@ -14,10 +17,14 @@ import {
 import ModalProfile from "./components/HomeScreen/ModalProfile";
 import { AuthContext } from "../contexts/AuthProvider";
 import Add from "./components/HomeScreen/Add";
-import { DisplayAddPopupSelector } from "../redux/selector";
+import { DarkModeSelector, DisplayAddPopupSelector } from "../redux/selector";
+import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../contexts/constants";
+import axios from "axios";
+import { DarkModeSlice } from "../redux/slice/DarkModeSlice";
 
 function HomeScreen() {
   var openPopupSelector = useSelector(DisplayAddPopupSelector);
+  var isDarkMode = useSelector(DarkModeSelector);
   const [showNav, setShowNav] = React.useState(true);
   const [showCloseNav, setShowCloseNav] = React.useState(false);
   const [isClickNoti, setIsClickNoti] = React.useState(false);
@@ -26,20 +33,54 @@ function HomeScreen() {
   const { user } = React.useContext(AuthContext);
   const [valueSearchProject, setValueSearchProject] = React.useState("");
   const [isOpenAddPopup, setIsOpenAddPopup] = React.useState(false);
+  const [displayHideModal, setDisplayHideModal] = useState(false);
+  let htmlClasses = document.querySelector("html").classList;
 
   useEffect(() => {
     if (window.innerWidth <= 768) setShowNav(false);
     openPopupSelector ? setIsOpenAddPopup(true) : setIsOpenAddPopup(false);
+    async function getDarkMode() {
+      const response = await axios
+        .get(`${URL_BASE}/api/auth/user`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              LOCAL_STORAGE_TOKEN_NAME
+            )}`,
+          },
+        })
+        .catch((err) => console.log(err));
+      if (response.data.success === true) {
+        const dataUser = response.data.user;
+        if (dataUser.isDarkMode) {
+          htmlClasses.add("dark");
+          localStorage.theme = "dark";
+          dispatch(DarkModeSlice.actions.enable());
+        } else {
+          htmlClasses.remove("dark");
+          localStorage.removeItem("theme");
+        }
+      }
+    }
+    getDarkMode();
   }, [setShowNav, setIsOpenAddPopup, openPopupSelector]);
 
   return (
     <>
-      <div className="flex flex-col md:flex-row select-none overflow-hidden h-screen">
+      <div
+        className="flex flex-col md:flex-row select-none overflow-hidden h-screen"
+        onClick={(e) => {
+          if (e.target.id !== "avatar")
+            dispatch(ShowProfileModalSlice.actions.setHide());
+        }}
+      >
         {window.innerWidth > 768 && <Navbar isShow={showNav} />}
         <div className="md:flex md:flex-col md:w-full">
-          <div className="headerBar border-b-[1px] border-b-outlineButton border-solid">
+          <div
+            className={`headerBar dark:bg-bgHeaderBarDark border-b-[1px] border-b-outlineButton
+            dark:border-b-black-100 border-solid`}
+          >
             {window.innerWidth >= 768 ? (
-              <h1 className="text-[17px] font-medium">Home</h1>
+              <h1 className="text-[17px] dark:text-white font-medium">Home</h1>
             ) : isClickNoti ? (
               <img
                 src={ArrowLeft}
@@ -52,9 +93,9 @@ function HomeScreen() {
               />
             ) : (
               <img
-                src={MenuSvg}
+                src={isDarkMode ? MenuDark : MenuSvg}
                 alt="Menu Icon"
-                className="w-[17px] h-[22px] md:hidden"
+                className="w-[17px] h-[22px] fill-white md:hidden"
                 onClick={() => {
                   setShowNav(!showNav);
                   setShowCloseNav(!showCloseNav);
@@ -68,7 +109,7 @@ function HomeScreen() {
                   <input
                     type="text"
                     placeholder="Search"
-                    className="outline-none w-full text-[13px] font-medium text-black-20 ml-[5px] truncate"
+                    className="outline-none w-full text-[13px] font-medium text-black-20 bg-white dark:bg-bgHeaderBarDark dark:text-black-10 ml-[5px] truncate"
                     value={valueSearchProject}
                     onChange={(e) => {
                       setValueSearchProject(e.target.value);
@@ -76,7 +117,7 @@ function HomeScreen() {
                   />
                 </div>
               ) : (
-                <img src={SearchSvg} alt="" />
+                <img src={isDarkMode ? SearchDark : SearchSvg} alt="" />
               )}
               <div
                 className="p-[7px] bg-cyan rounded-[16px] md:cursor-pointer"
@@ -89,7 +130,7 @@ function HomeScreen() {
               </div>
               <div className="relative md:cursor-pointer">
                 <img
-                  src={NotiSvg}
+                  src={isDarkMode ? NotiDark : NotiSvg}
                   alt=""
                   className={`${isClickNoti && "pointer-events-none"}`}
                   onClick={() => {
@@ -101,10 +142,12 @@ function HomeScreen() {
               </div>
               <img
                 src={user.photoURL}
+                id="avatar"
                 className="h-[28px] w-[28px] rounded-full md:cursor-pointer"
                 alt="Avatar"
-                onClick={() => {
+                onClick={(e) => {
                   dispatch(ShowProfileModalSlice.actions.toggleShow());
+                  setDisplayHideModal(!displayHideModal);
                 }}
               />
             </div>
@@ -122,12 +165,13 @@ function HomeScreen() {
                 }}
               ></div>
             )}
-            <ModalProfile />
           </div>
           <Outlet />
         </div>
       </div>
+
       {isOpenAddPopup && <Add />}
+      <ModalProfile />
     </>
   );
 }

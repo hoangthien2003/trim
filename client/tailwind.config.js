@@ -16,6 +16,7 @@ module.exports = {
         500: "#f35f38",
       },
       black: {
+        10: "#CECFD0",
         20: "#7D838E",
         50: "#5B5C60",
         100: "#2B343B",
@@ -25,7 +26,12 @@ module.exports = {
       backgroundWebIcon: "#D4E6FF",
       backgroundCreateIcon: "#FFDCC7",
       backgroundMarketIcon: "#DDE1FF",
+      bgHeaderBarDark: "#2B343B",
+      bgDashboardDark: "#1E272E",
+      bgProjectCardDark: "#222B32",
+      bgOtherPopup: "#384047",
     },
   },
   plugins: [],
+  darkMode: "class",
 };
