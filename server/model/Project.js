@@ -7,6 +7,7 @@ const projectsSchema = new mongoose.Schema({
   numberProgressTask: Number,
   numberCompleteTask: Number,
   description: String,
+  privacy:String,
   members: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DisplayAddPopupSelector } from "../../../redux/selector";
 import { DisplayAddPopupSlice } from "../../../redux/slice/HomeSlice";
@@ -9,8 +9,10 @@ import ArrowLeft from "../../../images/ArrowLeft.svg";
 import ArrowDark from "../../../images/ArrowLeftDark.svg";
 import CloseDark from "../../../images/CloseDark.svg";
 import Camera from "../../../images/Camera.svg";
-import { useEffect } from "react";
 import { DarkModeSelector } from "../../../redux/selector";
+import axios from "axios";
+import { URL_BASE, LOCAL_STORAGE_TOKEN_NAME } from "../../../contexts/constants"
+import { AuthContext } from "../../../contexts/AuthProvider"
 
 function Add() {
   var displayAddPopup = useSelector(DisplayAddPopupSelector);
@@ -29,6 +31,7 @@ function Add() {
   const [isErrorImg, setIsErrorImg] = useState(false);
   const [isErrorProj, setIsErrorProj] = useState(false);
   const [isErrorDesc, setIsErrorDesc] = useState(false);
+  const { user } = React.useContext(AuthContext);
 
   function getImage(e) {
     var inputImg = e.target.files[0];
@@ -43,6 +46,29 @@ function Add() {
   }
 
   function createProject() {
+    async function handleCreateProject() {
+      console.log(projName);
+      console.log(categoryVal);
+      console.log(descVal);
+      console.log(privacyVal);
+      await axios
+        .post(
+          `${URL_BASE}/api/project/add-project`,
+          {
+            name: projName,
+            members: [user._id],
+            avatar: "https://cdn.vietnammoi.vn/171464242508312576/2020/10/28/huanhoahong-1ugww-1603860149561719888008-1603873413854-16038734202391656232023.jpg",
+            category: categoryVal,
+            description: descVal,
+            privacy: privacyVal
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME)}`,
+            },
+          }
+        )
+    }
     return (
       <div
         className={`flex flex-col absolute bg-white dark:bg-bgProjectCardDark 
@@ -77,9 +103,8 @@ function Add() {
           Create a New Project
         </h1>
         <div
-          className={`h-[65px] w-[65px] flex items-center justify-center md:mt-[25px] mt-[8px] rounded-[12px] ${
-            isSelected ? "border-none" : "border-[2px]"
-          }
+          className={`h-[65px] w-[65px] flex items-center justify-center md:mt-[25px] mt-[8px] rounded-[12px] ${isSelected ? "border-none" : "border-[2px]"
+            }
           ${borderImage} border-solid md:cursor-pointer md:h-[75px] md:w-[75px]`}
         >
           <input
@@ -101,9 +126,8 @@ function Add() {
           )}
         </div>
         <p
-          className={`${
-            isErrorImg ? "visible" : "hidden"
-          } text-red-100 text-[12px]`}
+          className={`${isErrorImg ? "visible" : "hidden"
+            } text-red-100 text-[12px]`}
         >
           Required
         </p>
@@ -130,9 +154,8 @@ function Add() {
               />
             </div>
             <p
-              className={`${
-                isErrorProj ? "visible" : "hidden"
-              } text-red-100 text-[12px] ml-[8px]`}
+              className={`${isErrorProj ? "visible" : "hidden"
+                } text-red-100 text-[12px] ml-[8px]`}
             >
               Required
             </p>
@@ -185,9 +208,8 @@ function Add() {
               />
             </div>
             <p
-              className={`${
-                isErrorDesc ? "visible" : "hidden"
-              } text-red-100 text-[12px] ml-[8px]`}
+              className={`${isErrorDesc ? "visible" : "hidden"
+                } text-red-100 text-[12px] ml-[8px]`}
             >
               Required
             </p>
@@ -238,10 +260,7 @@ function Add() {
               }
               //If hasn't error -> add project
               if (!hasError) {
-                console.log(projName);
-                console.log(categoryVal);
-                console.log(descVal);
-                console.log(privacyVal);
+                handleCreateProject();
               }
             }}
           >
@@ -298,9 +317,8 @@ function Add() {
 
   return (
     <div
-      className={`${
-        displayAddPopup ? "absolute" : "hidden"
-      } select-none flex justify-center items-center z-30 inset-0 bg-[rgba(0,0,0,0.5)] dark:bg-[rgba(225,223,223,0.2)]`}
+      className={`${displayAddPopup ? "absolute" : "hidden"
+        } select-none flex justify-center items-center z-30 inset-0 bg-[rgba(0,0,0,0.5)] dark:bg-[rgba(225,223,223,0.2)]`}
     >
       {isCreate ? createProject() : modalAdd()}
     </div>

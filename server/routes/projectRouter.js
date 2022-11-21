@@ -63,7 +63,7 @@ projectRouter.patch("/change-favorite", verifyToken, async (req, res) => {
 });
 
 projectRouter.post("/add-project", verifyToken, async (req, res) => {
-  const { name, members, avatar, category, description } = req.body;
+  const { name, members, avatar, category, description, privacy } = req.body;
   console.log(members);
   const lovers = members.map((member) => {
     return {
@@ -81,6 +81,7 @@ projectRouter.post("/add-project", verifyToken, async (req, res) => {
       numberCompleteTask: 0,
       numberProgressTask: 0,
       lovers,
+      privacy
     });
 
     await newProject.save();
