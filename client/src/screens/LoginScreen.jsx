@@ -134,7 +134,7 @@ function LoginScreen() {
   }
 
   return (
-    <div className="container select-none">
+    <div className="container">
       <div className="card">
         <h1 className="cardTitle">Welcome back</h1>
         <form method="post" onSubmit={handleSubmitLogin} className="form">

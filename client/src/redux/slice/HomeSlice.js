@@ -29,3 +29,33 @@ export const DisplayAddPopupSlice = createSlice({
     },
   },
 });
+
+export const DisplaySharePopupSlice = createSlice({
+  name: "displaySharePopup",
+  initialState: {
+    displaySharePopup: false,
+  },
+  reducers: {
+    openSharePopup: (state) => {
+      state.displaySharePopup = true;
+    },
+    closeSharePopup: (state) => {
+      state.displaySharePopup = false;
+    },
+  },
+});
+
+export const DarkModeSlice = createSlice({
+  name: "isDarkMode",
+  initialState: {
+    isDarkMode: null,
+  },
+  reducers: {
+    enable: (state) => {
+      state.isDarkMode = true;
+    },
+    disable: (state) => {
+      state.isDarkMode = false;
+    },
+  },
+});

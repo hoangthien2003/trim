@@ -11,7 +11,7 @@ body {
 @layer components {
   .container {
     @apply flex justify-center items-center h-screen dark:bg-bgDashboardDark
-    md:w-screen;
+    md:w-screen select-none;
   }
   .card {
     @apply flex flex-col items-center dark:bg-bgProjectCardDark border-solid px-[30px] py-[20px] rounded-2xl
@@ -34,7 +34,7 @@ body {
     md:text-[12px];
   }
   .formInput {
-    @apply outline-none border-none px-3 py-3  w-[235px] md:w-[505px]
+    @apply outline-none border-none px-3 py-3  w-[235px] md:w-[505px] dark:border-[1px]
     text-black-200 rounded-[5px] text-[14px] dark:text-whitesmoke dark:bg-bgProjectCardDark
     md:text-[13.5px];
   }
@@ -70,6 +70,6 @@ body {
     md:flex md:flex-col md:z-0 md:relative;
   }
   .textOther {
-    @apply text-[12px] dark:text-whitesmoke px-[6px] py-[8px] w-[150px] hover:bg-whitesmoke dark:hover:bg-bgHeaderBarDark rounded-[4px];
+    @apply text-[12px] dark:text-whitesmoke md:cursor-pointer px-[6px] py-[8px] w-[150px] hover:bg-whitesmoke dark:hover:bg-bgHeaderBarDark rounded-[4px];
   }
 }

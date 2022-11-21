@@ -7,13 +7,16 @@ import { EmailSignupSlice } from "../../redux/slice/EmailSignupSlice.js";
 import * as yup from "yup";
 import axios from "axios";
 import ErrorItem from "./ErrorItem";
-import { auth, providerGoogle } from "../../firebase/config.js"
-import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../../contexts/constants.js";
+import { auth, providerGoogle } from "../../firebase/config.js";
+import {
+  LOCAL_STORAGE_TOKEN_NAME,
+  URL_BASE,
+} from "../../contexts/constants.js";
 
 function EmailSignupComponent() {
   const [emailError, setEmailError] = React.useState("");
   const [borderInputEmail, setBorderInputEmail] = React.useState(
-    "border-outlineButton"
+    "border-outlineButton dark:border-bgOtherPopup"
   );
   const [displayError, setDisplayError] = React.useState("hidden");
   const [widthInputEmailDesktop, setWidthInputEmailDesktop] =
@@ -50,37 +53,44 @@ function EmailSignupComponent() {
         }
       })
       .catch((err) => {
-        setEmailError(err.response.data.message)
+        setEmailError(err.response.data.message);
         setBorderInputEmail("border-red-50");
         setDisplayError("block");
         setWidthInputEmailDesktop("md:w-[505px]");
-        setWidthInputEmailMobile("w-[235px]")
+        setWidthInputEmailMobile("w-[235px]");
       });
-
   };
 
   async function handelSignupWithGoogle(e) {
     e.preventDefault();
-    const { additionalUserInfo, user } = await auth.signInWithPopup(providerGoogle);
+    const { additionalUserInfo, user } = await auth.signInWithPopup(
+      providerGoogle
+    );
     if (additionalUserInfo.isNewUser) {
       const data = {
         displayName: user.displayName,
         email: user.email,
         uid: user.uid,
         photoURL: user.photoURL,
-        password: user.uid
-      }
+        password: user.uid,
+      };
       const url = `${URL_BASE}/api/auth/register`;
-      const response = await axios.post(url, data).catch(err => console.log(err));
-      if (response === undefined) { return };
+      const response = await axios
+        .post(url, data)
+        .catch((err) => console.log(err));
+      if (response === undefined) {
+        return;
+      }
       if (response.data.success) {
-        localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.accessToken);
+        localStorage.setItem(
+          LOCAL_STORAGE_TOKEN_NAME,
+          response.data.accessToken
+        );
       }
       navigate("/setup", { replace: true });
     }
 
     navigate("/", { replace: true });
-
   }
 
   return (
@@ -104,7 +114,9 @@ function EmailSignupComponent() {
                 onFocus={() => {
                   setEmailError("");
                   formik.errors.email = "";
-                  setBorderInputEmail("border-outlineButton");
+                  setBorderInputEmail(
+                    "border-outlineButton dark:border-bgOtherPopup"
+                  );
                   setDisplayError("hidden");
                   setWidthInputEmailDesktop("md:w-full");
                   setWidthInputEmailMobile("w-full");
@@ -128,23 +140,26 @@ function EmailSignupComponent() {
           </button>
         </form>
         <div className="flex justify-center items-center w-full my-10">
-          <div className="h-[1px] bg-outlineButton w-full"></div>
-          <div className="absolute bg-white px-2">
-            <p className="text-gray text-sm">or</p>
+          <div className="h-[1px] bg-outlineButton dark:bg-bgOtherPopup w-full"></div>
+          <div className="absolute bg-white dark:bg-bgProjectCardDark px-2">
+            <p className="text-gray dark:text-black-10 text-sm">or</p>
           </div>
         </div>
-        <button onClick={(e) => handelSignupWithGoogle(e)} className="buttonGoogle">
+        <button
+          onClick={(e) => handelSignupWithGoogle(e)}
+          className="buttonGoogle"
+        >
           <img src={googleSvg} alt="Google Logo" className="mb-[2px]" />
-          <p className="ml-5 text-black50 font-medium text-sm">
+          <p className="ml-5 text-black-50 dark:text-whitesmoke font-medium text-sm">
             Continue with Google
           </p>
         </button>
         <div className="text-sm flex flex-row justify-center mt-[40px]">
-          <p className="mr-4 text-black50 font-regular select-none">
+          <p className="mr-4 text-black-50 dark:text-whitesmoke font-regular select-none">
             Already have an account?
           </p>
           <p
-            className="text-cyan cursor-pointer"
+            className="text-cyan cursor-pointer hover:underline"
             onClick={() => navigate("/login", { replace: true })}
           >
             Log in

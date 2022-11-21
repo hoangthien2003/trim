@@ -8,7 +8,10 @@ import { EmailSignupSelector } from "../../redux/selector";
 import ErrorItem from "./ErrorItem";
 import { auth } from "../../firebase/config.js";
 import { useDispatch } from "react-redux";
-import { LOCAL_STORAGE_TOKEN_NAME,URL_BASE } from "../../contexts/constants.js";
+import {
+  LOCAL_STORAGE_TOKEN_NAME,
+  URL_BASE,
+} from "../../contexts/constants.js";
 import firebase from "../../firebase/config.js";
 
 function SignupComponent() {
@@ -18,13 +21,13 @@ function SignupComponent() {
   const [passwordError, setPasswordError] = React.useState("");
   const [confirmPwError, setConfirmPwError] = React.useState("");
   const [borderInputName, setBorderInputName] = React.useState(
-    "border-outlineButton"
+    "border-outlineButton dark:border-bgOtherPopup"
   );
   const [borderInputPassword, setBorderInputPassword] = React.useState(
-    "border-outlineButton"
+    "border-outlineButton dark:border-bgOtherPopup"
   );
   const [borderInputConfirmPw, setBorderInputConfirmPw] = React.useState(
-    "border-outlineButton"
+    "border-outlineButton dark:border-bgOtherPopup"
   );
   const [displayErrorName, setDisplayErrorName] = React.useState("hidden");
   const [displayErrorPassword, setDisplayErrorPassword] =
@@ -74,10 +77,12 @@ function SignupComponent() {
       email: emailSignup,
       password: formik.values.password,
       confirmPassword: formik.values.confirmPassword,
-      photoURL: "https://www.meme-arsenal.com/memes/9f0935ebd265b299eaa1480ccec28052.jpg"
+      photoURL:
+        "https://www.meme-arsenal.com/memes/9f0935ebd265b299eaa1480ccec28052.jpg",
     };
-    const response = await axios.post(`${URL_BASE}/api/auth/check-register-info`, data)
-      .catch(err => {
+    const response = await axios
+      .post(`${URL_BASE}/api/auth/check-register-info`, data)
+      .catch((err) => {
         const messageError = err.response.data.message;
         if (messageError.name) {
           setNameError(messageError.name);
@@ -100,19 +105,27 @@ function SignupComponent() {
           setWidthInputConfirmPwMobile("w-[235px]");
           setDisplayErrorConfirmPw("block");
         }
-      })
+      });
     if (response.data.success === true) {
-      await auth.createUserWithEmailAndPassword(emailSignup, formik.values.password)
+      await auth.createUserWithEmailAndPassword(
+        emailSignup,
+        formik.values.password
+      );
       const uid = firebase.auth().currentUser.uid;
-      await axios.post(`${URL_BASE}/api/auth/register`, { ...data, uid })
-        .then(res => {
+      await axios
+        .post(`${URL_BASE}/api/auth/register`, { ...data, uid })
+        .then((res) => {
           if (res.data.success === true) {
-            localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.accessToken);
+            localStorage.setItem(
+              LOCAL_STORAGE_TOKEN_NAME,
+              response.data.accessToken
+            );
             navigate("/setup", { replace: true });
           }
         })
+        .catch((err) => console.log(err));
     }
-  }
+  };
 
   return (
     <div className="container">
@@ -137,7 +150,9 @@ function SignupComponent() {
                 className={`formInput ${widthInputNameDesktop} ${widthInputNameMobile}`}
                 onFocus={() => {
                   setNameError("");
-                  setBorderInputName("border-outlineButton");
+                  setBorderInputName(
+                    "border-outlineButton dark:border-bgOtherPopup"
+                  );
                   setDisplayErrorName("hidden");
                   setWidthInputNameDesktop("md:w-full");
                   setWidthInputNameMobile("w-full");
@@ -171,7 +186,9 @@ function SignupComponent() {
                 className={`formInput ${widthInputPasswordDesktop} ${widthInputPasswordMobile}`}
                 onFocus={() => {
                   setPasswordError("");
-                  setBorderInputPassword("border-outlineButton");
+                  setBorderInputPassword(
+                    "border-outlineButton dark:border-bgOtherPopup"
+                  );
                   setWidthInputPasswordDesktop("md:w-full");
                   setWidthInputPasswordMobile("w-full");
                   setDisplayErrorPassword("hidden");
@@ -205,7 +222,9 @@ function SignupComponent() {
                 className={`formInput ${widthInputConfirmPwDesktop} ${widthInputConfirmPwMobile}`}
                 onFocus={() => {
                   setConfirmPwError("");
-                  setBorderInputConfirmPw("border-outlineButton");
+                  setBorderInputConfirmPw(
+                    "border-outlineButton dark:border-bgOtherPopup"
+                  );
                   setWidthInputConfirmPwDesktop("md:w-full");
                   setWidthInputConfirmPwMobile("w-full");
                   setDisplayErrorConfirmPw("hidden");
@@ -231,6 +250,5 @@ function SignupComponent() {
     </div>
   );
 }
-
 
 export default SignupComponent;

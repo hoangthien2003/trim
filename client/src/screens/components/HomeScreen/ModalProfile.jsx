@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import AvtIcon from "../../../images/Avatar.png";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../../firebase/config";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,7 +8,10 @@ import {
   LOCAL_STORAGE_TOKEN_NAME,
   URL_BASE,
 } from "../../../contexts/constants.js";
-import { ShowProfileModalSlice } from "../../../redux/slice/HomeSlice";
+import {
+  DarkModeSlice,
+  ShowProfileModalSlice,
+} from "../../../redux/slice/HomeSlice";
 import axios from "axios";
 
 function ModalProfile() {
@@ -66,10 +68,12 @@ function ModalProfile() {
       })
       .catch((err) => console.log(err));
     if (toggleButtonDarkMode) {
+      dispatch(DarkModeSlice.actions.disable());
       document.body.className = "light";
       htmlClasses.remove("dark");
       localStorage.removeItem("theme");
     } else {
+      dispatch(DarkModeSlice.actions.enable());
       htmlClasses.add("dark");
       localStorage.theme = "dark";
     }

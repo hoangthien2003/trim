@@ -11,26 +11,35 @@ import NotiDark from "../images/NotiDark.svg";
 import ArrowLeft from "../images/arrow-left-solid.svg";
 import Navbar from "./components/HomeScreen/Navbar";
 import {
+  DarkModeSlice,
   DisplayAddPopupSlice,
   ShowProfileModalSlice,
 } from "../redux/slice/HomeSlice";
 import ModalProfile from "./components/HomeScreen/ModalProfile";
 import { AuthContext } from "../contexts/AuthProvider";
 import Add from "./components/HomeScreen/Add";
-import { DarkModeSelector, DisplayAddPopupSelector } from "../redux/selector";
+import {
+  DarkModeSelector,
+  DisplayAddPopupSelector,
+  DisplaySharePopupSelector,
+} from "../redux/selector";
 import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../contexts/constants";
 import axios from "axios";
+import Share from "./components/HomeScreen/Share";
 
 function HomeScreen() {
   var openPopupSelector = useSelector(DisplayAddPopupSelector);
-  const [showNav, setShowNav] = React.useState(true);
-  const [showCloseNav, setShowCloseNav] = React.useState(false);
-  const [isClickNoti, setIsClickNoti] = React.useState(false);
+  var openSharePopupSelector = useSelector(DisplaySharePopupSelector);
+  var darkModeSelector = useSelector(DarkModeSelector);
+  const [showNav, setShowNav] = useState(true);
+  const [showCloseNav, setShowCloseNav] = useState(false);
+  const [isClickNoti, setIsClickNoti] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = React.useContext(AuthContext);
-  const [valueSearchProject, setValueSearchProject] = React.useState("");
-  const [isOpenAddPopup, setIsOpenAddPopup] = React.useState(false);
+  const [valueSearchProject, setValueSearchProject] = useState("");
+  const [isOpenAddPopup, setIsOpenAddPopup] = useState(false);
+  const [isOpenSharePopup, setIsOpenSharePopup] = useState(false);
   const [displayHideModal, setDisplayHideModal] = useState(false);
   let htmlClasses = document.querySelector("html").classList;
   const [isDarkMode, setIsDarkMode] = useState(null);
@@ -38,6 +47,9 @@ function HomeScreen() {
   useEffect(() => {
     if (window.innerWidth <= 768) setShowNav(false);
     openPopupSelector ? setIsOpenAddPopup(true) : setIsOpenAddPopup(false);
+    openSharePopupSelector
+      ? setIsOpenSharePopup(true)
+      : setIsOpenSharePopup(false);
     async function getDarkMode() {
       const response = await axios
         .get(`${URL_BASE}/api/auth/user`, {
@@ -49,14 +61,10 @@ function HomeScreen() {
         })
         .catch((err) => console.log(err));
       if (response.data.success === true) {
-        setIsDarkMode(response.data.user.isDarkMode);
-        if (isDarkMode) {
-          htmlClasses.add("dark");
-          localStorage.theme = "dark";
-        } else {
-          htmlClasses.remove("dark");
-          localStorage.removeItem("theme");
-        }
+        var dataDarkMode = response.data.user.isDarkMode;
+        dataDarkMode
+          ? dispatch(DarkModeSlice.actions.enable())
+          : dispatch(DarkModeSlice.actions.disable());
       }
     }
     getDarkMode();
@@ -64,6 +72,7 @@ function HomeScreen() {
     setShowNav,
     setIsOpenAddPopup,
     openPopupSelector,
+    openSharePopupSelector,
     htmlClasses,
     dispatch,
     isDarkMode,
@@ -98,7 +107,7 @@ function HomeScreen() {
               />
             ) : (
               <img
-                src={isDarkMode ? MenuDark : MenuSvg}
+                src={darkModeSelector ? MenuDark : MenuSvg}
                 alt="Menu Icon"
                 className="w-[17px] h-[22px] fill-white md:hidden"
                 onClick={() => {
@@ -122,7 +131,7 @@ function HomeScreen() {
                   />
                 </div>
               ) : (
-                <img src={isDarkMode ? SearchDark : SearchSvg} alt="" />
+                <img src={darkModeSelector ? SearchDark : SearchSvg} alt="" />
               )}
               <div
                 className="p-[7px] bg-cyan rounded-[16px] md:cursor-pointer"
@@ -135,7 +144,7 @@ function HomeScreen() {
               </div>
               <div className="relative md:cursor-pointer">
                 <img
-                  src={isDarkMode ? NotiDark : NotiSvg}
+                  src={darkModeSelector ? NotiDark : NotiSvg}
                   alt=""
                   className={`${isClickNoti && "pointer-events-none"}`}
                   onClick={() => {
@@ -175,7 +184,8 @@ function HomeScreen() {
         </div>
       </div>
 
-      {isOpenAddPopup && <Add />}
+      {isOpenAddPopup ? <Add /> : null}
+      {isOpenSharePopup ? <Share /> : null}
       <ModalProfile />
     </>
   );
