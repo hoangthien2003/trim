@@ -39,7 +39,7 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <AuthProvider>
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense>
           <Routes>
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/forgotpw" element={<ForgotPwScreen />} />

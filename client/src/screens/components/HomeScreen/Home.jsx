@@ -9,8 +9,15 @@ import axios from "axios";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonCard from "../SkeletonLoading/SkeletonCard";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ColorLoadingSelector,
+  DarkModeSelector,
+} from "../../../redux/selector";
+import { ColorLoadingSlice } from "../../../redux/slice/HomeSlice";
 
 function Home() {
+  const dispatch = useDispatch();
   const [spanColor01, setSpanColor01] = useState("text-purple dark:text-white");
   const [spanColor02, setSpanColor02] = useState(
     "text-black-200 dark:text-black-10"
@@ -27,12 +34,13 @@ function Home() {
   const [workedOnBottomBarColor, setWorkedOnBottomBarColor] = useState(
     "border-b-[#FBFBFB] dark:border-b-bgDashboardDark"
   );
-
   const [typeProject, setTypeProject] = React.useState(1);
   var colorBorderChoosed = "border-b-purple dark:border-b-white",
     colorBorderNormal = "border-b-[#FBFBFB] dark:border-b-bgDashboardDark",
     colorSpanChoosed = "text-purple dark:text-white",
     colorSpanNormal = "text-black-200 dark:text-black-10";
+  var isDarkMode = useSelector(DarkModeSelector);
+  var colorLoading = useSelector(ColorLoadingSelector);
 
   function RecentProject() {
     const [recentProjects, setRecentProjects] = React.useState(null);
@@ -62,7 +70,13 @@ function Home() {
       >
         {recentProjects?.map((project) => {
           return <ProjectCard key={project._id} project={project} />;
-        }) || <SkeletonCard />}
+        }) || (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        )}
       </div>
     );
   }

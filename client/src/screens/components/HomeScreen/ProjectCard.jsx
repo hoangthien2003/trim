@@ -8,9 +8,10 @@ import {
   URL_BASE,
   LOCAL_STORAGE_TOKEN_NAME,
 } from "../../../contexts/constants.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DisplaySharePopupSlice } from "../../../redux/slice/HomeSlice";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { ColorLoadingSelector } from "../../../redux/selector";
 
 function ProjectCard(props) {
   const {
@@ -27,6 +28,7 @@ function ProjectCard(props) {
   const { user, isLoaded } = useContext(AuthContext);
   const [members, setMembers] = React.useState(null);
   var dispatch = useDispatch();
+  var colorLoading = useSelector(ColorLoadingSelector);
 
   async function getMembers() {
     await axios
@@ -165,8 +167,8 @@ function ProjectCard(props) {
             );
           }) || (
             <SkeletonTheme
-              baseColor="#a09fa1"
-              highlightColor="#c6c5c7"
+              baseColor={colorLoading[0]}
+              highlightColor={colorLoading[2]}
               inline={true}
             >
               <Skeleton circle={true} count={3} height={25} width={25} />

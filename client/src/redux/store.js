@@ -7,6 +7,7 @@ import { IDColorSlice } from "./slice/IDColorSlice";
 import { MemberSlice } from "./slice/MembersSlice";
 import { IDMemberSlice } from "./slice/IDMemberSlice";
 import {
+  ColorLoadingSlice,
   DarkModeSlice,
   DisplayAddPopupSlice,
   DisplaySharePopupSlice,
@@ -26,5 +27,6 @@ export const store = configureStore({
     displayAddPopupReducer: DisplayAddPopupSlice.reducer,
     displaySharePopupReducer: DisplaySharePopupSlice.reducer,
     darkModeReducer: DarkModeSlice.reducer,
+    colorLoadingReducer: ColorLoadingSlice.reducer,
   },
 });

@@ -11,6 +11,7 @@ import NotiDark from "../images/NotiDark.svg";
 import ArrowLeft from "../images/arrow-left-solid.svg";
 import Navbar from "./components/HomeScreen/Navbar";
 import {
+  ColorLoadingSlice,
   DarkModeSlice,
   DisplayAddPopupSlice,
   ShowProfileModalSlice,
@@ -19,6 +20,7 @@ import ModalProfile from "./components/HomeScreen/ModalProfile";
 import { AuthContext } from "../contexts/AuthProvider";
 import Add from "./components/HomeScreen/Add";
 import {
+  ColorLoadingSelector,
   DarkModeSelector,
   DisplayAddPopupSelector,
   DisplaySharePopupSelector,
@@ -45,6 +47,7 @@ function HomeScreen() {
   const [displayHideModal, setDisplayHideModal] = useState(false);
   let htmlClasses = document.querySelector("html").classList;
   const [isDarkMode, setIsDarkMode] = useState(null);
+  var colorLoading = useSelector(ColorLoadingSelector);
 
   useEffect(() => {
     if (window.innerWidth <= 768) setShowNav(false);
@@ -64,12 +67,29 @@ function HomeScreen() {
         .catch((err) => console.log(err));
       if (response.data.success === true) {
         var dataDarkMode = response.data.user.isDarkMode;
-        dataDarkMode
-          ? dispatch(DarkModeSlice.actions.enable())
-          : dispatch(DarkModeSlice.actions.disable());
+        if (dataDarkMode) {
+          dispatch(DarkModeSlice.actions.enable());
+          dispatch(ColorLoadingSlice.actions.dark());
+        } else {
+          dispatch(DarkModeSlice.actions.disable());
+          dispatch(ColorLoadingSlice.actions.normal());
+        }
       }
     }
-    getDarkMode();
+    // getDarkMode();
+    var dataDarkMode = true;
+    if (dataDarkMode) {
+      dispatch(DarkModeSlice.actions.enable());
+      dispatch(ColorLoadingSlice.actions.dark());
+      htmlClasses.add("dark");
+      localStorage.theme = "dark";
+    } else {
+      dispatch(DarkModeSlice.actions.disable());
+      dispatch(ColorLoadingSlice.actions.normal());
+      document.body.className = "light";
+      htmlClasses.remove("dark");
+      localStorage.removeItem("theme");
+    }
   }, [
     setShowNav,
     setIsOpenAddPopup,
@@ -172,8 +192,8 @@ function HomeScreen() {
                   circle={true}
                   width={28}
                   height={28}
-                  baseColor="#a09fa1"
-                  highlightColor="#c6c5c7"
+                  baseColor={colorLoading[0]}
+                  highlightColor={colorLoading[2]}
                 />
               )}
             </div>
