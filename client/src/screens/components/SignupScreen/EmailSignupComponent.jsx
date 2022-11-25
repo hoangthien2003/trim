@@ -1,17 +1,17 @@
 import React from "react";
-import googleSvg from "../../images/google.svg";
+import googleSvg from "../../../images/google.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
-import { EmailSignupSlice } from "../../redux/slice/EmailSignupSlice.js";
+import { EmailSignupSlice } from "../../../redux/slice/EmailSignupSlice.js";
 import * as yup from "yup";
 import axios from "axios";
-import ErrorItem from "./ErrorItem";
-import { auth, providerGoogle } from "../../firebase/config.js";
+import ErrorItem from "../SetupScreen/ErrorItem";
+import { auth, providerGoogle } from "../../../firebase/config.js";
 import {
   LOCAL_STORAGE_TOKEN_NAME,
   URL_BASE,
-} from "../../contexts/constants.js";
+} from "../../../contexts/constants.js";
 
 function EmailSignupComponent() {
   const [emailError, setEmailError] = React.useState("");

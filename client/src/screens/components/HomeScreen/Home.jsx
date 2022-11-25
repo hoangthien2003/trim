@@ -6,6 +6,9 @@ import {
   URL_BASE,
 } from "../../../contexts/constants.js";
 import axios from "axios";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import SkeletonCard from "../SkeletonLoading/SkeletonCard";
 
 function Home() {
   const [spanColor01, setSpanColor01] = useState("text-purple dark:text-white");
@@ -59,7 +62,7 @@ function Home() {
       >
         {recentProjects?.map((project) => {
           return <ProjectCard key={project._id} project={project} />;
-        })}
+        }) || <SkeletonCard />}
       </div>
     );
   }
@@ -91,7 +94,7 @@ function Home() {
       >
         {favoriteProjects?.map((project) => {
           return <ProjectCard key={project._id} project={project} />;
-        })}
+        }) || <SkeletonCard />}
       </div>
     );
   }

@@ -10,6 +10,7 @@ import {
 } from "../../../contexts/constants.js";
 import { useDispatch } from "react-redux";
 import { DisplaySharePopupSlice } from "../../../redux/slice/HomeSlice";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function ProjectCard(props) {
   const {
@@ -23,7 +24,7 @@ function ProjectCard(props) {
   } = props.project;
   const [isLiked, setIsLiked] = React.useState();
   const [isDisplayOther, setIsDisplayOther] = React.useState(false);
-  const { user } = useContext(AuthContext);
+  const { user, isLoaded } = useContext(AuthContext);
   const [members, setMembers] = React.useState(null);
   var dispatch = useDispatch();
 
@@ -115,6 +116,7 @@ function ProjectCard(props) {
             className="textOther"
             onClick={() => {
               dispatch(DisplaySharePopupSlice.actions.openSharePopup());
+              setIsDisplayOther(false);
             }}
           >
             Share
@@ -161,7 +163,15 @@ function ProjectCard(props) {
                 className="h-[22px] w-[22px] rounded-full"
               />
             );
-          })}
+          }) || (
+            <SkeletonTheme
+              baseColor="#a09fa1"
+              highlightColor="#c6c5c7"
+              inline={true}
+            >
+              <Skeleton circle={true} count={3} height={25} width={25} />
+            </SkeletonTheme>
+          )}
         </div>
       </div>
     </>

@@ -26,6 +26,8 @@ import {
 import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../contexts/constants";
 import axios from "axios";
 import Share from "./components/HomeScreen/Share";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function HomeScreen() {
   var openPopupSelector = useSelector(DisplayAddPopupSelector);
@@ -36,7 +38,7 @@ function HomeScreen() {
   const [isClickNoti, setIsClickNoti] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = React.useContext(AuthContext);
+  const { user, isLoaded } = React.useContext(AuthContext);
   const [valueSearchProject, setValueSearchProject] = useState("");
   const [isOpenAddPopup, setIsOpenAddPopup] = useState(false);
   const [isOpenSharePopup, setIsOpenSharePopup] = useState(false);
@@ -154,16 +156,26 @@ function HomeScreen() {
                 />
                 <div className="animate-ping absolute h-[4px] w-[4px] rounded-full bg-red-100 top-0 right-[4px]"></div>
               </div>
-              <img
-                src={user.photoURL}
-                id="avatar"
-                className="h-[28px] w-[28px] rounded-full md:cursor-pointer"
-                alt="Avatar"
-                onClick={(e) => {
-                  dispatch(ShowProfileModalSlice.actions.toggleShow());
-                  setDisplayHideModal(!displayHideModal);
-                }}
-              />
+              {isLoaded ? (
+                <img
+                  src={user.photoURL}
+                  id="avatar"
+                  className="h-[28px] w-[28px] rounded-full md:cursor-pointer"
+                  alt="Avatar"
+                  onClick={(e) => {
+                    dispatch(ShowProfileModalSlice.actions.toggleShow());
+                    setDisplayHideModal(!displayHideModal);
+                  }}
+                />
+              ) : (
+                <Skeleton
+                  circle={true}
+                  width={28}
+                  height={28}
+                  baseColor="#a09fa1"
+                  highlightColor="#c6c5c7"
+                />
+              )}
             </div>
           </div>
           <div className="relative flex flex-row">

@@ -4,15 +4,15 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { EmailSignupSelector } from "../../redux/selector";
-import ErrorItem from "./ErrorItem";
-import { auth } from "../../firebase/config.js";
+import { EmailSignupSelector } from "../../../redux/selector";
+import ErrorItem from "../SetupScreen/ErrorItem";
+import { auth } from "../../../firebase/config.js";
 import { useDispatch } from "react-redux";
 import {
   LOCAL_STORAGE_TOKEN_NAME,
   URL_BASE,
-} from "../../contexts/constants.js";
-import firebase from "../../firebase/config.js";
+} from "../../../contexts/constants.js";
+import firebase from "../../../firebase/config.js";
 
 function SignupComponent() {
   /** REACT STATE */

@@ -1,8 +1,8 @@
 import React from "react";
-import ColorItem from "./ColorItem";
+import ColorItem from "../SetupScreen/ColorItem";
 import { useDispatch } from "react-redux";
-import { ColorSlice } from "../../redux/slice/ColorSlice";
-import { IDColorSlice } from "../../redux/slice/IDColorSlice";
+import { ColorSlice } from "../../../redux/slice/ColorSlice";
+import { IDColorSlice } from "../../../redux/slice/IDColorSlice";
 
 function Color() {
   const dispatch = useDispatch();

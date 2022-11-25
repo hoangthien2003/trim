@@ -13,6 +13,8 @@ import {
   ShowProfileModalSlice,
 } from "../../../redux/slice/HomeSlice";
 import axios from "axios";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function ModalProfile() {
   let isShowProfile = useSelector(ShowProfileModalSelector);
@@ -20,7 +22,7 @@ function ModalProfile() {
   const [toggleButtonDarkMode, setToggleButtonDarkMode] = React.useState(null);
   const [requestLogOut, setRequestLogOut] = useState(false);
   const navigate = useNavigate();
-  const { user } = React.useContext(AuthContext);
+  const { user, isLoaded } = React.useContext(AuthContext);
   const dispatch = useDispatch();
   let htmlClasses = document.querySelector("html").classList;
 
@@ -85,21 +87,33 @@ function ModalProfile() {
         isShowProfile ? "absolute" : "hidden"
       } top-14 select-none bg-white dark:bg-bgHeaderBarDark rounded-[7px] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] z-10 right-8`}
     >
-      <div className="flex flex-row items-center py-[14px] px-[18px]">
-        <img
-          src={user.photoURL}
-          referrerPolicy="no-referrer"
-          alt=""
-          className="h-[30px] w-[30px] rounded-full"
-        />
-        <div className="flex flex-col ml-[9px]">
-          <span className="text-[13px] dark:text-white font-medium whitespace-nowrap">
-            {user.username}
-          </span>
-          <span className="text-[12px] text-black-20 dark:text-black-10">
-            {user.email}
-          </span>
-        </div>
+      <div className=" py-[14px] px-[18px]">
+        {isLoaded ? (
+          <div className="flex flex-row items-center">
+            <img
+              src={user.photoURL}
+              referrerPolicy="no-referrer"
+              alt=""
+              className="h-[30px] w-[30px] rounded-full"
+            />
+            <div className="flex flex-col ml-[9px]">
+              <span className="text-[13px] dark:text-white font-medium whitespace-nowrap">
+                {user.username}
+              </span>
+              <span className="text-[12px] text-black-20 dark:text-black-10">
+                {user.email}
+              </span>
+            </div>
+          </div>
+        ) : (
+          <SkeletonTheme baseColor="#c9c7c7">
+            <Skeleton circle={true} height={30} width={30} />
+            <div className="w-[80%] ml-[8%]">
+              <Skeleton />
+              <Skeleton />
+            </div>
+          </SkeletonTheme>
+        )}
       </div>
       <div className="h-[1px] w-full bg-outlineButton"></div>
       <div className="mt-[15px] px-[18px]">

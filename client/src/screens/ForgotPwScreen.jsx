@@ -2,8 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ContinueSelector } from "../redux/selector";
-import EmailComponent from "./components/EmailResetComponent";
-import InputEmailComponent from "./components/InputEmailComponent";
+import EmailComponent from "./components/SignupScreen/EmailResetComponent";
+import InputEmailComponent from "./components/SignupScreen/InputEmailComponent";
 
 function ForgotPwScreen() {
   const navigate = useNavigate();

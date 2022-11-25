@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { IDColorSelector } from "../../redux/selector";
+import { IDColorSelector } from "../../../redux/selector";
 const ColorItem = (props) => {
   const chooseID = useSelector(IDColorSelector);
   var opacity = "opacity-60",

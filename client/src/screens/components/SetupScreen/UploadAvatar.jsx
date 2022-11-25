@@ -1,5 +1,5 @@
 import React from "react";
-import cameraSvg from "../../images/bxs-camera-2.svg";
+import cameraSvg from "../../../images/bxs-camera-2.svg";
 import Color from "./Color";
 import { useNavigate } from "react-router-dom";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import MemberComponent from "./MemberComponent";
 import { useDispatch } from "react-redux";
-import { MemberSlice } from "../../redux/slice/MembersSlice";
+import { MemberSlice } from "../../../redux/slice/MembersSlice";
 import { useNavigate } from "react-router-dom";
 
 function Members() {

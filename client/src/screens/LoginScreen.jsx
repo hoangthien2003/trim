@@ -3,7 +3,7 @@ import googleSvg from "../images/google.svg";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import ErrorItem from "./components/ErrorItem";
+import ErrorItem from "./components/SetupScreen/ErrorItem";
 import { auth, providerGoogle } from "../firebase/config.js";
 import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../contexts/constants.js";
 import axios from "axios";

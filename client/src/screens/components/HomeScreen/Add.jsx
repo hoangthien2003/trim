@@ -11,8 +11,11 @@ import CloseDark from "../../../images/CloseDark.svg";
 import Camera from "../../../images/Camera.svg";
 import { DarkModeSelector } from "../../../redux/selector";
 import axios from "axios";
-import { URL_BASE, LOCAL_STORAGE_TOKEN_NAME } from "../../../contexts/constants"
-import { AuthContext } from "../../../contexts/AuthProvider"
+import {
+  URL_BASE,
+  LOCAL_STORAGE_TOKEN_NAME,
+} from "../../../contexts/constants";
+import { AuthContext } from "../../../contexts/AuthProvider";
 
 function Add() {
   var displayAddPopup = useSelector(DisplayAddPopupSelector);
@@ -36,6 +39,7 @@ function Add() {
   function getImage(e) {
     var inputImg = e.target.files[0];
     if (inputImg) {
+      console.log(inputImg);
       setSelectedImage(window.URL.createObjectURL(inputImg));
       setIsSelected(true);
       setIsErrorImg(false);
@@ -47,27 +51,31 @@ function Add() {
 
   function createProject() {
     async function handleCreateProject() {
+      dispatch(DisplayAddPopupSlice.actions.closeAddPopup());
       console.log(projName);
       console.log(categoryVal);
       console.log(descVal);
       console.log(privacyVal);
-      await axios
-        .post(
-          `${URL_BASE}/api/project/add-project`,
-          {
-            name: projName,
-            members: [user._id],
-            avatar: "https://cdn.vietnammoi.vn/171464242508312576/2020/10/28/huanhoahong-1ugww-1603860149561719888008-1603873413854-16038734202391656232023.jpg",
-            category: categoryVal,
-            description: descVal,
-            privacy: privacyVal
+      await axios.post(
+        `${URL_BASE}/api/project/add-project`,
+        {
+          name: projName,
+          members: [user._id],
+          avatar:
+            "https://cdn.vietnammoi.vn/171464242508312576/2020/10/28/huanhoahong-1ugww-1603860149561719888008-1603873413854-16038734202391656232023.jpg",
+          category: categoryVal,
+          description: descVal,
+          privacy: privacyVal,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              LOCAL_STORAGE_TOKEN_NAME
+            )}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_NAME)}`,
-            },
-          }
-        )
+        }
+      );
+      window.location.reload();
     }
     return (
       <div
@@ -103,8 +111,9 @@ function Add() {
           Create a New Project
         </h1>
         <div
-          className={`h-[65px] w-[65px] flex items-center justify-center md:mt-[25px] mt-[8px] rounded-[12px] ${isSelected ? "border-none" : "border-[2px]"
-            }
+          className={`h-[65px] w-[65px] flex items-center justify-center md:mt-[25px] mt-[8px] rounded-[12px] ${
+            isSelected ? "border-none" : "border-[2px]"
+          }
           ${borderImage} border-solid md:cursor-pointer md:h-[75px] md:w-[75px]`}
         >
           <input
@@ -126,8 +135,9 @@ function Add() {
           )}
         </div>
         <p
-          className={`${isErrorImg ? "visible" : "hidden"
-            } text-red-100 text-[12px]`}
+          className={`${
+            isErrorImg ? "visible" : "hidden"
+          } text-red-100 text-[12px]`}
         >
           Required
         </p>
@@ -154,8 +164,9 @@ function Add() {
               />
             </div>
             <p
-              className={`${isErrorProj ? "visible" : "hidden"
-                } text-red-100 text-[12px] ml-[8px]`}
+              className={`${
+                isErrorProj ? "visible" : "hidden"
+              } text-red-100 text-[12px] ml-[8px]`}
             >
               Required
             </p>
@@ -170,7 +181,7 @@ function Add() {
               <select
                 id="category"
                 className="w-full text-[13px] dark:bg-bgProjectCardDark mx-[5px] 
-              dark:text-whitesmoke px-[4px] py-[10px] outline-none"
+              dark:text-whitesmoke px-[4px] py-[10px] outline-none md:cursor-pointer"
                 value={categoryVal}
                 onChange={(e) => setCategoryVal(e.target.value)}
               >
@@ -208,8 +219,9 @@ function Add() {
               />
             </div>
             <p
-              className={`${isErrorDesc ? "visible" : "hidden"
-                } text-red-100 text-[12px] ml-[8px]`}
+              className={`${
+                isErrorDesc ? "visible" : "hidden"
+              } text-red-100 text-[12px] ml-[8px]`}
             >
               Required
             </p>
@@ -224,7 +236,8 @@ function Add() {
               <select
                 id="privacy"
                 className="w-full text-[13px] px-[4px] py-[10px] outline-none
-              dark:bg-bgProjectCardDark dark:text-whitesmoke mx-[5px]"
+              dark:bg-bgProjectCardDark dark:text-whitesmoke mx-[5px]
+                md:cursor-pointer"
                 value={privacyVal}
                 onChange={(e) => setPrivacyVal(e.target.value)}
               >
@@ -317,8 +330,9 @@ function Add() {
 
   return (
     <div
-      className={`${displayAddPopup ? "absolute" : "hidden"
-        } select-none flex justify-center items-center z-30 inset-0 bg-[rgba(0,0,0,0.5)] dark:bg-[rgba(225,223,223,0.2)]`}
+      className={`${
+        displayAddPopup ? "absolute" : "hidden"
+      } select-none flex justify-center items-center z-30 inset-0 bg-[rgba(0,0,0,0.5)] dark:bg-[rgba(225,223,223,0.2)]`}
     >
       {isCreate ? createProject() : modalAdd()}
     </div>

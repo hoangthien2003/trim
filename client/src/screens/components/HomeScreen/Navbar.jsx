@@ -26,6 +26,8 @@ import {
   DisplayAddPopupSlice,
   ShowProfileModalSlice,
 } from "../../../redux/slice/HomeSlice";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import SkeletonHorizon from "../SkeletonLoading/SkeletonHorizon";
 
 function Navbar(props) {
   /** STATE ONCLICK NAVITEM **/
@@ -305,7 +307,7 @@ function Navbar(props) {
             setIsHideFavourProject(!isHideFavourProject);
           }}
         >
-          <div className="flex flex-row items-center justify-between md:cursor-pointer">
+          <div className="flex flex-row items-center justify-between md:cursor-pointer mb-[10px]">
             <span className="text-black-20 dark:text-black-10 font-medium text-[14px]">
               Favourites
             </span>
@@ -325,7 +327,7 @@ function Navbar(props) {
             >
               {favoriteProjects?.map((project) => (
                 <FavouritesProject key={project._id} project={project} />
-              ))}
+              )) || <SkeletonHorizon />}
             </div>
           </div>
         </div>
@@ -361,12 +363,12 @@ function Navbar(props) {
         </div>
         {/**List Project */}
         <div className={`mt-[15px] ${isHideProject && "hidden"}`}>
-          <span className="text-black-20 dark:text-whitesmoke text-[14px] font-medium">
+          <p className="text-black-20 dark:text-black-10 text-[14px] mb-[10px] font-medium">
             Projects
-          </span>
+          </p>
           {recentProjects?.map((project) => (
             <FavouritesProject key={project._id} project={project} />
-          ))}
+          )) || <SkeletonHorizon />}
         </div>
       </div>
     </div>

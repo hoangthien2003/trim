@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { ContinueSlice } from "../../redux/slice/ContinueSlice";
-import { EmailSlice } from "../../redux/slice/EmalSlice";
-import ErrorItem from "./ErrorItem";
+import { ContinueSlice } from "../../../redux/slice/ContinueSlice";
+import { EmailSlice } from "../../../redux/slice/EmalSlice";
+import ErrorItem from "../SetupScreen/ErrorItem";
 
 function InputEmailComponent() {
   const [email, setEmail] = React.useState("");
