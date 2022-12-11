@@ -63,11 +63,86 @@ export const DarkModeSlice = createSlice({
 export const ColorLoadingSlice = createSlice({
   name: "colorLoading",
   initialState: {
-    colorLoading: [],
+    colorLoading: {
+      baseColor: null,
+      detailColor: null,
+      highlightColor: null,
+    },
   },
   reducers: {
+    normal: (state) => {
+      state.colorLoading.baseColor = null;
+      state.colorLoading.detailColor = null;
+      state.colorLoading.highlightColor = null;
+    },
     dark: (state) => {
-      state.colorLoading = ["#27343d", "#202a30", "#34444f"]; //1: baseColor, 2: detailColor, 3:highlightColor
+      state.colorLoading.baseColor = "#27343d";
+      state.colorLoading.detailColor = "#202a30";
+      state.colorLoading.highlightColor = "#34444f";
+    },
+  },
+});
+
+export const ChooseNavSlice = createSlice({
+  name: "chooseNav",
+  initialState: {
+    chooseNav: {
+      home: null,
+      tasks: null,
+      plan: null,
+      inbox: null,
+      people: null,
+      report: null,
+    },
+  },
+  reducers: {
+    setChooseNav: (state, action) => {
+      let param = action.payload;
+      switch (param) {
+        case "/":
+          state.chooseNav.home = true;
+          state.chooseNav.tasks = false;
+          state.chooseNav.plan = false;
+          state.chooseNav.inbox = false;
+          state.chooseNav.people = false;
+          state.chooseNav.report = false;
+          break;
+        case "/people":
+          state.chooseNav.home = false;
+          state.chooseNav.tasks = false;
+          state.chooseNav.plan = false;
+          state.chooseNav.inbox = false;
+          state.chooseNav.people = true;
+          state.chooseNav.report = false;
+          break;
+      }
+    },
+  },
+});
+
+export const TitleSlice = createSlice({
+  name: "title",
+  initialState: {
+    title: null,
+  },
+  reducers: {
+    setTitle: (state, action) => {
+      state.title = action.payload;
+    },
+  },
+});
+
+export const PopupAddPeopleSlice = createSlice({
+  name: "popupAddPeople",
+  initialState: {
+    popupAddPeople: null,
+  },
+  reducers: {
+    open: (state) => {
+      state.popupAddPeople = true;
+    },
+    close: (state) => {
+      state.popupAddPeople = false;
     },
   },
 });

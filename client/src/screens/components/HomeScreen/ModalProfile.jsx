@@ -9,6 +9,7 @@ import {
   URL_BASE,
 } from "../../../contexts/constants.js";
 import {
+  ColorLoadingSlice,
   DarkModeSlice,
   ShowProfileModalSlice,
 } from "../../../redux/slice/HomeSlice";
@@ -71,11 +72,13 @@ function ModalProfile() {
       .catch((err) => console.log(err));
     if (toggleButtonDarkMode) {
       dispatch(DarkModeSlice.actions.disable());
+      dispatch(ColorLoadingSlice.actions.normal());
       document.body.className = "light";
       htmlClasses.remove("dark");
       localStorage.removeItem("theme");
     } else {
       dispatch(DarkModeSlice.actions.enable());
+      dispatch(ColorLoadingSlice.actions.dark());
       htmlClasses.add("dark");
       localStorage.theme = "dark";
     }

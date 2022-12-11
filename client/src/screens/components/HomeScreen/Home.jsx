@@ -6,18 +6,14 @@ import {
   URL_BASE,
 } from "../../../contexts/constants.js";
 import axios from "axios";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonCard from "../SkeletonLoading/SkeletonCard";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  ColorLoadingSelector,
-  DarkModeSelector,
-} from "../../../redux/selector";
-import { ColorLoadingSlice } from "../../../redux/slice/HomeSlice";
+import { ColorLoadingSelector } from "../../../redux/selector";
 
 function Home() {
   const dispatch = useDispatch();
+  var colorLoading = useSelector(ColorLoadingSelector);
   const [spanColor01, setSpanColor01] = useState("text-purple dark:text-white");
   const [spanColor02, setSpanColor02] = useState(
     "text-black-200 dark:text-black-10"
@@ -39,8 +35,6 @@ function Home() {
     colorBorderNormal = "border-b-[#FBFBFB] dark:border-b-bgDashboardDark",
     colorSpanChoosed = "text-purple dark:text-white",
     colorSpanNormal = "text-black-200 dark:text-black-10";
-  var isDarkMode = useSelector(DarkModeSelector);
-  var colorLoading = useSelector(ColorLoadingSelector);
 
   function RecentProject() {
     const [recentProjects, setRecentProjects] = React.useState(null);
@@ -72,9 +66,9 @@ function Home() {
           return <ProjectCard key={project._id} project={project} />;
         }) || (
           <>
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
+            <SkeletonCard colorLoading={colorLoading} />
+            <SkeletonCard colorLoading={colorLoading} />
+            <SkeletonCard colorLoading={colorLoading} />
           </>
         )}
       </div>
@@ -115,7 +109,7 @@ function Home() {
 
   function WorkedOnComponent() {
     return (
-      <div className={`mt-[20px] `}>
+      <div className={`mt-[20px] overflow-scroll `}>
         <div className="grid grid-cols-12 w-full px-[20px] py-[15px] md:py-[10px] border-y-[2px] border-outlineButton border-solid">
           <div className="flex items-center justify-center col-span-1">
             <img
@@ -144,7 +138,7 @@ function Home() {
   }
 
   return (
-    <div className="bg-[#FBFBFB] dark:bg-bgDashboardDark h-screen relative justify-center pt-[15px]">
+    <div className="outletContainer">
       <div className="px-[20px]">
         <div className="flex justify-between w-full px-[20px]">
           <div

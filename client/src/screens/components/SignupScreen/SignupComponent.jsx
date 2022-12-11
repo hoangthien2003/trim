@@ -4,7 +4,10 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { EmailSignupSelector } from "../../../redux/selector";
+import {
+  EmailSignupSelector,
+  UserInfoCreateSelector,
+} from "../../../redux/selector";
 import ErrorItem from "../SetupScreen/ErrorItem";
 import { auth } from "../../../firebase/config.js";
 import { useDispatch } from "react-redux";
@@ -13,6 +16,7 @@ import {
   URL_BASE,
 } from "../../../contexts/constants.js";
 import firebase from "../../../firebase/config.js";
+import { UserInfoCreateSlice } from "../../../redux/slice/UserInfoCreateSlice";
 
 function SignupComponent() {
   /** REACT STATE */
@@ -49,7 +53,7 @@ function SignupComponent() {
 
   /** VARIABLE */
   const navigate = useNavigate();
-  const emailSignup = useSelector(EmailSignupSelector);
+  const emailSignup = useSelector(UserInfoCreateSelector);
 
   /** FORMIK VALIDATION */
   const formik = useFormik({
@@ -108,9 +112,11 @@ function SignupComponent() {
       });
     if (response.data.success === true) {
       await auth.createUserWithEmailAndPassword(
-        emailSignup,
+        emailSignup.email,
         formik.values.password
       );
+      dispatch(UserInfoCreateSlice.actions.setName(formik.values.name));
+      dispatch(UserInfoCreateSlice.actions.setPassword(formik.values.password));
       const uid = firebase.auth().currentUser.uid;
       await axios
         .post(`${URL_BASE}/api/auth/register`, { ...data, uid })

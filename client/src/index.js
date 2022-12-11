@@ -6,6 +6,11 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import AuthProvider from "./contexts/AuthProvider";
 import PrivateRoute from "./utils/PrivateRoute";
+import Loading from "./screens/components/Loading";
+import Home from "./screens/components/HomeScreen/Home";
+import Notification from "./screens/components/HomeScreen/Notification";
+import Tasks from "./screens/components/HomeScreen/Tasks";
+import People from "./screens/People";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const LoginScreen = lazy(() => import("./screens/LoginScreen"));
@@ -30,16 +35,11 @@ const EmailMembers = lazy(() =>
   import("./screens/components/SetupScreen/EmailMembers")
 );
 const HomeScreen = lazy(() => import("./screens/HomeScreen"));
-const Home = lazy(() => import("./screens/components/HomeScreen/Home"));
-const Tasks = lazy(() => import("./screens/components/HomeScreen/Tasks"));
-const Notification = lazy(() =>
-  import("./screens/components/HomeScreen/Notification")
-);
 root.render(
   <Provider store={store}>
     <BrowserRouter>
       <AuthProvider>
-        <Suspense>
+        <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/forgotpw" element={<ForgotPwScreen />} />
@@ -59,6 +59,7 @@ root.render(
                 <Route index element={<Home />} />
                 <Route path="/noti" element={<Notification />} />
                 <Route path="/tasks" element={<Tasks />} />
+                <Route path="/people" element={<People />} />
               </Route>
             </Route>
           </Routes>

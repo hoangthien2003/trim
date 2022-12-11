@@ -24,19 +24,24 @@ import {
 } from "../../../contexts/constants.js";
 import {
   DisplayAddPopupSlice,
-  ShowProfileModalSlice,
+  TitleSlice,
 } from "../../../redux/slice/HomeSlice";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import SkeletonHorizon from "../SkeletonLoading/SkeletonHorizon";
+import { ChooseNavSelector } from "../../../redux/selector";
 
 function Navbar(props) {
   /** STATE ONCLICK NAVITEM **/
-  const [isClickedHome, setIsClickedHome] = React.useState(true);
-  const [isClickedTasks, setIsClickedTasks] = React.useState(false);
-  const [isClickedPlan, setIsClickedPlan] = React.useState(false);
-  const [isClickedInbox, setIsClickedInbox] = React.useState(false);
-  const [isClickedPeople, setIsClickedPeople] = React.useState(false);
-  const [isClickedReport, setIsClickedReport] = React.useState(false);
+  var chooseNav = useSelector(ChooseNavSelector);
+  const [isClickedHome, setIsClickedHome] = React.useState(chooseNav.home);
+  const [isClickedTasks, setIsClickedTasks] = React.useState(chooseNav.tasks);
+  const [isClickedPlan, setIsClickedPlan] = React.useState(chooseNav.plan);
+  const [isClickedInbox, setIsClickedInbox] = React.useState(chooseNav.inbox);
+  const [isClickedPeople, setIsClickedPeople] = React.useState(
+    chooseNav.people
+  );
+  const [isClickedReport, setIsClickedReport] = React.useState(
+    chooseNav.report
+  );
 
   const [isOpenFavourites, setIsOpenFavourites] = React.useState(false);
   const [isHideFavourProject, setIsHideFavourProject] = React.useState(false);
@@ -52,7 +57,7 @@ function Navbar(props) {
       getFavoriteProjects();
       setHideDisplayNav(false);
     }
-  }, [props.isShow]);
+  }, []);
 
   const getRecentProjects = async () => {
     const response = await axios
@@ -128,6 +133,7 @@ function Navbar(props) {
               isClickedHome ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
+              dispatch(TitleSlice.actions.setTitle("Home"));
               setIsClickedHome(true);
               setIsClickedTasks(false);
               setIsClickedPlan(false);
@@ -157,6 +163,7 @@ function Navbar(props) {
               isClickedTasks ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
+              dispatch(TitleSlice.actions.setTitle("Tasks"));
               setIsClickedHome(false);
               setIsClickedTasks(true);
               setIsClickedPlan(false);
@@ -186,6 +193,7 @@ function Navbar(props) {
               isClickedPlan ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
+              dispatch(TitleSlice.actions.setTitle("Plan"));
               setIsClickedHome(false);
               setIsClickedTasks(false);
               setIsClickedPlan(true);
@@ -215,6 +223,7 @@ function Navbar(props) {
               isClickedInbox ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
+              dispatch(TitleSlice.actions.setTitle("Inbox"));
               setIsClickedHome(false);
               setIsClickedTasks(false);
               setIsClickedPlan(false);
@@ -239,11 +248,12 @@ function Navbar(props) {
             </span>
           </Link>
           <Link
-            to="/"
+            to="/people"
             className={`flex flex-row items-center mt-[5px] py-[5px] px-[10px] rounded-[7px] ${
               isClickedPeople ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
+              dispatch(TitleSlice.actions.setTitle("People"));
               setIsClickedHome(false);
               setIsClickedTasks(false);
               setIsClickedPlan(false);
@@ -273,6 +283,7 @@ function Navbar(props) {
               isClickedReport ? "bg-cyan" : "bg-white dark:bg-bgHeaderBarDark"
             }`}
             onClick={() => {
+              dispatch(TitleSlice.actions.setTitle("Report"));
               setIsClickedHome(false);
               setIsClickedTasks(false);
               setIsClickedPlan(false);

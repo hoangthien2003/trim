@@ -1,18 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { EmailSlice } from "./slice/EmalSlice";
-import { ContinueSlice } from "./slice/ContinueSlice";
-import { EmailSignupSlice } from "./slice/EmailSignupSlice";
-import { ColorSlice } from "./slice/ColorSlice";
-import { IDColorSlice } from "./slice/IDColorSlice";
-import { MemberSlice } from "./slice/MembersSlice";
-import { IDMemberSlice } from "./slice/IDMemberSlice";
+import { EmailSlice } from "./slice/SignupScreen";
+import { ContinueSlice } from "./slice/SignupScreen";
+import { EmailSignupSlice } from "./slice/SignupScreen";
 import {
+  ColorSlice,
+  IDColorSlice,
+  MemberSlice,
+  IDMemberSlice,
+} from "./slice/SetupScreen";
+import {
+  ChooseNavSlice,
   ColorLoadingSlice,
   DarkModeSlice,
   DisplayAddPopupSlice,
   DisplaySharePopupSlice,
+  PopupAddPeopleSlice,
   ShowProfileModalSlice,
+  TitleSlice,
 } from "./slice/HomeSlice";
+import { UserInfoCreateSlice } from "./slice/UserInfoCreateSlice";
 
 export const store = configureStore({
   reducer: {
@@ -28,5 +34,9 @@ export const store = configureStore({
     displaySharePopupReducer: DisplaySharePopupSlice.reducer,
     darkModeReducer: DarkModeSlice.reducer,
     colorLoadingReducer: ColorLoadingSlice.reducer,
+    userInfoCreateReducer: UserInfoCreateSlice.reducer,
+    chooseNavReducer: ChooseNavSlice.reducer,
+    titleReducer: TitleSlice.reducer,
+    popupAddPeopleReducer: PopupAddPeopleSlice.reducer,
   },
 });

@@ -3,7 +3,7 @@ import googleSvg from "../../../images/google.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
-import { EmailSignupSlice } from "../../../redux/slice/EmailSignupSlice.js";
+import { EmailSignupSlice } from "../../../redux/slice/SignupScreen";
 import * as yup from "yup";
 import axios from "axios";
 import ErrorItem from "../SetupScreen/ErrorItem";
@@ -12,6 +12,7 @@ import {
   LOCAL_STORAGE_TOKEN_NAME,
   URL_BASE,
 } from "../../../contexts/constants.js";
+import { UserInfoCreateSlice } from "../../../redux/slice/UserInfoCreateSlice";
 
 function EmailSignupComponent() {
   const [emailError, setEmailError] = React.useState("");
@@ -48,7 +49,7 @@ function EmailSignupComponent() {
       .post(`${URL_BASE}/api/auth/check-email`, userCredential)
       .then((res) => {
         if (res.data.success === true) {
-          dispatch(EmailSignupSlice.actions.setEmail(formik.values.email));
+          dispatch(UserInfoCreateSlice.actions.setEmail(formik.values.email));
           navigate("detail");
         }
       })

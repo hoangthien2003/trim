@@ -72,4 +72,7 @@ body {
   .textOther {
     @apply text-[12px] dark:text-whitesmoke md:cursor-pointer px-[6px] py-[8px] w-[150px] hover:bg-whitesmoke dark:hover:bg-bgHeaderBarDark rounded-[4px];
   }
+  .outletContainer {
+    @apply bg-[#FBFBFB] dark:bg-bgDashboardDark h-screen relative justify-center pt-[15px];
+  }
 }

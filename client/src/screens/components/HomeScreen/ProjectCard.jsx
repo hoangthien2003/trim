@@ -167,8 +167,8 @@ function ProjectCard(props) {
             );
           }) || (
             <SkeletonTheme
-              baseColor={colorLoading[0]}
-              highlightColor={colorLoading[2]}
+              baseColor={colorLoading.baseColor}
+              highlightColor={colorLoading.highlightColor}
               inline={true}
             >
               <Skeleton circle={true} count={3} height={25} width={25} />

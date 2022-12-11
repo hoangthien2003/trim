@@ -5,13 +5,12 @@ import { ColorLoadingSelector } from "../../../redux/selector";
 
 function SkeletonHorizon() {
   var colorLoading = useSelector(ColorLoadingSelector);
-
   return (
     <SkeletonTheme
       inline={true}
       width="100%"
-      baseColor={colorLoading[0]}
-      highlightColor={colorLoading[2]}
+      baseColor={colorLoading.baseColor}
+      highlightColor={colorLoading.highlightColor}
     >
       <Skeleton circle={true} height={24} width={24} className="mr-[10px]" />
       <Skeleton height={24} width="80%" />

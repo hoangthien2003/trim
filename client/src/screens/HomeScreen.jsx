@@ -24,16 +24,18 @@ import {
   DarkModeSelector,
   DisplayAddPopupSelector,
   DisplaySharePopupSelector,
+  PopupAddPeopleSelector,
+  TitleSelector,
 } from "../redux/selector";
-import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../contexts/constants";
-import axios from "axios";
 import Share from "./components/HomeScreen/Share";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import AddPeople from "./components/PeopleScreen/AddPeople";
 
 function HomeScreen() {
   var openPopupSelector = useSelector(DisplayAddPopupSelector);
   var openSharePopupSelector = useSelector(DisplaySharePopupSelector);
+  var openAddPeopleSelector = useSelector(PopupAddPeopleSelector);
   var darkModeSelector = useSelector(DarkModeSelector);
   const [showNav, setShowNav] = useState(true);
   const [showCloseNav, setShowCloseNav] = useState(false);
@@ -46,8 +48,8 @@ function HomeScreen() {
   const [isOpenSharePopup, setIsOpenSharePopup] = useState(false);
   const [displayHideModal, setDisplayHideModal] = useState(false);
   let htmlClasses = document.querySelector("html").classList;
-  const [isDarkMode, setIsDarkMode] = useState(null);
   var colorLoading = useSelector(ColorLoadingSelector);
+  var title = useSelector(TitleSelector);
 
   useEffect(() => {
     if (window.innerWidth <= 768) setShowNav(false);
@@ -55,40 +57,10 @@ function HomeScreen() {
     openSharePopupSelector
       ? setIsOpenSharePopup(true)
       : setIsOpenSharePopup(false);
-    async function getDarkMode() {
-      const response = await axios
-        .get(`${URL_BASE}/api/auth/user`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              LOCAL_STORAGE_TOKEN_NAME
-            )}`,
-          },
-        })
-        .catch((err) => console.log(err));
-      if (response.data.success === true) {
-        var dataDarkMode = response.data.user.isDarkMode;
-        if (dataDarkMode) {
-          dispatch(DarkModeSlice.actions.enable());
-          dispatch(ColorLoadingSlice.actions.dark());
-        } else {
-          dispatch(DarkModeSlice.actions.disable());
-          dispatch(ColorLoadingSlice.actions.normal());
-        }
-      }
-    }
-    // getDarkMode();
-    var dataDarkMode = true;
-    if (dataDarkMode) {
-      dispatch(DarkModeSlice.actions.enable());
+    if (localStorage.getItem("theme") === "dark") {
       dispatch(ColorLoadingSlice.actions.dark());
-      htmlClasses.add("dark");
-      localStorage.theme = "dark";
     } else {
-      dispatch(DarkModeSlice.actions.disable());
       dispatch(ColorLoadingSlice.actions.normal());
-      document.body.className = "light";
-      htmlClasses.remove("dark");
-      localStorage.removeItem("theme");
     }
   }, [
     setShowNav,
@@ -96,8 +68,6 @@ function HomeScreen() {
     openPopupSelector,
     openSharePopupSelector,
     htmlClasses,
-    dispatch,
-    isDarkMode,
   ]);
 
   return (
@@ -116,7 +86,9 @@ function HomeScreen() {
             dark:border-b-black-100 border-solid`}
           >
             {window.innerWidth >= 768 ? (
-              <h1 className="text-[17px] dark:text-white font-medium">Home</h1>
+              <h1 className="text-[17px] dark:text-white font-medium">
+                {title}
+              </h1>
             ) : isClickNoti ? (
               <img
                 src={ArrowLeft}
@@ -192,8 +164,8 @@ function HomeScreen() {
                   circle={true}
                   width={28}
                   height={28}
-                  baseColor={colorLoading[0]}
-                  highlightColor={colorLoading[2]}
+                  baseColor={colorLoading.baseColor}
+                  highlightColor={colorLoading.highlightColor}
                 />
               )}
             </div>
@@ -219,6 +191,7 @@ function HomeScreen() {
       {isOpenAddPopup ? <Add /> : null}
       {isOpenSharePopup ? <Share /> : null}
       <ModalProfile />
+      {openAddPeopleSelector ? <AddPeople /> : null}
     </>
   );
 }

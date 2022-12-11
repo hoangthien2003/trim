@@ -14,3 +14,9 @@ export const DisplaySharePopupSelector = (state) =>
 export const DarkModeSelector = (state) => state.darkModeReducer.isDarkMode;
 export const ColorLoadingSelector = (state) =>
   state.colorLoadingReducer.colorLoading;
+export const UserInfoCreateSelector = (state) =>
+  state.userInfoCreateReducer.userInfo;
+export const ChooseNavSelector = (state) => state.chooseNavReducer.chooseNav;
+export const TitleSelector = (state) => state.titleReducer.title;
+export const PopupAddPeopleSelector = (state) =>
+  state.popupAddPeopleReducer.popupAddPeople;
