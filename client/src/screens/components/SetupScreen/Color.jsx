@@ -7,8 +7,8 @@ import { IDColorSlice } from "../../../redux/slice/SetupScreen";
 function Color() {
   const dispatch = useDispatch();
   return (
-    <div className="w-[255px] md:w-[480px]">
-      <div className="flex flex-wrap md:justify-start">
+    <div className="">
+      <div className="grid grid-cols-12 grid-rows-2 gap-1">
         <div
           id="1"
           onClick={(e) => {

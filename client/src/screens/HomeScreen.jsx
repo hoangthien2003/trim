@@ -25,17 +25,20 @@ import {
   DisplayAddPopupSelector,
   DisplaySharePopupSelector,
   PopupAddPeopleSelector,
+  PopupAddTeamSelector,
   TitleSelector,
 } from "../redux/selector";
 import Share from "./components/HomeScreen/Share";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import AddPeople from "./components/PeopleScreen/AddPeople";
+import AddTeam from "./components/PeopleScreen/AddTeam";
 
 function HomeScreen() {
   var openPopupSelector = useSelector(DisplayAddPopupSelector);
   var openSharePopupSelector = useSelector(DisplaySharePopupSelector);
   var openAddPeopleSelector = useSelector(PopupAddPeopleSelector);
+  var openAddTeamSelector = useSelector(PopupAddTeamSelector);
   var darkModeSelector = useSelector(DarkModeSelector);
   const [showNav, setShowNav] = useState(true);
   const [showCloseNav, setShowCloseNav] = useState(false);
@@ -192,6 +195,7 @@ function HomeScreen() {
       {isOpenSharePopup ? <Share /> : null}
       <ModalProfile />
       {openAddPeopleSelector ? <AddPeople /> : null}
+      {openAddTeamSelector ? <AddTeam /> : null}
     </>
   );
 }

@@ -146,3 +146,18 @@ export const PopupAddPeopleSlice = createSlice({
     },
   },
 });
+
+export const PopupAddTeamSlice = createSlice({
+  name: "popupAddTeam",
+  initialState: {
+    popupAddTeam: null,
+  },
+  reducers: {
+    open: (state) => {
+      state.popupAddTeam = true;
+    },
+    close: (state) => {
+      state.popupAddTeam = false;
+    },
+  },
+});

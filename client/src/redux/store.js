@@ -15,10 +15,12 @@ import {
   DisplayAddPopupSlice,
   DisplaySharePopupSlice,
   PopupAddPeopleSlice,
+  PopupAddTeamSlice,
   ShowProfileModalSlice,
   TitleSlice,
 } from "./slice/HomeSlice";
 import { UserInfoCreateSlice } from "./slice/UserInfoCreateSlice";
+import { ChooseProjectSlice } from "./slice/PeopleSlice";
 
 export const store = configureStore({
   reducer: {
@@ -38,5 +40,7 @@ export const store = configureStore({
     chooseNavReducer: ChooseNavSlice.reducer,
     titleReducer: TitleSlice.reducer,
     popupAddPeopleReducer: PopupAddPeopleSlice.reducer,
+    popupAddTeamReducer: PopupAddTeamSlice.reducer,
+    chooseProjectReducer: ChooseProjectSlice.reducer,
   },
 });

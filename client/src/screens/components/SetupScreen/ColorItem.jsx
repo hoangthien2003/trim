@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { IDColorSelector } from "../../../redux/selector";
+import { DarkModeSelector, IDColorSelector } from "../../../redux/selector";
 const ColorItem = (props) => {
+  var darkModeSelector = useSelector(DarkModeSelector);
   const chooseID = useSelector(IDColorSelector);
   var opacity = "opacity-60",
     border;
@@ -13,7 +14,11 @@ const ColorItem = (props) => {
     border = "border-white";
   }
   return (
-    <div className={`colorItem ${props.hoverBorderColor} ${opacity} ${border}`}>
+    <div
+      className={`colorItem ${
+        darkModeSelector ? "border-bgProjectCardDark" : "border-white"
+      } ${props.hoverBorderColor} ${opacity} ${border}`}
+    >
       <div
         className={`colorDiv ${props.backgroundColor}`}
         id={props.id}

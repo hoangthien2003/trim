@@ -9,8 +9,8 @@ function People() {
   return (
     <>
       <div
-        className="flex flex-col justify-center items-center bg-white h-[11rem]
-      rounded-[4px] border-outlineButton border-[1px] md:h-[13rem] md:hover:cursor-pointer"
+        className="flex flex-col justify-center items-center bg-white dark:bg-bgProjectCardDark h-[11rem]
+      rounded-[4px] border-outlineButton dark:border-bgOtherPopup border-[1px] md:h-[13rem] md:hover:cursor-pointer"
         onClick={() => {
           dispatch(PopupAddPeopleSlice.actions.open());
         }}

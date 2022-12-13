@@ -20,3 +20,7 @@ export const ChooseNavSelector = (state) => state.chooseNavReducer.chooseNav;
 export const TitleSelector = (state) => state.titleReducer.title;
 export const PopupAddPeopleSelector = (state) =>
   state.popupAddPeopleReducer.popupAddPeople;
+export const PopupAddTeamSelector = (state) =>
+  state.popupAddTeamReducer.popupAddTeam;
+export const ChooseProjectSelector = (state) =>
+  state.chooseProjectReducer.chooseProject;

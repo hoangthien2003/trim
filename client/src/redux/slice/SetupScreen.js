@@ -27,7 +27,7 @@ export const IDMemberSlice = createSlice({
 export const IDColorSlice = createSlice({
   name: "storeID",
   initialState: {
-    IDState: "",
+    IDState: "11",
   },
   reducers: {
     setID: (state, action) => {
@@ -39,7 +39,7 @@ export const IDColorSlice = createSlice({
 export const ColorSlice = createSlice({
   name: "color",
   initialState: {
-    colorState: "",
+    colorState: "#F24D16",
   },
   reducers: {
     setColor: (state, action) => {

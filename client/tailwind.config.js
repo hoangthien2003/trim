@@ -9,7 +9,7 @@ module.exports = {
       purple: "#5F48EA",
       white: "#fff",
       outlineButton: "#E8ECEE",
-      cyan: "#08C7E0",
+      cyan: "#25d9e2",
       red: {
         50: "#fc6565",
         100: "#E44258",

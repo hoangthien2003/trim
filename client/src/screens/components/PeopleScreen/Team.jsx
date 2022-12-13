@@ -1,20 +1,37 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import TeamCard from "./TeamCard";
-import Add from "../../../images/Add.svg";
+import Person from "../../../images/avatar.svg";
+import Person2 from "../../../images/avatar-1.svg";
+import Person3 from "../../../images/avatar-2.svg";
+import { PopupAddTeamSlice } from "../../../redux/slice/HomeSlice";
 
 function Team() {
+  const dispatch = useDispatch();
   return (
     <>
       <div
         className="flex flex-col justify-center items-center bg-white h-[11rem]
-        rounded-[4px] border-outlineButton border-[1px] md:h-[13rem] md:hover:cursor-pointer"
+        rounded-[4px] border-outlineButton dark:bg-bgProjectCardDark border-[1px] md:h-[13rem] 
+      dark:border-bgOtherPopup"
       >
-        <div className="rounded-[34px] mb-[7px] p-[12px] flex items-center justify-center bg-purple">
-          <img src={Add} alt="" className="h-[18px] w-[18px]" />
+        <div className="flex flex-row items-center">
+          <img src={Person3} alt="" className="h-[32px] w-[32px]" />
+          <img src={Person2} alt="" className="h-[32px] w-[32px]" />
+          <img src={Person} alt="" className="h-[32px] w-[32px]" />
         </div>
-        <h2 className="md:hover:underline underline text-purple text-[14px]">
-          Start a team
+        <h2 className="text-[14px] mt-[20px] dark:text-whitesmoke">
+          Your new team!
         </h2>
+        <button
+          className="bg-[#25d9e2] text-white text-[13px] font-medium px-[18px] py-[7px] rounded-[6px]
+        mt-[16px]"
+          onClick={() => {
+            dispatch(PopupAddTeamSlice.actions.open());
+          }}
+        >
+          Start a team
+        </button>
       </div>
       <TeamCard />
       <TeamCard />
