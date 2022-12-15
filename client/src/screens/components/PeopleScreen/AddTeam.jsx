@@ -15,8 +15,8 @@ function AddTeam() {
   const [isHoverClose, setHoverClose] = useState(null);
   var colorSelector = useSelector(ColorSelector);
   const [nameVal, setName] = useState(null);
-  const [inviteVal, setInvite] = useState(null)
-  const [isInviteErr, setInviteErr] = useState(null)
+  const [inviteVal, setInvite] = useState(null);
+  const [isInviteErr, setInviteErr] = useState(null);
 
   return (
     <div
@@ -119,7 +119,7 @@ function AddTeam() {
               />
             </div>
             <p className={`${isInviteErr ? "visible" : "hidden"} text-red-50`}>
-              Invalid email 
+              Invalid email
             </p>
           </div>
 
@@ -138,7 +138,11 @@ function AddTeam() {
             <button
               className={`bg-cyan px-[28px] py-[10px] rounded-[8px] font md:text-[16px] 
             transition-opacity text-white 
-            ${nameVal && inviteVal ? "opacity-100" : "opacity-60 cursor-not-allowed"}`}
+            ${
+              nameVal && inviteVal
+                ? "opacity-100"
+                : "opacity-60 cursor-not-allowed"
+            }`}
             >
               Start
             </button>

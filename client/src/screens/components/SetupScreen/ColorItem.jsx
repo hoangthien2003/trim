@@ -1,9 +1,14 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { IDColorSelector } from "../../../redux/selector";
+import { ColorSlice, IDColorSlice } from "../../../redux/slice/SetupScreen";
+
 const ColorItem = (props) => {
   const chooseID = useSelector(IDColorSelector);
-  var opacity = "opacity-60", borderColor; 
+  var opacity = "opacity-60",
+    borderColor;
+  const dispatch = useDispatch();
   if (chooseID === props.id) {
     opacity = "opacity-100";
     borderColor = props.borderColor;
@@ -14,6 +19,10 @@ const ColorItem = (props) => {
   return (
     <div
       className={`colorItem ${props.hoverBorderColor} ${opacity} ${borderColor}`}
+      onClick={() => {
+        dispatch(ColorSlice.actions.setColor(props.color));
+        dispatch(IDColorSlice.actions.setID(props.id));
+      }}
     >
       <div
         className={`colorDiv ${props.backgroundColor}`}
