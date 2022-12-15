@@ -3,7 +3,6 @@ import ColorItem from "../SetupScreen/ColorItem";
 import { useDispatch } from "react-redux";
 import { ColorSlice } from "../../../redux/slice/SetupScreen";
 import { IDColorSlice } from "../../../redux/slice/SetupScreen";
-
 function Color() {
   const dispatch = useDispatch();
   return (

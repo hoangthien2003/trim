@@ -50,7 +50,7 @@ body {
   }
   .colorItem {
     @apply opacity-60 border-solid border-[2px] p-[2px]
-    transition-opacity hover:cursor-pointer rounded-full;
+    transition-opacity hover:cursor-pointer rounded-full; 
   }
   .colorDiv {
     @apply h-[18px] w-[18px] md:h-[22px] md:w-[22px] rounded-full;

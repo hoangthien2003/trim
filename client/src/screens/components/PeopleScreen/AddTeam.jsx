@@ -14,6 +14,9 @@ function AddTeam() {
   var darkModeSelector = useSelector(DarkModeSelector);
   const [isHoverClose, setHoverClose] = useState(null);
   var colorSelector = useSelector(ColorSelector);
+  const [nameVal, setName] = useState(null);
+  const [inviteVal, setInvite] = useState(null)
+  const [isInviteErr, setInviteErr] = useState(null)
 
   return (
     <div
@@ -55,8 +58,6 @@ function AddTeam() {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
                 d="M8.92101 1.0791C9.13755 1.29564 9.13755 1.64674 8.92101 1.86328L5.78427 5.00002L8.92101 8.13676C9.13755 8.35331 9.13755 8.7044 8.92101 8.92095C8.70446 9.13749 8.35337 9.13749 8.13682 8.92095L5.00008 5.78421L1.86334 8.92095C1.6468 9.13749 1.2957 9.13749 1.07916 8.92095C0.862611 8.7044 0.862611 8.35331 1.07916 8.13676L4.2159 5.00002L1.07916 1.86328C0.862611 1.64674 0.862611 1.29564 1.07916 1.0791C1.2957 0.862551 1.6468 0.862551 1.86334 1.0791L5.00008 4.21584L8.13682 1.0791C8.35337 0.86255 8.70446 0.86255 8.92101 1.0791Z"
                 fill={`${
                   isHoverClose || darkModeSelector ? "white" : "#323338"
@@ -76,7 +77,7 @@ function AddTeam() {
           <div className="flex flex-row items-center justify-between md:mt-[24px]">
             <div
               className={`md:w-[86px] md:h-[86px] w-[56px] h-[56px] flex justify-center 
-            items-center bg-[${colorSelector}] rounded-full`}
+            items-center bg-[${colorSelector}] rounded-full transition-colors`}
             >
               <span className="font-medium md:text-[34px] text-[22px] text-white">
                 P
@@ -96,6 +97,8 @@ function AddTeam() {
                 id="name"
                 placeholder="Name"
                 className="formInput"
+                value={nameVal}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
           </div>
@@ -111,8 +114,13 @@ function AddTeam() {
                 id="name"
                 placeholder="Their email or @mention"
                 className="formInput"
+                value={inviteVal}
+                onChange={(e) => setInvite(e.target.value)}
               />
             </div>
+            <p className={`${isInviteErr ? "visible" : "hidden"} text-red-50`}>
+              Invalid email 
+            </p>
           </div>
 
           {/**Footer */}
@@ -129,7 +137,8 @@ function AddTeam() {
             </button>
             <button
               className={`bg-cyan px-[28px] py-[10px] rounded-[8px] font md:text-[16px] 
-            transition-opacity text-white opacity-60 cursor-not-allowed`}
+            transition-opacity text-white 
+            ${nameVal && inviteVal ? "opacity-100" : "opacity-60 cursor-not-allowed"}`}
             >
               Start
             </button>

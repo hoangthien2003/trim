@@ -1,23 +1,19 @@
-import React from "react";
+import React, {useState} from "react";
 import { useSelector } from "react-redux";
-import { DarkModeSelector, IDColorSelector } from "../../../redux/selector";
+import { IDColorSelector } from "../../../redux/selector";
 const ColorItem = (props) => {
-  var darkModeSelector = useSelector(DarkModeSelector);
   const chooseID = useSelector(IDColorSelector);
-  var opacity = "opacity-60",
-    border;
+  var opacity = "opacity-60", borderColor; 
   if (chooseID === props.id) {
     opacity = "opacity-100";
-    border = `${props.borderColor}`;
+    borderColor = props.borderColor;
   } else {
     opacity = "opacity-60";
-    border = "border-white";
+    borderColor = "border-white dark:border-bgProjectCardDark";
   }
   return (
     <div
-      className={`colorItem ${
-        darkModeSelector ? "border-bgProjectCardDark" : "border-white"
-      } ${props.hoverBorderColor} ${opacity} ${border}`}
+      className={`colorItem ${props.hoverBorderColor} ${opacity} ${borderColor}`}
     >
       <div
         className={`colorDiv ${props.backgroundColor}`}
