@@ -11,6 +11,7 @@ import Home from "./screens/components/HomeScreen/Home";
 import Notification from "./screens/components/HomeScreen/Notification";
 import Tasks from "./screens/components/HomeScreen/Tasks";
 import People from "./screens/People";
+import Profile from "./screens/components/SettingScreen/Profile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const LoginScreen = lazy(() => import("./screens/LoginScreen"));
@@ -35,6 +36,8 @@ const EmailMembers = lazy(() =>
   import("./screens/components/SetupScreen/EmailMembers")
 );
 const HomeScreen = lazy(() => import("./screens/HomeScreen"));
+const SettingScreen = lazy(() => import("./screens/SettingScreen"));
+
 root.render(
   <Provider store={store}>
     <BrowserRouter>
@@ -60,6 +63,9 @@ root.render(
                 <Route path="/noti" element={<Notification />} />
                 <Route path="/tasks" element={<Tasks />} />
                 <Route path="/people" element={<People />} />
+                <Route path="setting" element={<SettingScreen />}>
+                  <Route index element={<Profile />} />
+                </Route>
               </Route>
             </Route>
           </Routes>

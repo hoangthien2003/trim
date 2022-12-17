@@ -52,11 +52,16 @@ export default function Loading() {
       case "/":
         dispatch(TitleSlice.actions.setTitle("Home"));
         break;
+      case "/setting":
+        dispatch(TitleSlice.actions.setTitle("Setting"));
+        break;
       case "/tasks":
         dispatch(TitleSlice.actions.setTitle("Tasks"));
         break;
       case "/people":
         dispatch(TitleSlice.actions.setTitle("People"));
+        break;
+      default:
         break;
     }
   }

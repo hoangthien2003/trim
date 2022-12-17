@@ -2,13 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DisplayAddPopupSelector } from "../../../redux/selector";
 import { DisplayAddPopupSlice } from "../../../redux/slice/HomeSlice";
-import CloseIcon from "../../../images/Close.svg";
-import AddIcon from "../../../images/AddBlack.svg";
-import AddDark from "../../../images/Add.svg";
-import ArrowLeft from "../../../images/ArrowLeft.svg";
-import ArrowDark from "../../../images/ArrowLeftDark.svg";
-import CloseDark from "../../../images/CloseDark.svg";
-import Camera from "../../../images/Camera.svg";
 import { DarkModeSelector } from "../../../redux/selector";
 import axios from "axios";
 import {
@@ -80,11 +73,11 @@ function Add() {
     }
     return (
       <div className="flex items-center flex-col">
-        <h1 className="text-[26px] font-light dark:text-whitesmoke mt-[5px]">
+        <h1 className="md:text-[26px] md:font-light font-medium text-[16px] dark:text-whitesmoke mt-[5px]">
           Create a New Project
         </h1>
         <div
-          className={`h-[65px] w-[65px] flex items-center justify-center md:mt-[25px] mt-[8px] rounded-[12px] ${
+          className={`h-[65px] w-[70px] flex items-center justify-center md:mt-[25px] mt-[8px] rounded-[12px] ${
             isSelected ? "border-none" : "border-[2px]"
           }
           ${borderImage} border-solid md:cursor-pointer md:h-[90px] md:w-[90px]`}
@@ -101,11 +94,10 @@ function Add() {
             <img id="outputImg" src={selectedImage} alt="" />
           ) : (
             <svg
-              width="34"
-              height="28"
               viewBox="0 0 20 18"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="md:h-[34px] md:w-[28px] h-[17px] w-[20px]"
             >
               <path
                 d="M10 7.36538C10.8264 7.36538 11.533 7.65314 12.1198 8.22867C12.7066 8.80419 13 9.4972 13 10.3077C13 11.1182 12.7066 11.8112 12.1198 12.3867C11.533 12.9622 10.8264 13.25 10 13.25C9.17361 13.25 8.46701 12.9622 7.88021 12.3867C7.2934 11.8112 7 11.1182 7 10.3077C7 9.4972 7.2934 8.80419 7.88021 8.22867C8.46701 7.65314 9.17361 7.36538 10 7.36538ZM17.3333 3.11538C18.0694 3.11538 18.6979 3.37079 19.2188 3.88161C19.7396 4.39243 20 5.00881 20 5.73077V14.8846C20 15.6066 19.7396 16.223 19.2188 16.7338C18.6979 17.2446 18.0694 17.5 17.3333 17.5H2.66667C1.93056 17.5 1.30208 17.2446 0.78125 16.7338C0.260417 16.223 0 15.6066 0 14.8846V5.73077C0 5.00881 0.260417 4.39243 0.78125 3.88161C1.30208 3.37079 1.93056 3.11538 2.66667 3.11538H5L5.53125 1.72596C5.66319 1.39223 5.90451 1.10447 6.25521 0.86268C6.6059 0.620893 6.96528 0.5 7.33333 0.5H12.6667C13.0347 0.5 13.3941 0.620893 13.7448 0.86268C14.0955 1.10447 14.3368 1.39223 14.4688 1.72596L15 3.11538H17.3333ZM10 14.8846C11.2847 14.8846 12.3837 14.4368 13.2969 13.5412C14.2101 12.6455 14.6667 11.5677 14.6667 10.3077C14.6667 9.04768 14.2101 7.96985 13.2969 7.07422C12.3837 6.17859 11.2847 5.73077 10 5.73077C8.71528 5.73077 7.61632 6.17859 6.70312 7.07422C5.78993 7.96985 5.33333 9.04768 5.33333 10.3077C5.33333 11.5677 5.78993 12.6455 6.70312 13.5412C7.61632 14.4368 8.71528 14.8846 10 14.8846Z"
@@ -121,7 +113,9 @@ function Add() {
         >
           Required
         </p>
-        <div className="w-full px-[25px]">
+
+        {/** Body */}
+        <div className="md:px-[25px] w-full">
           {/**Project Name */}
           <div className="w-full md:mb-[10px] md:mt-[15px] mt-[10px] mb-[5px]">
             <p className="text-[12px] text-black-20 font-medium">
@@ -311,7 +305,7 @@ function Add() {
     >
       <div
         className={`flex flex-col absolute ${
-          isCreate ? "md:w-[700px]" : "top-[20%] md:w-[600px]"
+          isCreate ? "md:w-[700px] w-full" : "top-[20%] md:w-[600px]"
         } bg-white dark:bg-bgProjectCardDark 
         pb-[15px] rounded-[8px]`}
       >
@@ -372,7 +366,7 @@ function Add() {
             </svg>
           </div>
         </div>
-        <div className="pb-[30px] px-[60px]">
+        <div className="pb-[30px] md:px-[60px] px-[30px]">
           {isCreate ? createProject() : modalAdd()}
         </div>
       </div>

@@ -168,6 +168,10 @@ function ModalProfile() {
         <p
           className="text-[11px] mb-[12px] md:mb-[4px] md:text-[13px] md:px-[8px] 
         md:py-[6px] rounded-[6px] hover:bg-whitesmoke dark:hover:bg-black-50 dark:text-whitesmoke md:cursor-pointer"
+          onClick={() => {
+            navigate("/setting", { replace: true });
+            dispatch(ShowProfileModalSlice.actions.setHide());
+          }}
         >
           Setting
         </p>
