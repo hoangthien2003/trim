@@ -1,8 +1,34 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthProvider";
+import { useSelector } from "react-redux";
+import Skeleton from "react-loading-skeleton";
+import {
+  ColorLoadingSelector,
+  DarkModeSelector,
+} from "../../../redux/selector";
+import CountryModal from "./CountryModal";
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, isLoaded } = useContext(AuthContext);
+  const [fullNameVal, setFullNameVal] = useState("");
+  const [emailVal, setEmailVal] = useState("");
+  const [usernameVal, setUsernameVal] = useState("");
+  const [gender, setGender] = useState("");
+  const [aboutVal, setAboutVal] = useState(
+    "Clay is a new type of tool that brings together the best parts of spreadsheets, coding & simple automation. Quickly connect your apps and code into automated workflows, build useful tools, enrich data sets and more!"
+  );
+  var colorLoading = useSelector(ColorLoadingSelector);
+  var darkModeSelector = useSelector(DarkModeSelector);
+  const [isClickLangua, setClickLangua] = useState(false);
+  const [isClickCountry, setClickCountry] = useState(false);
+
+  useEffect(() => {
+    setFullNameVal("Hoang Dang Bao Thien");
+    setEmailVal("hoangthiennt2003@gmail.com");
+    setUsernameVal("hoangthien2003");
+    document.querySelector("#labelMale").click();
+  }, []);
+
   return (
     <div className="px-[30px]">
       {/**Avatar*/}
@@ -19,12 +45,24 @@ const Profile = () => {
             fill="#848588"
           />
         </svg>
-        <img
-          src={user.photoURL}
-          referrerPolicy="no-referrer"
-          alt=""
-          className="h-[72px] w-[72px] rounded-full mx-[40px]"
-        />
+        <div className="mx-[40px]">
+          {isLoaded ? (
+            <img
+              src={user.photoURL}
+              referrerPolicy="no-referrer"
+              alt=""
+              className="h-[72px] w-[72px] rounded-full"
+            />
+          ) : (
+            <Skeleton
+              circle={true}
+              width={72}
+              height={72}
+              baseColor={colorLoading.baseColor}
+              highlightColor={colorLoading.highlightColor}
+            />
+          )}
+        </div>
         <svg
           width="14"
           height="14"
@@ -33,8 +71,6 @@ const Profile = () => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
             d="M4.1948 2.27503C4.1948 1.17524 5.13307 0.333374 6.22732 0.333374H7.77203C8.86628 0.333374 9.80455 1.17524 9.80455 2.27503V2.51415H13.1785C13.4479 2.51415 13.6663 2.73255 13.6663 3.00195C13.6663 3.27136 13.4479 3.48976 13.1785 3.48976H12.1216V11.7251C12.1216 12.8248 11.1834 13.6667 10.0891 13.6667H3.91024C2.816 13.6667 1.87772 12.8248 1.87772 11.7251V3.48976H0.820813C0.551406 3.48976 0.333008 3.27136 0.333008 3.00195C0.333008 2.73255 0.551406 2.51415 0.820813 2.51415H4.1948V2.27503ZM2.85333 3.48976V11.7251C2.85333 12.2311 3.29825 12.6911 3.91024 12.6911H10.0891C10.7011 12.6911 11.146 12.2311 11.146 11.7251V3.48976H2.85333ZM8.82894 2.51415H5.17041V2.27503C5.17041 1.76894 5.61532 1.30898 6.22732 1.30898H7.77203C8.38403 1.30898 8.82894 1.76894 8.82894 2.27503V2.51415ZM5.45496 5.42185C5.72437 5.42185 5.94276 5.64025 5.94276 5.90965V10.2712C5.94276 10.5406 5.72437 10.759 5.45496 10.759C5.18555 10.759 4.96715 10.5406 4.96715 10.2712V5.90965C4.96715 5.64025 5.18555 5.42185 5.45496 5.42185ZM8.54439 5.42185C8.8138 5.42185 9.0322 5.64025 9.0322 5.90965V10.2712C9.0322 10.5406 8.8138 10.759 8.54439 10.759C8.27498 10.759 8.05659 10.5406 8.05659 10.2712V5.90965C8.05659 5.64025 8.27498 5.42185 8.54439 5.42185Z"
             fill="#848588"
           />
@@ -43,23 +79,32 @@ const Profile = () => {
 
       {/**Gender*/}
       <div className="flex mt-[18px] flex-row items-center justify-evenly">
-        <label className="flex flex-row items-center">
-          <input type="radio" name="gender" />
-          <p className="ml-[8px] font-medium text-[14px] text-black-100">
+        <label id="labelMale" className="flex flex-row items-center">
+          <input id="male" type="radio" name="gender" value="Male" />
+          <label
+            htmlFor="male"
+            className="ml-[8px] font-medium text-[14px] text-black-100"
+          >
             Male
-          </p>
+          </label>
         </label>
-        <label className="flex flex-row items-center">
-          <input type="radio" name="gender" />
-          <p className="ml-[8px] font-medium text-[14px] text-black-100">
+        <label id="labelFemale" className="flex flex-row items-center">
+          <input id="female" value="Female" type="radio" name="gender" />
+          <label
+            htmlFor="female"
+            className="ml-[8px] font-medium text-[14px] text-black-100"
+          >
             Female
-          </p>
+          </label>
         </label>
-        <label className="flex flex-row items-center">
-          <input type="radio" name="gender" />
-          <p className="ml-[8px] font-medium text-[14px] text-black-100">
+        <label id="labelOther" className="flex flex-row items-center">
+          <input id="other" value="Other" type="radio" name="gender" />
+          <label
+            htmlFor="other"
+            className="ml-[8px] font-medium text-[14px] text-black-100"
+          >
             Other
-          </p>
+          </label>
         </label>
       </div>
 
@@ -73,7 +118,8 @@ const Profile = () => {
           <input
             name="fullName"
             id="fullName"
-            value="Hoang Dang Bao Thien"
+            value={fullNameVal}
+            onChange={(e) => setFullNameVal(e.target.value)}
             placeholder="Full name"
             className="formInput py-[9px] text-[13px]"
           />
@@ -89,6 +135,7 @@ const Profile = () => {
               name="role"
               id="role"
               value="Owner"
+              readOnly={true}
               placeholder="Role"
               className="formInput py-[9px] text-[13px]"
             />
@@ -104,7 +151,8 @@ const Profile = () => {
             <input
               name="email"
               id="email"
-              value="hoangthiennt2003@gmail.com"
+              value={emailVal}
+              onChange={(e) => setEmailVal(e.target.value)}
               placeholder="Email"
               className="formInput py-[9px] text-[13px]"
             />
@@ -120,7 +168,8 @@ const Profile = () => {
             <input
               name="username"
               id="username"
-              value="bibungbu2003"
+              value={usernameVal}
+              onChange={(e) => e.target.value}
               placeholder="Username"
               className="formInput py-[9px] text-[13px]"
             />
@@ -137,7 +186,8 @@ const Profile = () => {
               id="about"
               name="about"
               placeholder="About"
-              defaultValue="Clay is a new type of tool that brings together the best parts of spreadsheets, coding & simple automation. Quickly connect your apps and code into automated workflows, build useful tools, enrich data sets and more!"
+              value={aboutVal}
+              onChange={(e) => setAboutVal(e.target.value)}
               className="outline-none w-full text-[13px] text-black-100 h-[100px]
               dark:bg-bgProjectCardDark dark:text-whitesmoke p-[8px]"
             />
@@ -146,19 +196,23 @@ const Profile = () => {
       </div>
 
       {/**Language & Region Setting*/}
-      <div className="mt-[30px] relative">
-        <label htmlFor="chooseProject" className="formLabel">
-          Choose a starting project
+      <div className="mt-[40px] relative">
+        <h2 className="font-medium mb-[12px]">Language & Region Setting</h2>
+        {/**Language*/}
+        <label htmlFor="language" className="formLabel">
+          Language
         </label>
         <div
-          id="chooseProject"
+          id="language"
           className={`w-full border-[2px] rounded-[8px] flex flex-row items-center
-              justify-between px-3 py-3 md:hover:cursor-pointer 
-              border-outlineButton dark:border-bgOtherPopup`}
+              justify-between px-3 py-2 md:hover:cursor-pointer 
+              border-outlineButton dark:border-bgOtherPopup
+              text-[13px]`}
+          onClick={() => {
+            setClickLangua(!isClickLangua);
+          }}
         >
-          <p className="md:text-[13.5px] text-[14px] text-black-200 dark:text-whitesmoke">
-            English
-          </p>
+          <p>English</p>
           <svg
             width="12"
             height="8"
@@ -171,6 +225,42 @@ const Profile = () => {
               fill="#848588"
             />
           </svg>
+        </div>
+        {/*Language Modal*/}
+        <div
+          className={`absolute ${
+            isClickLangua ? "visible" : "hidden"
+          } z-40 bg-white dark:bg-bgOtherPopup w-full rounded-[12px] mt-[2px] 
+            shadow-xl border-[1px] border-outlineButton dark:border-none
+            px-[25px] py-[12px]`}
+        >
+          <CountryModal />
+        </div>
+
+        {/*Region*/}
+        <div className="mt-[15px]">
+          <label className="formLabel">Week start on</label>
+          <div
+            id="language"
+            className={`w-full border-[2px] rounded-[8px] flex flex-row items-center
+              justify-between px-3 py-2 md:hover:cursor-pointer 
+              border-outlineButton dark:border-bgOtherPopup
+              text-[13px]`}
+          >
+            <p>Monday</p>
+            <svg
+              width="12"
+              height="8"
+              viewBox="0 0 12 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.64637 6.97986L0.186805 1.5203C-0.128177 1.20532 0.0949049 0.666748 0.540357 0.666748H11.4595C11.9049 0.666748 12.128 1.20532 11.813 1.5203L6.35347 6.97986C6.15821 7.17512 5.84163 7.17512 5.64637 6.97986Z"
+                fill="#848588"
+              />
+            </svg>
+          </div>
         </div>
       </div>
     </div>

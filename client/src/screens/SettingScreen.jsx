@@ -6,11 +6,10 @@ function SettingScreen() {
   const [isNoti, setChooseNoti] = useState(false);
   const [isAccount, setChooseAcc] = useState(false);
   const [isDisplay, setChooseDisplay] = useState(false);
-  const [choosing, setChoosing] = useState(1);
 
   return (
-    <div className="overflow-auto">
-      <div className="bg-whitesmoke h-screen dark:bg-bgProjectCardDark">
+    <div className="overflow-auto h-screen pb-[100px]">
+      <div className="bg-whitesmoke dark:bg-bgProjectCardDark">
         {window.innerWidth < 768 ? (
           <h1 className="font-medium text-[16px] ml-[24px] py-[15px]">
             Settings
@@ -34,7 +33,6 @@ function SettingScreen() {
                 setChooseNoti(false);
                 setChooseAcc(false);
                 setChooseDisplay(false);
-                setChoosing(1);
               }}
             >
               <h1
@@ -54,7 +52,6 @@ function SettingScreen() {
                 setChooseNoti(true);
                 setChooseAcc(false);
                 setChooseDisplay(false);
-                setChoosing(2);
               }}
             >
               <h1
@@ -74,7 +71,6 @@ function SettingScreen() {
                 setChooseNoti(false);
                 setChooseAcc(true);
                 setChooseDisplay(false);
-                setChoosing(3);
               }}
             >
               <h1
@@ -94,7 +90,6 @@ function SettingScreen() {
                 setChooseNoti(false);
                 setChooseAcc(false);
                 setChooseDisplay(true);
-                setChoosing(4);
               }}
             >
               <h1

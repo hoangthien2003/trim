@@ -52,7 +52,8 @@ function AddPeople() {
             </h1>
           </div>
           <div
-            className="md:hover:bg-red-100 inset-0 h-full px-[35px] rounded-tr-[8px] flex items-center justify-center transition-colors"
+            className="md:hover:bg-red-100 inset-0 h-full px-[35px] rounded-tr-[8px] 
+            flex items-center justify-center transition-colors"
             onClick={() => {
               dispatch(PopupAddPeopleSlice.actions.close());
               dispatch(ChooseProjectSlice.actions.close());
@@ -175,14 +176,10 @@ function AddPeople() {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
                     d="M12.7009 12.7008C12.9512 12.4505 13.3571 12.4505 13.6074 12.7008L17.1459 16.2394C17.3962 16.4897 17.3962 16.8956 17.1459 17.1459C16.8956 17.3962 16.4897 17.3962 16.2394 17.1459L12.7009 13.6074C12.4505 13.357 12.4505 12.9512 12.7009 12.7008Z"
                     fill={`${darkModeSelector ? "#fff" : "#000"}`}
                   />
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
                     d="M8.23117 1.94904C4.76163 1.94904 1.94902 4.76169 1.94902 8.23127C1.94902 11.7008 4.76163 14.5135 8.23117 14.5135C11.7007 14.5135 14.5133 11.7008 14.5133 8.23127C14.5133 4.76169 11.7007 1.94904 8.23117 1.94904ZM0.666992 8.23127C0.666992 4.05363 4.05359 0.666992 8.23117 0.666992C12.4087 0.666992 15.7953 4.05363 15.7953 8.23127C15.7953 12.4089 12.4087 15.7955 8.23117 15.7955C4.05359 15.7955 0.666992 12.4089 0.666992 8.23127Z"
                     fill={`${darkModeSelector ? "#fff" : "#000"}`}
                   />
