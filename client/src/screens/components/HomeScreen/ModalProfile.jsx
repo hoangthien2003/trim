@@ -12,6 +12,7 @@ import {
   ColorLoadingSlice,
   DarkModeSlice,
   ShowProfileModalSlice,
+  OpenSettingSlice
 } from "../../../redux/slice/HomeSlice";
 import axios from "axios";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -171,6 +172,7 @@ function ModalProfile() {
           onClick={() => {
             navigate("/setting", { replace: true });
             dispatch(ShowProfileModalSlice.actions.setHide());
+            dispatch(OpenSettingSlice.actions.setOpen(true))
           }}
         >
           Setting

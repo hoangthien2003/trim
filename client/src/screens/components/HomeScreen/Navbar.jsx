@@ -15,11 +15,12 @@ import {
   TitleSlice,
 } from "../../../redux/slice/HomeSlice";
 import SkeletonHorizon from "../SkeletonLoading/SkeletonHorizon";
-import { ChooseNavSelector } from "../../../redux/selector";
+import { ChooseNavSelector, TitleSelector } from "../../../redux/selector";
 
 function Navbar(props) {
   /** STATE ONCLICK NAVITEM **/
   var chooseNav = useSelector(ChooseNavSelector);
+  var titleSelector = useSelector(TitleSelector)
   const [isClickedHome, setIsClickedHome] = React.useState(chooseNav.home);
   const [isClickedTasks, setIsClickedTasks] = React.useState(chooseNav.tasks);
   const [isClickedPlan, setIsClickedPlan] = React.useState(chooseNav.plan);

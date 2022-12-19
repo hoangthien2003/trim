@@ -14,6 +14,7 @@ import {
   ColorLoadingSlice,
   DarkModeSlice,
   DisplayAddPopupSlice,
+  OpenSettingSlice,
   ShowProfileModalSlice,
 } from "../redux/slice/HomeSlice";
 import ModalProfile from "./components/HomeScreen/ModalProfile";
@@ -24,6 +25,7 @@ import {
   DarkModeSelector,
   DisplayAddPopupSelector,
   DisplaySharePopupSelector,
+  OpenSettingSelector,
   PopupAddPeopleSelector,
   PopupAddTeamSelector,
   TitleSelector,
@@ -53,6 +55,7 @@ function HomeScreen() {
   let htmlClasses = document.querySelector("html").classList;
   var colorLoading = useSelector(ColorLoadingSelector);
   var title = useSelector(TitleSelector);
+  var openSettingSelector = useSelector(OpenSettingSelector)
 
   useEffect(() => {
     if (window.innerWidth <= 768) setShowNav(false);
@@ -92,14 +95,15 @@ function HomeScreen() {
               <h1 className="text-[17px] dark:text-white font-medium">
                 {title}
               </h1>
-            ) : isClickNoti ? (
+            ) : isClickNoti || openSettingSelector ? (
               <img
                 src={ArrowLeft}
                 alt=""
                 className="w-[17px] h-[22px]"
                 onClick={() => {
                   setIsClickNoti(false);
-                  navigate(-1);
+                  dispatch(OpenSettingSlice.actions.setOpen(false))
+                  navigate("/");
                 }}
               />
             ) : (
@@ -109,7 +113,7 @@ function HomeScreen() {
                 className="w-[17px] h-[22px] fill-white md:hidden"
                 onClick={() => {
                   setShowNav(!showNav);
-                  setShowCloseNav(!showCloseNav);
+                  setShowCloseNav(!showCloseNav)
                 }}
               />
             )}

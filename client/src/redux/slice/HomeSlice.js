@@ -161,3 +161,15 @@ export const PopupAddTeamSlice = createSlice({
     },
   },
 });
+
+export const OpenSettingSlice = createSlice({
+  name: "openSetting",
+  initialState: {
+    isClick: null
+  },
+  reducers: {
+    setOpen: (state, action) => {
+      state.isClick = action.payload
+    }
+  }
+})

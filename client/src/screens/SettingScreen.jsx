@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 function SettingScreen() {
   const [isProfile, setChooseProfile] = useState(true);
   const [isNoti, setChooseNoti] = useState(false);
   const [isAccount, setChooseAcc] = useState(false);
   const [isDisplay, setChooseDisplay] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="overflow-auto h-screen pb-[100px]">
@@ -33,6 +34,7 @@ function SettingScreen() {
                 setChooseNoti(false);
                 setChooseAcc(false);
                 setChooseDisplay(false);
+                navigate("/setting");
               }}
             >
               <h1
@@ -52,6 +54,7 @@ function SettingScreen() {
                 setChooseNoti(true);
                 setChooseAcc(false);
                 setChooseDisplay(false);
+                navigate("/setting/noti-setting");
               }}
             >
               <h1

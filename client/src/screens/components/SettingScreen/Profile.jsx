@@ -41,6 +41,8 @@ const Profile = () => {
     document.querySelector("#labelMale").click();
     dispatch(LanguageSlice.actions.setLanguage("United State (English)"));
     document.querySelector("#Monday").click();
+    document.querySelector("#shortTime").click()
+    document.querySelector("#DD").click()
   }, [setFullNameVal, setEmailVal, setUsernameVal, dispatch]);
 
   return (
@@ -296,33 +298,33 @@ const Profile = () => {
             Time Format
           </label>
           <div id="time" className="flex flex-row items-center">
-            <div className="flex flex-row items-center mr-[30px]">
-              <input type="radio" id="12" className="mr-[7px]" />
+            <label id="shortTime" className="flex flex-row items-center mr-[30px]">
+              <input type="radio" name="time" id="12" className="mr-[7px]" />
               <p className="text-[14px]">12 Hour</p>
-            </div>
-            <div className="flex flex-row items-center">
-              <input type="radio" id="24" className="mr-[7px]" />
+            </label>
+            <label id="fullTime" className="flex flex-row items-center">
+              <input type="radio" name="time" id="24" className="mr-[7px]" />
               <p className="text-[14px]">24 Hour</p>
-            </div>
+            </label>
           </div>
         </div>
         <div className="mt-[10px]">
           <label htmlFor="date" className="font-medium text-[13px] text-black-20">
             Date Format
           </label>
-          <div id="date" className="font-medium text-[13px] text-black-20">
-            <div className="flex flex-row items-center mr-[30px]">
-              <input type="radio" id="DD" className="mr-[7px]" />
+          <div id="date" className="flex flex-row items-center">
+            <label id="DD" className="flex flex-row items-center mr-[15px]">
+              <input type="radio" name="date" id="DD" className="mr-[7px]" />
               <p className="text-[14px]">DD/MM/YY</p>
-            </div>
-            <div className="flex flex-row items-center">
-              <input type="radio" id="MM" className="mr-[7px]" />
+            </label>
+            <label id="MM" className="flex flex-row items-center mr-[15px]">
+              <input type="radio" name="date" id="MM" className="mr-[7px]" />
               <p className="text-[14px]">MM/DD/YY</p>
-            </div>
-            <div className="flex flex-row items-center">
-              <input type="radio" id="YY" className="mr-[7px]"/>
+            </label>
+            <label id="YY" className="flex flex-row items-center">
+              <input type="radio" name="date" id="YY" className="mr-[7px]"/>
               <p className="text-[14px]">YY/MM/DD</p>
-            </div>
+            </label>
           </div>
         </div>
       </div>

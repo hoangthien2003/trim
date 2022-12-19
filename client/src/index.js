@@ -12,6 +12,7 @@ import Notification from "./screens/components/HomeScreen/Notification";
 import Tasks from "./screens/components/HomeScreen/Tasks";
 import People from "./screens/People";
 import Profile from "./screens/components/SettingScreen/Profile";
+import NotiSetting from "./screens/components/SettingScreen/Notification";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const LoginScreen = lazy(() => import("./screens/LoginScreen"));
@@ -63,8 +64,12 @@ root.render(
                 <Route path="/noti" element={<Notification />} />
                 <Route path="/tasks" element={<Tasks />} />
                 <Route path="/people" element={<People />} />
-                <Route path="setting" element={<SettingScreen />}>
+                <Route path="/setting" element={<SettingScreen />}>
                   <Route index element={<Profile />} />
+                  <Route
+                    path="/setting/noti-setting"
+                    element={<NotiSetting />}
+                  />
                 </Route>
               </Route>
             </Route>

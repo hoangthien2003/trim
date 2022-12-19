@@ -29,3 +29,4 @@ export const ClickLanguaSelector = (state) => state.clickLanguaReducer.isClick;
 export const ClickRegionSelector = (state) =>
   state.clickLanguaReducer.isClickRegion;
 export const StartDaySelector = (state) => state.languageReducer.startDay;
+export const OpenSettingSelector = (state) => state.openSettingReducer.isClick
