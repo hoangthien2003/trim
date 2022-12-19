@@ -24,3 +24,8 @@ export const PopupAddTeamSelector = (state) =>
   state.popupAddTeamReducer.popupAddTeam;
 export const ChooseProjectSelector = (state) =>
   state.chooseProjectReducer.chooseProject;
+export const LanguageSelector = (state) => state.languageReducer.language;
+export const ClickLanguaSelector = (state) => state.clickLanguaReducer.isClick;
+export const ClickRegionSelector = (state) =>
+  state.clickLanguaReducer.isClickRegion;
+export const StartDaySelector = (state) => state.languageReducer.startDay;

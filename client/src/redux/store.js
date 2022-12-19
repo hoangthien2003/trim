@@ -21,6 +21,7 @@ import {
 } from "./slice/HomeSlice";
 import { UserInfoCreateSlice } from "./slice/UserInfoCreateSlice";
 import { ChooseProjectSlice } from "./slice/PeopleSlice";
+import { ClickLanguaSlice, LanguageSlice } from "./slice/SettingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -42,5 +43,7 @@ export const store = configureStore({
     popupAddPeopleReducer: PopupAddPeopleSlice.reducer,
     popupAddTeamReducer: PopupAddTeamSlice.reducer,
     chooseProjectReducer: ChooseProjectSlice.reducer,
+    languageReducer: LanguageSlice.reducer,
+    clickLanguaReducer: ClickLanguaSlice.reducer,
   },
 });

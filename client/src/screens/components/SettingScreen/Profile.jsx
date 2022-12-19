@@ -1,12 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthProvider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import {
+  ClickLanguaSelector,
+  ClickRegionSelector,
   ColorLoadingSelector,
   DarkModeSelector,
+  LanguageSelector,
+  StartDaySelector,
 } from "../../../redux/selector";
 import CountryModal from "./CountryModal";
+import {
+  ClickLanguaSlice,
+  LanguageSlice,
+} from "../../../redux/slice/SettingSlice";
+import RegionModal from "./RegionModal";
 
 const Profile = () => {
   const { user, isLoaded } = useContext(AuthContext);
@@ -19,15 +28,20 @@ const Profile = () => {
   );
   var colorLoading = useSelector(ColorLoadingSelector);
   var darkModeSelector = useSelector(DarkModeSelector);
-  const [isClickLangua, setClickLangua] = useState(false);
-  const [isClickCountry, setClickCountry] = useState(false);
+  var languageSelector = useSelector(LanguageSelector);
+  var startDaySelector = useSelector(StartDaySelector);
+  var clickLanguaSelector = useSelector(ClickLanguaSelector);
+  var clickRegionSelector = useSelector(ClickRegionSelector);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setFullNameVal("Hoang Dang Bao Thien");
     setEmailVal("hoangthiennt2003@gmail.com");
     setUsernameVal("hoangthien2003");
     document.querySelector("#labelMale").click();
-  }, []);
+    dispatch(LanguageSlice.actions.setLanguage("United State (English)"));
+    document.querySelector("#Monday").click();
+  }, [setFullNameVal, setEmailVal, setUsernameVal, dispatch]);
 
   return (
     <div className="px-[30px]">
@@ -209,10 +223,10 @@ const Profile = () => {
               border-outlineButton dark:border-bgOtherPopup
               text-[13px]`}
           onClick={() => {
-            setClickLangua(!isClickLangua);
+            dispatch(ClickLanguaSlice.actions.toggleClick());
           }}
         >
-          <p>English</p>
+          <p>{languageSelector}</p>
           <svg
             width="12"
             height="8"
@@ -229,10 +243,10 @@ const Profile = () => {
         {/*Language Modal*/}
         <div
           className={`absolute ${
-            isClickLangua ? "visible" : "hidden"
+            clickLanguaSelector ? "visible" : "hidden"
           } z-40 bg-white dark:bg-bgOtherPopup w-full rounded-[12px] mt-[2px] 
             shadow-xl border-[1px] border-outlineButton dark:border-none
-            px-[25px] py-[12px]`}
+            px-[25px] py-[20px]`}
         >
           <CountryModal />
         </div>
@@ -246,8 +260,11 @@ const Profile = () => {
               justify-between px-3 py-2 md:hover:cursor-pointer 
               border-outlineButton dark:border-bgOtherPopup
               text-[13px]`}
+            onClick={() => {
+              dispatch(ClickLanguaSlice.actions.toggleClickRegion());
+            }}
           >
-            <p>Monday</p>
+            <p>{startDaySelector}</p>
             <svg
               width="12"
               height="8"
@@ -260,6 +277,52 @@ const Profile = () => {
                 fill="#848588"
               />
             </svg>
+          </div>
+        </div>
+        {/*Region Modal*/}
+        <div
+          className={`absolute ${
+            clickRegionSelector ? "visible" : "hidden"
+          } z-40 bg-white dark:bg-bgOtherPopup w-full rounded-[12px] mt-[2px] 
+            shadow-xl border-[1px] border-outlineButton dark:border-none
+            px-[25px] py-[20px]`}
+        >
+          <RegionModal />
+        </div>
+
+        {/*Time & Date format*/}
+        <div className="mt-[20px]">
+          <label htmlFor="time" className="font-medium text-[13px] text-black-20">
+            Time Format
+          </label>
+          <div id="time" className="flex flex-row items-center">
+            <div className="flex flex-row items-center mr-[30px]">
+              <input type="radio" id="12" className="mr-[7px]" />
+              <p className="text-[14px]">12 Hour</p>
+            </div>
+            <div className="flex flex-row items-center">
+              <input type="radio" id="24" className="mr-[7px]" />
+              <p className="text-[14px]">24 Hour</p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-[10px]">
+          <label htmlFor="date" className="font-medium text-[13px] text-black-20">
+            Date Format
+          </label>
+          <div id="date" className="font-medium text-[13px] text-black-20">
+            <div className="flex flex-row items-center mr-[30px]">
+              <input type="radio" id="DD" className="mr-[7px]" />
+              <p className="text-[14px]">DD/MM/YY</p>
+            </div>
+            <div className="flex flex-row items-center">
+              <input type="radio" id="MM" className="mr-[7px]" />
+              <p className="text-[14px]">MM/DD/YY</p>
+            </div>
+            <div className="flex flex-row items-center">
+              <input type="radio" id="YY" className="mr-[7px]"/>
+              <p className="text-[14px]">YY/MM/DD</p>
+            </div>
           </div>
         </div>
       </div>
