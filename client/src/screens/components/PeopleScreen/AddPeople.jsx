@@ -24,9 +24,6 @@ function AddPeople() {
 
   const handleInvite = (e) => {
     e.preventDefault();
-    if (!chooseProjectSelector.isChoose && !emailValue) return null;
-    else {
-    }
   };
 
   return (

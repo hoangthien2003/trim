@@ -6,8 +6,6 @@ import MenuDark from "../images/MenuDark.svg";
 import SearchSvg from "../images/Search.svg";
 import SearchDark from "../images/SearchDark.svg";
 import AddSvg from "../images/Add.svg";
-import NotiSvg from "../images/Notification.svg";
-import NotiDark from "../images/NotiDark.svg";
 import ArrowLeft from "../images/arrow-left-solid.svg";
 import Navbar from "./components/HomeScreen/Navbar";
 import {
@@ -16,6 +14,7 @@ import {
   DisplayAddPopupSlice,
   OpenSettingSlice,
   ShowProfileModalSlice,
+  TitleSlice,
 } from "../redux/slice/HomeSlice";
 import ModalProfile from "./components/HomeScreen/ModalProfile";
 import { AuthContext } from "../contexts/AuthProvider";
@@ -55,7 +54,27 @@ function HomeScreen() {
   let htmlClasses = document.querySelector("html").classList;
   var colorLoading = useSelector(ColorLoadingSelector);
   var title = useSelector(TitleSelector);
-  var openSettingSelector = useSelector(OpenSettingSelector)
+  var openSettingSelector = useSelector(OpenSettingSelector);
+
+  function getParamToChangeTitle() {
+    let param = window.location.pathname;
+    switch (param) {
+      case "/":
+        dispatch(TitleSlice.actions.setTitle("Home"));
+        break;
+      case "/setting":
+        dispatch(TitleSlice.actions.setTitle("Setting"));
+        break;
+      case "/tasks":
+        dispatch(TitleSlice.actions.setTitle("Tasks"));
+        break;
+      case "/people":
+        dispatch(TitleSlice.actions.setTitle("People"));
+        break;
+      default:
+        break;
+    }
+  }
 
   useEffect(() => {
     if (window.innerWidth <= 768) setShowNav(false);
@@ -68,6 +87,7 @@ function HomeScreen() {
     } else {
       dispatch(ColorLoadingSlice.actions.normal());
     }
+    getParamToChangeTitle();
   }, [
     setShowNav,
     setIsOpenAddPopup,
@@ -86,7 +106,7 @@ function HomeScreen() {
         }}
       >
         {window.innerWidth > 768 && <Navbar isShow={showNav} />}
-        <div className="md:flex md:flex-col md:w-full">
+        <div className="md:flex md:flex-col md:w-screen">
           <div
             className={`headerBar dark:bg-bgHeaderBarDark border-b-[1px] border-b-outlineButton
             dark:border-b-black-100 border-solid`}
@@ -95,14 +115,14 @@ function HomeScreen() {
               <h1 className="text-[17px] dark:text-white font-medium">
                 {title}
               </h1>
-            ) : isClickNoti || openSettingSelector ? (
+            ) : isClickNoti ? (
               <img
                 src={ArrowLeft}
                 alt=""
                 className="w-[17px] h-[22px]"
                 onClick={() => {
                   setIsClickNoti(false);
-                  dispatch(OpenSettingSlice.actions.setOpen(false))
+                  dispatch(OpenSettingSlice.actions.setOpen(false));
                   navigate("/");
                 }}
               />
@@ -113,7 +133,7 @@ function HomeScreen() {
                 className="w-[17px] h-[22px] fill-white md:hidden"
                 onClick={() => {
                   setShowNav(!showNav);
-                  setShowCloseNav(!showCloseNav)
+                  setShowCloseNav(!showCloseNav);
                 }}
               />
             )}

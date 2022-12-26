@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LogoSvg from "../../../images/logo.svg";
 import ExpandArrow from "../../../images/ExpandArrow.svg";
@@ -15,30 +15,27 @@ import {
   TitleSlice,
 } from "../../../redux/slice/HomeSlice";
 import SkeletonHorizon from "../SkeletonLoading/SkeletonHorizon";
-import { ChooseNavSelector, TitleSelector } from "../../../redux/selector";
+import {
+  ChooseNavSelector,
+  OpenSettingSelector,
+} from "../../../redux/selector";
 
 function Navbar(props) {
   /** STATE ONCLICK NAVITEM **/
   var chooseNav = useSelector(ChooseNavSelector);
-  var titleSelector = useSelector(TitleSelector)
-  const [isClickedHome, setIsClickedHome] = React.useState(chooseNav.home);
-  const [isClickedTasks, setIsClickedTasks] = React.useState(chooseNav.tasks);
-  const [isClickedPlan, setIsClickedPlan] = React.useState(chooseNav.plan);
-  const [isClickedInbox, setIsClickedInbox] = React.useState(chooseNav.inbox);
-  const [isClickedPeople, setIsClickedPeople] = React.useState(
-    chooseNav.people
-  );
-  const [isClickedReport, setIsClickedReport] = React.useState(
-    chooseNav.report
-  );
+  const [isClickedHome, setIsClickedHome] = useState(chooseNav.home);
+  const [isClickedTasks, setIsClickedTasks] = useState(chooseNav.tasks);
+  const [isClickedPlan, setIsClickedPlan] = useState(chooseNav.plan);
+  const [isClickedInbox, setIsClickedInbox] = useState(chooseNav.inbox);
+  const [isClickedPeople, setIsClickedPeople] = useState(chooseNav.people);
+  const [isClickedReport, setIsClickedReport] = useState(chooseNav.report);
+  const [isOpenFavourites, setIsOpenFavourites] = useState(false);
+  const [isHideFavourProject, setIsHideFavourProject] = useState(false);
+  const [isHideProject, setIsHideProject] = useState(false);
+  const [valueSearchProject, setValueSearchProject] = useState("");
 
-  const [isOpenFavourites, setIsOpenFavourites] = React.useState(false);
-  const [isHideFavourProject, setIsHideFavourProject] = React.useState(false);
-  const [isHideProject, setIsHideProject] = React.useState(false);
-  const [valueSearchProject, setValueSearchProject] = React.useState("");
-
-  const [recentProjects, setRecentProjects] = React.useState(null);
-  const [hideDisplayNav, setHideDisplayNav] = React.useState(true);
+  const [recentProjects, setRecentProjects] = useState(null);
+  const [hideDisplayNav, setHideDisplayNav] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {

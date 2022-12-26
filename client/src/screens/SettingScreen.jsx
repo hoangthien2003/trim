@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 function SettingScreen() {
@@ -9,26 +9,31 @@ function SettingScreen() {
   const navigate = useNavigate();
 
   return (
-    <div className="overflow-auto h-screen pb-[100px]">
-      <div className="bg-whitesmoke dark:bg-bgProjectCardDark">
+    <div className="overflow-auto h-screen bg-bgProjectCardDark">
+      <div className="bg-whitesmoke dark:bg-bgDashboardDark md:flex md:justify-center md:pb-[70px]">
         {window.innerWidth < 768 ? (
-          <h1 className="font-medium text-[16px] ml-[24px] py-[15px]">
+          <h1
+            className="font-medium text-[16px] ml-[24px] py-[15px]
+            dark:text-white"
+          >
             Settings
           </h1>
         ) : null}
         <div
-          className="h-full w-screen bg-white rounded-t-[10px] 
-          pt-[20px]"
+          className="h-full w-screen md:w-[60%] bg-white dark:bg-bgProjectCardDark rounded-t-[10px] 
+          pt-[20px] md:mt-[30px] md:px-[30px] md:rounded-b-[10px]"
         >
           {/**Header*/}
           <div
-            className="flex flex-row items-center justify-around border-b-[1px] 
-            border-outlineButton"
+            className="flex flex-row items-center justify-evenly pb-[2px] border-b-[1px] 
+            border-outlineButton dark:border-bgOtherPopup"
           >
             <div
               className={`pb-[5px] border-b-[2px] ${
-                isProfile ? "border-purple" : "border-white"
-              }`}
+                isProfile
+                  ? "border-purple dark:border-white"
+                  : "border-white dark:border-bgProjectCardDark"
+              } md:hover:cursor-pointer`}
               onClick={() => {
                 setChooseProfile(true);
                 setChooseNoti(false);
@@ -39,7 +44,9 @@ function SettingScreen() {
             >
               <h1
                 className={`font-medium text-[14px] ${
-                  isProfile ? "text-purple" : null
+                  isProfile
+                    ? "text-purple dark:text-white"
+                    : "dark:text-black-20"
                 }`}
               >
                 Profile
@@ -47,8 +54,10 @@ function SettingScreen() {
             </div>
             <div
               className={`pb-[5px] border-b-[2px] ${
-                isNoti ? "border-purple" : "border-white"
-              }`}
+                isNoti
+                  ? "border-purple dark:border-white"
+                  : "border-white dark:border-bgProjectCardDark"
+              } md:hover:cursor-pointer`}
               onClick={() => {
                 setChooseProfile(false);
                 setChooseNoti(true);
@@ -59,7 +68,7 @@ function SettingScreen() {
             >
               <h1
                 className={`font-medium text-[14px] ${
-                  isNoti ? "text-purple" : null
+                  isNoti ? "text-purple dark:text-white" : "dark:text-black-20"
                 }`}
               >
                 Notifications
@@ -67,8 +76,10 @@ function SettingScreen() {
             </div>
             <div
               className={`pb-[5px] border-b-[2px] ${
-                isAccount ? "border-purple" : "border-white"
-              }`}
+                isAccount
+                  ? "border-purple dark:border-white"
+                  : "border-white dark:border-bgProjectCardDark"
+              } md:hover:cursor-pointer`}
               onClick={() => {
                 setChooseProfile(false);
                 setChooseNoti(false);
@@ -78,7 +89,9 @@ function SettingScreen() {
             >
               <h1
                 className={`text-[14px] font-medium ${
-                  isAccount ? "text-purple" : null
+                  isAccount
+                    ? "text-purple dark:text-white"
+                    : "dark:text-black-20"
                 }`}
               >
                 Account
@@ -86,8 +99,10 @@ function SettingScreen() {
             </div>
             <div
               className={`pb-[5px] border-b-[2px] ${
-                isDisplay ? "border-purple" : "border-white"
-              }`}
+                isDisplay
+                  ? "border-purple dark:border-white"
+                  : "border-white dark:border-bgProjectCardDark"
+              } md:hover:cursor-pointer`}
               onClick={() => {
                 setChooseProfile(false);
                 setChooseNoti(false);
@@ -97,7 +112,9 @@ function SettingScreen() {
             >
               <h1
                 className={`font-medium text-[14px] ${
-                  isDisplay ? "text-purple" : null
+                  isDisplay
+                    ? "text-purple dark:text-white"
+                    : "dark:text-black-20"
                 }`}
               >
                 Display

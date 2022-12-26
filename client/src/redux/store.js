@@ -18,11 +18,15 @@ import {
   PopupAddTeamSlice,
   ShowProfileModalSlice,
   TitleSlice,
-  OpenSettingSlice
+  OpenSettingSlice,
 } from "./slice/HomeSlice";
 import { UserInfoCreateSlice } from "./slice/UserInfoCreateSlice";
 import { ChooseProjectSlice } from "./slice/PeopleSlice";
-import { ClickLanguaSlice, LanguageSlice } from "./slice/SettingSlice";
+import {
+  ClickLanguaSlice,
+  LanguageSlice,
+  SettingDayNotiSlice,
+} from "./slice/SettingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -46,6 +50,6 @@ export const store = configureStore({
     chooseProjectReducer: ChooseProjectSlice.reducer,
     languageReducer: LanguageSlice.reducer,
     clickLanguaReducer: ClickLanguaSlice.reducer,
-    openSettingReducer: OpenSettingSlice.reducer
+    openSettingReducer: OpenSettingSlice.reducer,
   },
 });

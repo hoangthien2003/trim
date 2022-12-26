@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { LanguageSlice } from "../../../redux/slice/SettingSlice";
 
 const RegionModal = () => {
   const dispatch = useDispatch();
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto md:h-[210px]">
       <label
         className="flex flex-row items-center mb-[15px]"
         onClick={() => {
@@ -13,7 +13,7 @@ const RegionModal = () => {
         }}
       >
         <input type="radio" name="startDay" id="Sunday" className="mr-[10px]" />
-        <p className="text-[14px]">Sunday</p>
+        <p className="text-[14px] dark:text-whitesmoke">Sunday</p>
       </label>
       <label
         className="flex flex-row items-center mb-[15px]"
@@ -22,7 +22,7 @@ const RegionModal = () => {
         }}
       >
         <input type="radio" name="startDay" id="Monday" className="mr-[10px]" />
-        <p className="text-[14px]">Monday</p>
+        <p className="text-[14px] dark:text-whitesmoke">Monday</p>
       </label>
       <label
         className="flex flex-row items-center mb-[15px]"
@@ -36,7 +36,7 @@ const RegionModal = () => {
           id="Tuesday"
           className="mr-[10px]"
         />
-        <p className="text-[14px]">Tuesday</p>
+        <p className="text-[14px] dark:text-whitesmoke">Tuesday</p>
       </label>
       <label
         className="flex flex-row items-center mb-[15px]"
@@ -50,7 +50,7 @@ const RegionModal = () => {
           id="Wednesday"
           className="mr-[10px]"
         />
-        <p className="text-[14px]">Wednesday</p>
+        <p className="text-[14px] dark:text-whitesmoke">Wednesday</p>
       </label>
       <label
         className="flex flex-row items-center mb-[15px]"
@@ -64,7 +64,7 @@ const RegionModal = () => {
           id="Thursday"
           className="mr-[10px]"
         />
-        <p className="text-[14px]">Thursday</p>
+        <p className="text-[14px] dark:text-whitesmoke">Thursday</p>
       </label>
       <label
         className="flex flex-row items-center mb-[15px]"
@@ -73,10 +73,10 @@ const RegionModal = () => {
         }}
       >
         <input type="radio" name="startDay" id="Friday" className="mr-[10px]" />
-        <p className="text-[14px]">Friday</p>
+        <p className="text-[14px] dark:text-whitesmoke">Friday</p>
       </label>
       <label
-        className="flex flex-row items-center mb-[15px]"
+        className="flex flex-row items-center"
         onClick={() => {
           dispatch(LanguageSlice.actions.setStartDay("Saturday"));
         }}
@@ -87,7 +87,7 @@ const RegionModal = () => {
           id="Saturday"
           className="mr-[10px]"
         />
-        <p className="text-[14px]">Saturday</p>
+        <p className="text-[14px] dark:text-whitesmoke">Saturday</p>
       </label>
     </div>
   );

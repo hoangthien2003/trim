@@ -1,19 +1,21 @@
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LOCAL_STORAGE_TOKEN_NAME, URL_BASE } from "../../contexts/constants";
 import {
   ChooseNavSlice,
   ColorLoadingSlice,
   DarkModeSlice,
+  OpenSettingSlice,
   TitleSlice,
 } from "../../redux/slice/HomeSlice";
-import { useParams } from "react-router-dom";
+import { OpenSettingSelector } from "../../redux/selector";
+import logo from "../../images/logo.svg";
 
 export default function Loading() {
   const dispatch = useDispatch();
   let htmlClasses = document.querySelector("html").classList;
-  let param = useParams();
+  var isClickSetting = useSelector(OpenSettingSelector);
 
   async function getDarkMode() {
     await axios
@@ -72,5 +74,14 @@ export default function Loading() {
     getParamToChangeTitle();
     console.log("Loading...");
   }, []);
-  return <div className="bg-[#858484] dark:bg-bgDashboardDark"></div>;
+  return (
+    <div className="bg-white dark:bg-bgDashboardDark h-screen w-screen flex items-center justify-center">
+      <div className="flex flex-row items-center">
+        <img src={logo} alt="logo" className="h-[64px] w-[64px]" />
+        <p className="ml-[10px] text-[16px] font-bold text-black-200 dark:text-white">
+          Trim
+        </p>
+      </div>
+    </div>
+  );
 }
